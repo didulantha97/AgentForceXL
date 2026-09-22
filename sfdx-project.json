@@ -1,0 +1,16 @@
+{
+  "packageDirectories": [
+    {
+      "path": "packages/default",
+      "default": true
+    },
+    {
+      "path": "packages/superbadges/apex-callouts",
+      "default": false
+    }
+  ],
+  "name": "AgentForceXL",
+  "namespace": "",
+  "sfdcLoginUrl": "https://login.salesforce.com",
+  "sourceApiVersion": "67.0"
+}
