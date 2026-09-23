@@ -72,6 +72,16 @@ Choose one package and use its paths consistently. The examples below use the
 general package; each package README contains ready-to-run commands for that
 package.
 
+Create a new top-level or nested package directory with:
+
+```bash
+scripts/sf-package-create.sh utilities
+scripts/sf-package-create.sh superbadges/my-superbadge
+```
+
+The script creates the standard package folders and starter files and registers
+the new non-default package in `sfdx-project.json`.
+
 ### Quick path: `scripts/sf-package.sh`
 
 For day-to-day retrieve/deploy against a specific package and org, use the

@@ -7,6 +7,10 @@
     {
       "path": "packages/superbadges/apex-callouts",
       "default": false
+    },
+    {
+      "path": "packages/trailhead-modules/event-comms",
+      "default": false
     }
   ],
   "name": "AgentForceXL",

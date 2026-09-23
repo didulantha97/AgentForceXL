@@ -5,10 +5,10 @@ work and create one directory under `superbadges/` for each Superbadge.
 
 ## Available packages
 
-| Package | Purpose | Documentation |
-| --- | --- | --- |
-| `default` | General Salesforce development | [default/README.md](default/README.md) |
-| `superbadges/apex-callouts` | Apex Callouts Superbadge | [superbadges/apex-callouts/README.md](superbadges/apex-callouts/README.md) |
+| Package                     | Purpose                        | Documentation                                                              |
+| --------------------------- | ------------------------------ | -------------------------------------------------------------------------- |
+| `default`                   | General Salesforce development | [default/README.md](default/README.md)                                     |
+| `superbadges/apex-callouts` | Apex Callouts Superbadge       | [superbadges/apex-callouts/README.md](superbadges/apex-callouts/README.md) |
 
 ## Standard package structure
 
@@ -28,12 +28,23 @@ payloads, and other support files belong at the package root, outside
 
 ## Add a package
 
-1. Create `packages/superbadges/<name>/` using the structure above.
-2. Add `packages/superbadges/<name>` to `packageDirectories` in the root
-   `sfdx-project.json` with `"default": false`.
-3. Add a `manifest/package.xml` containing only that project's metadata types.
-4. Add a README with exact retrieve, deploy, test, and script commands.
-5. Run `sf project list ignored --json` to catch misplaced or ignored files.
+Create and register a package with the scaffold script. The path is relative to
+`packages/` and can contain one folder or nested folders:
+
+```bash
+scripts/sf-package-create.sh utilities
+scripts/sf-package-create.sh superbadges/<name>
+```
+
+The script creates `main/default/`, `manifest/package.xml`, `scripts/apex/`,
+`scripts/soql/`, and a package README. It also adds the package to
+`packageDirectories` in the root `sfdx-project.json` with `"default": false`.
+
+After creation:
+
+1. Add the required metadata types and members to `manifest/package.xml`.
+2. Customize the generated README with package-specific commands or notes.
+3. Run `sf project list ignored --json` to catch misplaced or ignored files.
 
 There must be exactly one package with `"default": true`. New Superbadge
 packages should not be made the default because newly retrieved components can
