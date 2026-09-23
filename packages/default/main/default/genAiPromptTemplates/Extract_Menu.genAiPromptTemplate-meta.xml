@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<GenAiPromptTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <activeVersionIdentifier
+  >nu21+B7I2EtT07/s+lAj0wP6zNWee7bWwBUn+q5Wuy0=_2</activeVersionIdentifier>
+    <description
+  >Extract an uploaded menu file and return a JSON object with the menu content.</description>
+    <developerName>Extract_Menu</developerName>
+    <masterLabel>Extract Menu</masterLabel>
+    <overridable>false</overridable>
+    <templateVersions>
+        <content
+    >The attached files hold a menu for this restaurant: {!$RelatedList:Storefront.CombinedAttachments.Records}
+
+Parse the files and output a single JSON array holding the list of menu items following the structure of the Menu_Item__c object like this:
+
+[{
+&quot;Name&amp;quot;: &amp;quot;&amp;quot;,
+&amp;quot;Description__c&amp;quot;: &amp;quot;&amp;quot;,
+&amp;quot;Price__c&amp;quot;: 0,
+&amp;quot;Menu_Category__c&amp;quot;: &amp;quot;&amp;quot;,
+}]
+
+All fields are strings except for Price__c which is a number.
+Directly output the array as above.
+
+</content>
+        <fileDroppingStrategy
+    >{&quot;dropFilesBy&quot;:&quot;LAST_MODIFIED_DATE&quot;,&quot;dropFileStartingWith&quot;:&quot;OLDEST&quot;}</fileDroppingStrategy>
+        <inputs>
+            <apiName>Storefront</apiName>
+            <definition>SOBJECT://Storefront__c</definition>
+            <masterLabel>Storefront</masterLabel>
+            <referenceName>Input:Storefront</referenceName>
+            <required>true</required>
+        </inputs>
+        <isCitationEnabled>false</isCitationEnabled>
+        <primaryModel>sfdc_ai__DefaultGPT5Mini</primaryModel>
+        <status>Published</status>
+        <templateDataProviders>
+            <definition>invocable://getRelatedList</definition>
+            <description
+      >Gets a related list for the specified parent record id and related list name</description>
+            <label>Notes &amp; Attachments</label>
+            <parameters>
+                <definition>primitive://String</definition>
+                <isRequired>true</isRequired>
+                <parameterName>parentRecordId</parameterName>
+                <valueExpression>{!$Input:Storefront.Id}</valueExpression>
+            </parameters>
+            <parameters>
+                <definition>primitive://String</definition>
+                <isRequired>true</isRequired>
+                <parameterName>relatedListName</parameterName>
+                <valueExpression>CombinedAttachments</valueExpression>
+            </parameters>
+            <referenceName
+      >RelatedList:Storefront.CombinedAttachments.Records</referenceName>
+        </templateDataProviders>
+        <versionIdentifier
+    >nu21+B7I2EtT07/s+lAj0wP6zNWee7bWwBUn+q5Wuy0=_2</versionIdentifier>
+    </templateVersions>
+    <templateVersions>
+        <content
+    >The attached files hold a menu for this restaurant: {!$RelatedList:Storefront.CombinedAttachments.Records}
+
+Parse the files and output a single JSON array holding the list of menu items following the structure of the Menu_Item__c object like this:
+
+[{
+&quot;Name&amp;quot;: &amp;quot;&amp;quot;,
+&amp;quot;Description__c&amp;quot;: &amp;quot;&amp;quot;,
+&amp;quot;Price__c&amp;quot;: 0,
+&amp;quot;Menu_Category__c&amp;quot;: &amp;quot;&amp;quot;,
+}]
+
+All fields are strings except for Price__c which is a number.
+Directly output the array as above.
+
+</content>
+        <fileDroppingStrategy
+    >{&quot;dropFilesBy&quot;:&quot;LAST_MODIFIED_DATE&quot;,&quot;dropFileStartingWith&quot;:&quot;OLDEST&quot;}</fileDroppingStrategy>
+        <inputs>
+            <apiName>Storefront</apiName>
+            <definition>SOBJECT://Storefront__c</definition>
+            <masterLabel>Storefront</masterLabel>
+            <referenceName>Input:Storefront</referenceName>
+            <required>true</required>
+        </inputs>
+        <isCitationEnabled>false</isCitationEnabled>
+        <primaryModel>sfdc_ai__DefaultGPT5Mini</primaryModel>
+        <status>Draft</status>
+        <templateDataProviders>
+            <definition>invocable://getRelatedList</definition>
+            <description
+      >Gets a related list for the specified parent record id and related list name</description>
+            <label>Notes &amp; Attachments</label>
+            <parameters>
+                <definition>primitive://String</definition>
+                <isRequired>true</isRequired>
+                <parameterName>parentRecordId</parameterName>
+                <valueExpression>{!$Input:Storefront.Id}</valueExpression>
+            </parameters>
+            <parameters>
+                <definition>primitive://String</definition>
+                <isRequired>true</isRequired>
+                <parameterName>relatedListName</parameterName>
+                <valueExpression>CombinedAttachments</valueExpression>
+            </parameters>
+            <referenceName
+      >RelatedList:Storefront.CombinedAttachments.Records</referenceName>
+        </templateDataProviders>
+        <versionIdentifier
+    >nu21+B7I2EtT07/s+lAj0wP6zNWee7bWwBUn+q5Wuy0=_1</versionIdentifier>
+    </templateVersions>
+    <type>einstein_gpt__flex</type>
+    <visibility>Global</visibility>
+</GenAiPromptTemplate>

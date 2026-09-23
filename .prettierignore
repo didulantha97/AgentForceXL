@@ -3,6 +3,8 @@
 #
 
 **/staticresources/**
+# Agentforce exports store encoded graph payloads in files with a .json suffix.
+**/genAiPlannerBundles/**/agentGraph/*.json
 .localdevserver
 .sfdx
 .sf

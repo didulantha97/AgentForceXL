@@ -11,6 +11,10 @@
     {
       "path": "packages/trailhead-modules/event-comms",
       "default": false
+    },
+    {
+      "path": "packages/trailhead-modules/trailbread",
+      "default": false
     }
   ],
   "name": "AgentForceXL",

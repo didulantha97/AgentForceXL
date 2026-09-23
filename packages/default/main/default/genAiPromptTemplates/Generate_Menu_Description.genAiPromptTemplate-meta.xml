@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<GenAiPromptTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <activeVersionIdentifier
+  >nu21+B7I2EtT07/s+lAj0wP6zNWee7bWwBUn+q5Wuy0=_1</activeVersionIdentifier>
+    <description
+  >Generate a description for a menu on behalf of a storefront.</description>
+    <developerName>Generate_Menu_Description</developerName>
+    <masterLabel>Generate Menu Description</masterLabel>
+    <overridable>false</overridable>
+    <relatedEntity>Menu__c</relatedEntity>
+    <relatedField>Menu__c.Description__c</relatedField>
+    <templateVersions>
+        <content
+    >You are a restaurant marketing copywriter for the Pronto food delivery platform.
+
+Write a concise, appealing menu description (2-3 sentences max) based on the following data. The description should highlight the cuisine style, key categories, standout dishes, and price range. Write in a warm, inviting tone suitable for a customer-facing storefront listing.
+
+Restaurant Details: {!$RecordSnapshot:Menu__c.Storefront__r.snapshot}
+Menu Details: {!$RecordSnapshot:Menu__c.snapshot}
+Menu Items: {!$RelatedList:Menu__c.Menu_Items__r.Records}
+
+Instructions:
+- Highlight any price range (e.g., &quot;$8 - $25&quot;).
+- Keep it under 300 characters.
+- Do NOT include the menu name — it will already be shown as a title.
+- Write in third person (e.g., &quot;Features...&quot; not &quot;We offer...&quot;).
+</content>
+        <fileDroppingStrategy
+    >{&quot;dropFilesBy&quot;:&quot;LAST_MODIFIED_DATE&quot;,&quot;dropFileStartingWith&quot;:&quot;OLDEST&quot;}</fileDroppingStrategy>
+        <inputs>
+            <apiName>RelatedEntity</apiName>
+            <definition>SOBJECT://Menu__c</definition>
+            <referenceName>Input:Menu__c</referenceName>
+            <required>true</required>
+        </inputs>
+        <isCitationEnabled>false</isCitationEnabled>
+        <primaryModel>sfdc_ai__DefaultGPT5Mini</primaryModel>
+        <status>Published</status>
+        <templateDataProviders>
+            <definition>invocable://getDataForGrounding</definition>
+            <description
+      >Retrieves record data for grounding a prompt template.</description>
+            <label>Record Snapshot</label>
+            <parameters>
+                <definition>primitive://String</definition>
+                <isRequired>true</isRequired>
+                <parameterName>recordId</parameterName>
+                <valueExpression>{!$Input:Menu__c.Id}</valueExpression>
+            </parameters>
+            <referenceName>RecordSnapshot:Menu__c</referenceName>
+        </templateDataProviders>
+        <templateDataProviders>
+            <definition>invocable://getRelatedList</definition>
+            <description
+      >Gets a related list for the specified parent record id and related list name</description>
+            <label>Menu Items</label>
+            <parameters>
+                <definition>primitive://String</definition>
+                <isRequired>true</isRequired>
+                <parameterName>parentRecordId</parameterName>
+                <valueExpression>{!$Input:Menu__c.Id}</valueExpression>
+            </parameters>
+            <parameters>
+                <definition>primitive://String</definition>
+                <isRequired>true</isRequired>
+                <parameterName>relatedListName</parameterName>
+                <valueExpression>Menu_Items__r</valueExpression>
+            </parameters>
+            <referenceName
+      >RelatedList:Menu__c.Menu_Items__r.Records</referenceName>
+        </templateDataProviders>
+        <templateDataProviders>
+            <definition>invocable://getDataForGrounding</definition>
+            <description
+      >Retrieves record data for grounding a prompt template.</description>
+            <label>Record Snapshot</label>
+            <parameters>
+                <definition>primitive://String</definition>
+                <isRequired>true</isRequired>
+                <parameterName>recordId</parameterName>
+                <valueExpression
+        >{!$Input:Menu__c.Storefront__r.Id}</valueExpression>
+            </parameters>
+            <referenceName>RecordSnapshot:Menu__c.Storefront__r</referenceName>
+        </templateDataProviders>
+        <versionIdentifier
+    >nu21+B7I2EtT07/s+lAj0wP6zNWee7bWwBUn+q5Wuy0=_1</versionIdentifier>
+    </templateVersions>
+    <type>einstein_gpt__fieldCompletion</type>
+    <visibility>Global</visibility>
+</GenAiPromptTemplate>
