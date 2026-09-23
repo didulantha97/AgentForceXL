@@ -1,15 +1,3 @@
-// execute Trigger WorkshopTrigger using an anonymous block
-// Add a new Workshop__c record to the database to trigger the logic in the trigger
-// All fields on the Workshop__c object are required, so you must set a value for each field when creating the record. The only required field is Name, so you can set a value for that field and leave the other fields blank.
-Workshop__c w = new Workshop__c();
-w.Name = 'My Workshop2';
-w.Description__c = 'This is a description of my workshop2.';
-w.Capacity__c = 10;
-w.Date__c = Date.today();
-w.DHH_Accessible__c = true;
-w.Facilitator__c = 'John Doe';
-insert w;
-
 // Prepare enough qualifying data to exercise WellnessJourneyRewardsBatch.
 // The batch rewards an owner after 12 completed journeys in the previous quarter.
 Date today = Date.today();
@@ -21,11 +9,16 @@ Date currentQuarterStart = Date.newInstance(
 );
 Date previousQuarterStart = currentQuarterStart.addMonths(-3);
 
+// Give every execution its own identifier so the generated test records are
+// easy to distinguish from records created by earlier executions.
+String runKey = String.valueOf(Datetime.now().getTime()) + '-' +
+    EncodingUtil.convertToHex(Crypto.generateAesKey(128)).substring(0, 8);
+
 List<Wellness_Journey__c> journeys = new List<Wellness_Journey__c>();
 for (Integer i = 1; i <= 12; i++) {
     journeys.add(new Wellness_Journey__c(
-        Name = 'Badge Test Journey ' + i,
-        Description__c = 'Completed journey created to test the rewards batch.',
+        Name = 'Badge Test ' + runKey + '-' + i,
+        Description__c = 'Rewards batch test run ' + runKey + '.',
         Status__c = 'Complete',
         Completion_Date__c = Datetime.newInstance(
             previousQuarterStart.addDays(i),

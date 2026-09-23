@@ -41,8 +41,23 @@ otherwise become mixed with general project metadata.
 
 ## Package workflow
 
-Run commands from the repository root. For a package that already contains
-metadata, refresh its existing components with:
+Run commands from the repository root. The easiest way to retrieve or deploy
+a package is `scripts/sf-package.sh` from the repo root:
+
+```bash
+scripts/sf-package.sh retrieve <package> <org-alias> [--manifest]
+scripts/sf-package.sh deploy   <package> <org-alias> [--manifest] [--dry-run] [--test-level <level>]
+```
+
+It automatically uses the manifest for a package's first retrieve (when
+`main/default` is empty) and `--source-dir` afterward, and defaults deploy to
+the whole package unless `--manifest` is passed. See the root
+[README.md](../README.md#quick-path-scriptssf-packagesh) for more examples.
+The raw `sf` commands below explain what the script does under the hood, for
+cases the script doesn't cover.
+
+For a package that already contains metadata, refresh its existing components
+with:
 
 ```bash
 sf project retrieve start \

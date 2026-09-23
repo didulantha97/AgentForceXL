@@ -72,6 +72,35 @@ Choose one package and use its paths consistently. The examples below use the
 general package; each package README contains ready-to-run commands for that
 package.
 
+### Quick path: `scripts/sf-package.sh`
+
+For day-to-day retrieve/deploy against a specific package and org, use the
+wrapper script instead of typing out `sf project retrieve/deploy start` by
+hand. It picks the right flags for you:
+
+```bash
+# Retrieve: uses the manifest on the first retrieve (empty package), then
+# --source-dir automatically once the package has metadata locally.
+scripts/sf-package.sh retrieve superbadges/apex-callouts sb-apex-call-org
+scripts/sf-package.sh retrieve default dev-org
+
+# Force a manifest-based retrieve (e.g. to pull a newly added component)
+scripts/sf-package.sh retrieve superbadges/apex-callouts sb-apex-call-org --manifest
+
+# Deploy the whole package (default), or only the manifest's components
+scripts/sf-package.sh deploy superbadges/apex-callouts sb-apex-call-org
+scripts/sf-package.sh deploy default dev-org --manifest
+
+# Validate only, without saving to the org
+scripts/sf-package.sh deploy superbadges/apex-callouts sb-apex-call-org --dry-run
+scripts/sf-package.sh deploy default dev-org --dry-run --test-level RunSpecifiedTests
+```
+
+Run `scripts/sf-package.sh` with no arguments to see usage and the list of
+available packages. The same "manifest selects components, not their
+destination" rule below still applies — see the raw `sf` commands if you need
+more control than the script exposes.
+
 ### Retrieve metadata
 
 There are two separate retrieve modes. Do not put `--manifest` and
