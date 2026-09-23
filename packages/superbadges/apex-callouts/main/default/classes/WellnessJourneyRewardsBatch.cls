@@ -1,4 +1,4 @@
-global class WellnessJourneyRewardsBatch implements Database.Batchable<sObject> {
+global class WellnessJourneyRewardsBatch implements Database.Batchable<sObject>, Database.AllowsCallouts {
 
     global Database.QueryLocator start(Database.BatchableContext BC) {
     
@@ -59,6 +59,7 @@ global class WellnessJourneyRewardsBatch implements Database.Batchable<sObject> 
 
     global void finish(Database.BatchableContext BC) {
         // Perform finish operations
+        system.debug('Batch job completed.');
     }
 
 

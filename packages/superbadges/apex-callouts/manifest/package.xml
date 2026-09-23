@@ -36,5 +36,15 @@
         <members>*</members>
         <name>StaticResource</name>
     </types>
+    <types>
+        <members>IntegrationSB__BillingInvoiceService</members>
+        <members>IntegrationSB__BalancedLiving</members>
+        <name>NamedCredential</name>
+    </types>
+    <types>
+        <members>IntegrationSB__BalancedLivingCredential</members>
+        <members>IntegrationSB__BillingServiceCredential</members>
+        <name>ExternalCredential</name>
+    </types>
     <version>67.0</version>
 </Package>
