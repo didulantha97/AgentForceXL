@@ -15,6 +15,10 @@
     {
       "path": "packages/trailhead-modules/trailbread",
       "default": false
+    },
+    {
+      "path": "packages/agents/helpagent",
+      "default": false
     }
   ],
   "name": "AgentForceXL",
