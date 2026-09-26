@@ -19,6 +19,10 @@
     {
       "path": "packages/agents/helpagent",
       "default": false
+    },
+    {
+      "path": "packages/binance",
+      "default": false
     }
   ],
   "name": "AgentForceXL",
