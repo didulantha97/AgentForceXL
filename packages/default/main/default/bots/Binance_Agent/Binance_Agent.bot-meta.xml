@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Bot xmlns="http://soap.sforce.com/2006/04/metadata">
+    <agentDSLEnabled>true</agentDSLEnabled>
+    <agentType>EinsteinServiceAgent</agentType>
+    <botMlDomain>
+        <label>Binance Agent</label>
+        <name>Binance_Agent</name>
+    </botMlDomain>
+    <botSource>None</botSource>
+    <botUser>binance_agent@00djv000000pa171589782883.ext</botUser>
+    <description
+  >An agent that runs as part of a flow to help user for binance related info</description>
+    <label>Binance Agent</label>
+    <logPrivateConversationData>false</logPrivateConversationData>
+    <richContentEnabled>true</richContentEnabled>
+    <sessionTimeout>0</sessionTimeout>
+    <type>ExternalCopilot</type>
+</Bot>

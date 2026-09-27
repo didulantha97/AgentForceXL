@@ -5,10 +5,20 @@ work and create one directory under `superbadges/` for each Superbadge.
 
 ## Available packages
 
-| Package                     | Purpose                        | Documentation                                                              |
-| --------------------------- | ------------------------------ | -------------------------------------------------------------------------- |
-| `default`                   | General Salesforce development | [default/README.md](default/README.md)                                     |
-| `superbadges/apex-callouts` | Apex Callouts Superbadge       | [superbadges/apex-callouts/README.md](superbadges/apex-callouts/README.md) |
+| Package                         | Purpose                        | Documentation                                                                      |
+| ------------------------------- | ------------------------------ | ---------------------------------------------------------------------------------- |
+| `default`                       | General Salesforce development | [default/README.md](default/README.md)                                             |
+| `agents/helpagent`              | Help agent                     | [agents/helpagent/README.md](agents/helpagent/README.md)                           |
+| `binance`                       | Binance market-data agent      | [binance/README.md](binance/README.md)                                             |
+| `superbadges/apex-callouts`     | Apex Callouts Superbadge       | [superbadges/apex-callouts/README.md](superbadges/apex-callouts/README.md)         |
+| `trailhead-modules/event-comms` | Trailhead module               | [trailhead-modules/event-comms/README.md](trailhead-modules/event-comms/README.md) |
+| `trailhead-modules/trailbread`  | Trailhead module               | –                                                                                  |
+
+For agents, prompt templates, topics and actions, use
+`scripts/sf-agentforce.sh` from the repository root. It retrieves, deploys,
+deletes, publishes and activates one component at a time and updates the
+package's `manifest/package.xml`. See the root
+[README.md](../README.md#agentforce-scriptssf-agentforcesh).
 
 ## Standard package structure
 

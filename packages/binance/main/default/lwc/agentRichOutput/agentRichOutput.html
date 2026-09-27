@@ -1,0 +1,104 @@
+<template>
+  <section class="report" aria-live="polite">
+    <header class="report__header">
+      <div class="report__icon" aria-hidden="true">
+        <lightning-icon
+          icon-name="utility:einstein"
+          size="small"
+          alternative-text="Agent insight"
+        ></lightning-icon>
+      </div>
+      <div class="report__heading">
+        <p class="report__eyebrow">AGENTFORCE INSIGHT</p>
+        <h2>{displayTitle}</h2>
+        <p if:true={subtitle} class="report__subtitle">{subtitle}</p>
+      </div>
+      <span class="report__status">
+        <span class="report__status-dot"></span>
+        Generated
+      </span>
+    </header>
+
+    <template if:true={hasContent}>
+      <div class="report__body">
+        <template for:each={contentBlocks} for:item="block">
+          <h2 if:true={block.isTitle} key={block.key} class="content-title">
+            {block.text}
+          </h2>
+          <article if:true={block.isPair} key={block.key} class="pair-heading">
+            <span class="pair-heading__coin">{block.badge}</span>
+            <h3>{block.text}</h3>
+          </article>
+          <h4 if:true={block.isSection} key={block.key} class="section-heading">
+            {block.text}
+          </h4>
+          <div if:true={block.isMetric} key={block.key} class="metric-row">
+            <span class="metric-row__label">{block.label}</span>
+            <span class="metric-row__value">{block.value}</span>
+          </div>
+          <div if:true={block.isChartLabel} key={block.key} class="chart-label">
+            <lightning-icon
+              icon-name="utility:chart"
+              size="xx-small"
+              alternative-text="Chart"
+            ></lightning-icon>
+            {block.text}
+          </div>
+          <pre if:true={block.isChart} key={block.key} class="ascii-chart">
+{block.text}</pre>
+          <p if:true={block.isInsight} key={block.key} class="insight">
+            <lightning-icon
+              icon-name="utility:light_bulb"
+              size="xx-small"
+              alternative-text="Insight"
+            ></lightning-icon>
+            <span>{block.text}</span>
+          </p>
+          <p if:true={block.isQuestion} key={block.key} class="follow-up">
+            {block.text}
+          </p>
+          <p
+            if:true={block.isParagraph}
+            key={block.key}
+            class="content-paragraph"
+          >
+            {block.text}
+          </p>
+        </template>
+      </div>
+
+      <footer class="report__footer">
+        <lightning-icon
+          icon-name="utility:info"
+          size="xx-small"
+          alternative-text="Information"
+        ></lightning-icon>
+        <span
+          >AI-generated market information. Verify important details before
+          acting.</span
+        >
+      </footer>
+    </template>
+
+    <template if:false={hasContent}>
+      <div class="report__empty">
+        <lightning-icon
+          icon-name="utility:comments"
+          size="medium"
+          alternative-text="No response"
+        ></lightning-icon>
+        <h3>No agent response yet</h3>
+        <p>
+          Run the agent and pass its structured response into this component.
+        </p>
+      </div>
+    </template>
+
+    <template if:true={showRawResponse}>
+      <details class="report__raw">
+        <summary>View raw response</summary>
+        <pre>{rawResponse}</pre>
+      </details>
+    </template>
+  </section>
+</template>

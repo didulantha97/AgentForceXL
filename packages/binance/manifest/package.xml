@@ -1,16 +1,53 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
-        <members>*</members>
-        <name>ExternalCredential</name>
+        <members>BinanceTicker24hData</members>
+        <members>BinanceTickerFlowAction</members>
+        <members>BinanceTickerFlowActionTest</members>
+        <name>ApexClass</name>
     </types>
     <types>
-        <members>*</members>
-        <name>NamedCredential</name>
+        <members>agentRichOutput</members>
+        <name>LightningComponentBundle</name>
     </types>
     <types>
-        <members>*</members>
-        <name>PermissionSet</name>
-    </types>
+		<members>*</members>
+		<name>NamedCredential</name>
+	</types>
+    <types>
+		<members>Binance_Ticker_Screen_Flow</members>
+		<name>Flow</name>
+	</types>
+    <types>
+		<members>*</members>
+		<name>ExternalServiceRegistration</name>
+	</types>
+	<types>
+		<members>agentRichOutput</members>
+		<name>LightningComponentBundle</name>
+	</types>
+	<types>
+		<members>Binance_Agent1302793868_Permissions</members>
+		<members>Binance_Integration_Access</members>
+		<members>Binance_Public_API_Access</members>
+		<name>PermissionSet</name>
+	</types>
+    <types>
+		<members>Binance</members>
+		<members>Binance2</members>
+		<name>RemoteSiteSetting</name>
+	</types>
+    <types>
+		<members>Binance_Agent_3</members>
+		<name>AiAuthoringBundle</name>
+	</types>
+	<types>
+		<members>Binance_Agent</members>
+		<name>Bot</name>
+	</types>
+	<types>
+		<members>Binance_Agent_v3</members>
+		<name>GenAiPlannerBundle</name>
+	</types>
     <version>67.0</version>
 </Package>

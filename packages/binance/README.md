@@ -9,7 +9,8 @@ Salesforce metadata and supporting files for `binance`.
 - `scripts/apex/` — anonymous Apex scripts
 - `scripts/soql/` — reusable SOQL queries
 
-Add the required metadata types and members to `manifest/package.xml` before the first retrieve.
+The package contains the Binance credentials, integration permission set, ticker
+Apex data/action classes and tests, and the Agentforce rich-output LWC.
 
 Run from the repository root:
 

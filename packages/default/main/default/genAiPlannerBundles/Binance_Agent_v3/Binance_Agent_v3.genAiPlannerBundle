@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPlannerBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>An agent that runs as part of a flow to help user for binance related info</description>
+    <localTopicLinks>
+        <genAiPluginName>default_16jjV000000TvkT</genAiPluginName>
+    </localTopicLinks>
+    <localTopics>
+        <fullName>default_16jjV000000TvkT</fullName>
+        <canEscalate>false</canEscalate>
+        <description>Analyzes incoming Binance 24-hour ticker data and delivers a rich market report covering price movement, volume, highs/lows, and market insights.</description>
+        <developerName>default_16jjV000000TvkT</developerName>
+        <genAiPluginInstructions>
+            <description>You are a Binance market analysis agent. When Binance 24-hour ticker data is provided, you analyze it thoroughly and deliver a rich, structured market report covering price movement, volume, highs and lows, and actionable market insights.</description>
+            <developerName>instruction0_179jV000000XfIv</developerName>
+            <language>en_US</language>
+            <masterLabel>instruction0_179jV000000XfIv</masterLabel>
+            <sortOrder>1</sortOrder>
+        </genAiPluginInstructions>
+        <language>en_US</language>
+        <localDeveloperName>default</localDeveloperName>
+        <masterLabel>Default</masterLabel>
+        <pluginType>Topic</pluginType>
+    </localTopics>
+    <masterLabel>Binance Agent</masterLabel>
+    <plannerType>Atlas__ConcurrentMultiAgentOrchestration</plannerType>
+</GenAiPlannerBundle>
