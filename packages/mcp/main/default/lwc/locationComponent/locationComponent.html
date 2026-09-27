@@ -1,0 +1,108 @@
+<template>
+  <lightning-card title="Device Location" icon-name="utility:location">
+    <div class="slds-var-p-around_medium">
+      <template lwc:if={isAvailable}>
+        <div
+          class="slds-grid slds-gutters slds-grid_vertical-align-center slds-var-m-bottom_medium"
+        >
+          <div class="slds-col">
+            <lightning-button
+              label="Get Location"
+              icon-name="utility:location"
+              variant="brand"
+              onclick={handleGetLocation}
+              disabled={isGetDisabled}
+              class="slds-var-m-right_x-small"
+            ></lightning-button>
+            <lightning-button
+              label={watchButtonLabel}
+              icon-name={watchButtonIcon}
+              variant={watchButtonVariant}
+              onclick={handleToggleWatch}
+              disabled={isLocating}
+            ></lightning-button>
+          </div>
+          <template lwc:if={isLocating}>
+            <div class="slds-col slds-col_bump-left">
+              <lightning-spinner
+                alternative-text="Locating..."
+                size="small"
+              ></lightning-spinner>
+            </div>
+          </template>
+        </div>
+
+        <template lwc:if={isWatching}>
+          <p
+            class="slds-text-body_small slds-text-color_weak slds-var-m-bottom_small"
+          >
+            Tracking your location. Updates appear as you move.
+          </p>
+        </template>
+
+        <template lwc:if={position}>
+          <lightning-map
+            map-markers={mapMarkers}
+            zoom-level="15"
+          ></lightning-map>
+
+          <dl class="slds-list_horizontal slds-wrap slds-var-m-top_small">
+            <dt class="slds-item_label slds-text-color_weak">Latitude</dt>
+            <dd class="slds-item_detail">{position.latitudeText}</dd>
+            <dt class="slds-item_label slds-text-color_weak">Longitude</dt>
+            <dd class="slds-item_detail">{position.longitudeText}</dd>
+            <dt class="slds-item_label slds-text-color_weak">Accuracy</dt>
+            <dd class="slds-item_detail">{position.accuracyText}</dd>
+            <dt class="slds-item_label slds-text-color_weak">Altitude</dt>
+            <dd class="slds-item_detail">{position.altitudeText}</dd>
+            <dt class="slds-item_label slds-text-color_weak">Speed</dt>
+            <dd class="slds-item_detail">{position.speedText}</dd>
+            <dt class="slds-item_label slds-text-color_weak">Heading</dt>
+            <dd class="slds-item_detail">{position.headingText}</dd>
+            <dt class="slds-item_label slds-text-color_weak">Updated</dt>
+            <dd class="slds-item_detail">{position.timeText}</dd>
+          </dl>
+
+          <lightning-button
+            label="Clear"
+            variant="neutral"
+            onclick={handleClear}
+            disabled={isWatching}
+            class="slds-var-m-top_small"
+          ></lightning-button>
+        </template>
+      </template>
+
+      <template lwc:else>
+        <div
+          class="slds-notify slds-notify_alert slds-theme_info"
+          role="status"
+        >
+          <lightning-icon
+            icon-name="utility:info"
+            alternative-text="Info"
+            size="x-small"
+            class="slds-var-m-right_x-small"
+          ></lightning-icon>
+          Location services are not available on this device or surface.
+        </div>
+      </template>
+
+      <template lwc:if={errorMessage}>
+        <div
+          class="slds-notify slds-notify_toast slds-theme_error slds-var-m-top_small"
+          role="alert"
+        >
+          <lightning-icon
+            icon-name="utility:error"
+            alternative-text="Error"
+            size="x-small"
+            variant="inverse"
+            class="slds-var-m-right_x-small"
+          ></lightning-icon>
+          {errorMessage}
+        </div>
+      </template>
+    </div>
+  </lightning-card>
+</template>

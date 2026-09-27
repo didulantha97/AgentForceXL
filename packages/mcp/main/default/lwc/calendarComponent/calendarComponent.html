@@ -1,0 +1,218 @@
+<template>
+  <lightning-card title="Device Calendar" icon-name="utility:event">
+    <div class="slds-var-p-around_medium">
+      <template lwc:if={isAvailable}>
+        <div
+          class="slds-grid slds-gutters slds-grid_vertical-align-center slds-var-m-bottom_medium"
+        >
+          <div class="slds-col">
+            <lightning-button
+              label="Load Calendar"
+              icon-name="utility:refresh"
+              variant="brand"
+              onclick={handleLoad}
+              disabled={isBusy}
+            ></lightning-button>
+          </div>
+          <template lwc:if={isBusy}>
+            <div class="slds-col slds-col_bump-left">
+              <lightning-spinner
+                alternative-text="Working..."
+                size="small"
+              ></lightning-spinner>
+            </div>
+          </template>
+        </div>
+
+        <template lwc:if={hasLoaded}>
+          <lightning-combobox
+            label="Show events from"
+            options={calendarFilterOptions}
+            value={selectedCalendarId}
+            onchange={handleCalendarFilterChange}
+            disabled={isBusy}
+          ></lightning-combobox>
+
+          <h3
+            class="slds-text-heading_small slds-var-m-top_medium slds-var-m-bottom_x-small"
+          >
+            Next 7 Days
+          </h3>
+
+          <template lwc:if={hasEvents}>
+            <ul class="slds-has-dividers_bottom-space">
+              <template for:each={events} for:item="evt">
+                <li key={evt.key} class="slds-item slds-var-p-vertical_x-small">
+                  <div class="slds-grid slds-grid_vertical-align-center">
+                    <span
+                      class="calendar-dot slds-var-m-right_small"
+                      style={evt.colorStyle}
+                      aria-hidden="true"
+                    ></span>
+                    <div class="slds-col slds-truncate">
+                      <p
+                        class="slds-text-body_regular slds-truncate"
+                        title={evt.title}
+                      >
+                        <strong>{evt.title}</strong>
+                      </p>
+                      <p class="slds-text-body_small slds-text-color_weak">
+                        {evt.when}
+                      </p>
+                      <template lwc:if={evt.location}>
+                        <p
+                          class="slds-text-body_small slds-text-color_weak slds-truncate"
+                        >
+                          {evt.location}
+                        </p>
+                      </template>
+                    </div>
+                    <template lwc:if={evt.canRemove}>
+                      <div class="slds-col_bump-left">
+                        <lightning-button-icon
+                          icon-name="utility:delete"
+                          alternative-text="Remove event"
+                          title="Remove event"
+                          size="small"
+                          data-id={evt.id}
+                          onclick={handleRemove}
+                          disabled={isBusy}
+                        ></lightning-button-icon>
+                      </div>
+                    </template>
+                  </div>
+                </li>
+              </template>
+            </ul>
+          </template>
+          <template lwc:if={showNoEvents}>
+            <p class="slds-text-body_small slds-text-color_weak">
+              No events in the next 7 days.
+            </p>
+          </template>
+
+          <h3
+            class="slds-text-heading_small slds-var-m-top_medium slds-var-m-bottom_x-small"
+          >
+            Add an Event
+          </h3>
+          <lightning-input
+            label="Title"
+            data-field="title"
+            value={form.title}
+            onchange={handleFieldChange}
+            required
+          ></lightning-input>
+          <div class="slds-grid slds-wrap slds-gutters_x-small">
+            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+              <lightning-input
+                type="datetime"
+                label="Start"
+                data-field="start"
+                value={form.start}
+                onchange={handleFieldChange}
+                required
+              ></lightning-input>
+            </div>
+            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+              <lightning-input
+                type="datetime"
+                label="End"
+                data-field="end"
+                value={form.end}
+                onchange={handleFieldChange}
+                required
+              ></lightning-input>
+            </div>
+          </div>
+          <lightning-input
+            label="Location"
+            data-field="location"
+            value={form.location}
+            onchange={handleFieldChange}
+          ></lightning-input>
+          <lightning-combobox
+            label="Calendar"
+            data-field="calendarId"
+            options={writableCalendarOptions}
+            value={form.calendarId}
+            onchange={handleFieldChange}
+            placeholder="Choose a calendar"
+            required
+          ></lightning-combobox>
+          <div class="slds-var-m-top_x-small">
+            <lightning-input
+              type="checkbox"
+              label="All-day event"
+              data-field="isAllDay"
+              checked={form.isAllDay}
+              onchange={handleFieldChange}
+            ></lightning-input>
+            <lightning-input
+              type="checkbox"
+              label="Remind me 15 minutes before"
+              data-field="addAlarm"
+              checked={form.addAlarm}
+              onchange={handleFieldChange}
+            ></lightning-input>
+          </div>
+          <lightning-button
+            label="Add Event"
+            icon-name="utility:add"
+            variant="brand-outline"
+            onclick={handleAdd}
+            disabled={isAddDisabled}
+            class="slds-var-m-top_small"
+          ></lightning-button>
+        </template>
+      </template>
+
+      <template lwc:else>
+        <div
+          class="slds-notify slds-notify_alert slds-theme_info"
+          role="status"
+        >
+          <lightning-icon
+            icon-name="utility:info"
+            alternative-text="Info"
+            size="x-small"
+            class="slds-var-m-right_x-small"
+          ></lightning-icon>
+          The device calendar is not available on this device or surface.
+        </div>
+      </template>
+
+      <template lwc:if={successMessage}>
+        <div
+          class="slds-notify slds-notify_toast slds-theme_success slds-var-m-top_small"
+          role="status"
+        >
+          <lightning-icon
+            icon-name="utility:success"
+            alternative-text="Success"
+            size="x-small"
+            variant="inverse"
+            class="slds-var-m-right_x-small"
+          ></lightning-icon>
+          {successMessage}
+        </div>
+      </template>
+
+      <template lwc:if={errorMessage}>
+        <div
+          class="slds-notify slds-notify_toast slds-theme_error slds-var-m-top_small"
+          role="alert"
+        >
+          <lightning-icon
+            icon-name="utility:error"
+            alternative-text="Error"
+            size="x-small"
+            variant="inverse"
+            class="slds-var-m-right_x-small"
+          ></lightning-icon>
+          {errorMessage}
+        </div>
+      </template>
+    </div>
+  </lightning-card>
+</template>

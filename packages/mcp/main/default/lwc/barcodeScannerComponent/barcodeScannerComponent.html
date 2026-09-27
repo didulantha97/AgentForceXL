@@ -1,0 +1,104 @@
+<template>
+  <lightning-card title="Barcode Scanner" icon-name="utility:scan">
+    <div class="slds-var-p-around_medium">
+      <template lwc:if={isAvailable}>
+        <div
+          class="slds-grid slds-gutters slds-grid_vertical-align-center slds-var-m-bottom_medium"
+        >
+          <div class="slds-col">
+            <lightning-button
+              label="Scan Barcode"
+              icon-name="utility:scan"
+              variant="brand"
+              onclick={handleScan}
+              disabled={isScanning}
+            ></lightning-button>
+          </div>
+          <template lwc:if={isScanning}>
+            <div class="slds-col slds-col_bump-left">
+              <lightning-spinner
+                alternative-text="Scanning..."
+                size="small"
+              ></lightning-spinner>
+            </div>
+          </template>
+        </div>
+
+        <template lwc:if={scannedBarcodes.length}>
+          <h3 class="slds-text-heading_small slds-var-m-bottom_x-small">
+            Scanned Results
+          </h3>
+          <ul class="slds-has-dividers_bottom-space">
+            <template for:each={scannedBarcodes} for:item="barcode">
+              <li
+                key={barcode.id}
+                class="slds-item slds-var-p-vertical_x-small"
+              >
+                <div class="slds-grid">
+                  <div class="slds-col">
+                    <p
+                      class="slds-text-body_regular slds-truncate"
+                      title={barcode.value}
+                    >
+                      <strong>{barcode.value}</strong>
+                    </p>
+                    <p class="slds-text-body_small slds-text-color_weak">
+                      {barcode.type}
+                    </p>
+                  </div>
+                  <div class="slds-col slds-col_bump-left">
+                    <lightning-button-icon
+                      icon-name="utility:copy"
+                      alternative-text="Copy value"
+                      title="Copy value"
+                      size="small"
+                      data-value={barcode.value}
+                      onclick={handleCopy}
+                    ></lightning-button-icon>
+                  </div>
+                </div>
+              </li>
+            </template>
+          </ul>
+          <lightning-button
+            label="Clear Results"
+            variant="neutral"
+            onclick={handleClear}
+            class="slds-var-m-top_small"
+          ></lightning-button>
+        </template>
+      </template>
+
+      <template lwc:else>
+        <div
+          class="slds-notify slds-notify_alert slds-theme_info"
+          role="status"
+        >
+          <lightning-icon
+            icon-name="utility:info"
+            alternative-text="Info"
+            size="x-small"
+            class="slds-var-m-right_x-small"
+          ></lightning-icon>
+          Barcode scanning is not available on this device or surface.
+        </div>
+      </template>
+
+      <template lwc:if={errorMessage}>
+        <div
+          class="slds-notify slds-notify_toast slds-theme_error slds-var-m-top_small"
+          role="alert"
+        >
+          <lightning-icon
+            icon-name="utility:error"
+            alternative-text="Error"
+            size="x-small"
+            variant="inverse"
+            class="slds-var-m-right_x-small"
+          ></lightning-icon>
+          {errorMessage}
+        </div>
+      </template>
+    </div>
+  </lightning-card>
+</template>

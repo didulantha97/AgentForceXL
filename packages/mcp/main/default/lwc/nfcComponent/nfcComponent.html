@@ -1,0 +1,140 @@
+<template>
+  <lightning-card title="NFC Tags" icon-name="utility:signal">
+    <div class="slds-var-p-around_medium">
+      <template lwc:if={isAvailable}>
+        <div
+          class="slds-grid slds-gutters slds-grid_vertical-align-center slds-var-m-bottom_medium"
+        >
+          <div class="slds-col">
+            <lightning-button
+              label="Read Tag"
+              icon-name="utility:download"
+              variant="brand"
+              onclick={handleRead}
+              disabled={isBusy}
+              class="slds-var-m-right_x-small"
+            ></lightning-button>
+            <lightning-button
+              label="Erase Tag"
+              icon-name="utility:delete"
+              variant="destructive"
+              onclick={handleErase}
+              disabled={isBusy}
+            ></lightning-button>
+          </div>
+          <template lwc:if={isBusy}>
+            <div class="slds-col slds-col_bump-left">
+              <lightning-spinner
+                alternative-text="Waiting for NFC tag..."
+                size="small"
+              ></lightning-spinner>
+            </div>
+          </template>
+        </div>
+
+        <h3 class="slds-text-heading_small slds-var-m-bottom_x-small">
+          Write to Tag
+        </h3>
+        <lightning-radio-group
+          name="writeType"
+          label="Record type"
+          options={writeTypeOptions}
+          value={writeType}
+          type="button"
+          onchange={handleWriteTypeChange}
+        ></lightning-radio-group>
+        <lightning-input
+          label={writeInputLabel}
+          type={writeInputType}
+          value={writeValue}
+          onchange={handleWriteValueChange}
+          class="slds-var-m-top_x-small"
+        ></lightning-input>
+        <lightning-button
+          label="Write Tag"
+          icon-name="utility:upload"
+          variant="brand-outline"
+          onclick={handleWrite}
+          disabled={isWriteDisabled}
+          class="slds-var-m-top_small"
+        ></lightning-button>
+
+        <template lwc:if={readRecords.length}>
+          <h3
+            class="slds-text-heading_small slds-var-m-top_medium slds-var-m-bottom_x-small"
+          >
+            Tag Contents
+          </h3>
+          <ul class="slds-has-dividers_bottom-space">
+            <template for:each={readRecords} for:item="record">
+              <li key={record.id} class="slds-item slds-var-p-vertical_x-small">
+                <p
+                  class="slds-text-body_regular slds-truncate"
+                  title={record.value}
+                >
+                  <strong>{record.value}</strong>
+                </p>
+                <p class="slds-text-body_small slds-text-color_weak">
+                  {record.format} · {record.type}
+                </p>
+              </li>
+            </template>
+          </ul>
+          <lightning-button
+            label="Clear Results"
+            variant="neutral"
+            onclick={handleClear}
+            class="slds-var-m-top_small"
+          ></lightning-button>
+        </template>
+      </template>
+
+      <template lwc:else>
+        <div
+          class="slds-notify slds-notify_alert slds-theme_info"
+          role="status"
+        >
+          <lightning-icon
+            icon-name="utility:info"
+            alternative-text="Info"
+            size="x-small"
+            class="slds-var-m-right_x-small"
+          ></lightning-icon>
+          NFC is not available on this device or surface.
+        </div>
+      </template>
+
+      <template lwc:if={successMessage}>
+        <div
+          class="slds-notify slds-notify_toast slds-theme_success slds-var-m-top_small"
+          role="status"
+        >
+          <lightning-icon
+            icon-name="utility:success"
+            alternative-text="Success"
+            size="x-small"
+            variant="inverse"
+            class="slds-var-m-right_x-small"
+          ></lightning-icon>
+          {successMessage}
+        </div>
+      </template>
+
+      <template lwc:if={errorMessage}>
+        <div
+          class="slds-notify slds-notify_toast slds-theme_error slds-var-m-top_small"
+          role="alert"
+        >
+          <lightning-icon
+            icon-name="utility:error"
+            alternative-text="Error"
+            size="x-small"
+            variant="inverse"
+            class="slds-var-m-right_x-small"
+          ></lightning-icon>
+          {errorMessage}
+        </div>
+      </template>
+    </div>
+  </lightning-card>
+</template>

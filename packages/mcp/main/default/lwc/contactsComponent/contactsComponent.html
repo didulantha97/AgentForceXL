@@ -1,0 +1,179 @@
+<template>
+  <lightning-card title="Device Contacts" icon-name="utility:people">
+    <div class="slds-var-p-around_medium">
+      <template lwc:if={isAvailable}>
+        <div
+          class="slds-grid slds-gutters slds-grid_vertical-align-center slds-var-m-bottom_medium"
+        >
+          <div class="slds-col">
+            <lightning-button
+              label="Pick Contacts"
+              icon-name="utility:people"
+              variant="brand"
+              onclick={handlePick}
+              disabled={isBusy}
+            ></lightning-button>
+          </div>
+          <template lwc:if={isBusy}>
+            <div class="slds-col slds-col_bump-left">
+              <lightning-spinner
+                alternative-text="Working..."
+                size="small"
+              ></lightning-spinner>
+            </div>
+          </template>
+        </div>
+
+        <template lwc:if={pickedContacts.length}>
+          <h3 class="slds-text-heading_small slds-var-m-bottom_x-small">
+            Selected Contacts
+          </h3>
+          <ul class="slds-has-dividers_bottom-space">
+            <template for:each={pickedContacts} for:item="contact">
+              <li
+                key={contact.id}
+                class="slds-item slds-var-p-vertical_x-small"
+              >
+                <p class="slds-text-body_regular">
+                  <strong>{contact.fullName}</strong>
+                </p>
+                <template lwc:if={contact.organization}>
+                  <p class="slds-text-body_small slds-text-color_weak">
+                    {contact.organization}
+                  </p>
+                </template>
+                <template for:each={contact.phones} for:item="phone">
+                  <p key={phone.key} class="slds-text-body_small">
+                    <lightning-formatted-phone
+                      value={phone.value}
+                    ></lightning-formatted-phone>
+                    <span class="slds-text-color_weak"> ({phone.label})</span>
+                  </p>
+                </template>
+                <template for:each={contact.emails} for:item="email">
+                  <p key={email.key} class="slds-text-body_small">
+                    <lightning-formatted-email
+                      value={email.value}
+                    ></lightning-formatted-email>
+                    <span class="slds-text-color_weak"> ({email.label})</span>
+                  </p>
+                </template>
+              </li>
+            </template>
+          </ul>
+          <lightning-button
+            label="Clear Results"
+            variant="neutral"
+            onclick={handleClear}
+            class="slds-var-m-top_small"
+          ></lightning-button>
+        </template>
+
+        <h3
+          class="slds-text-heading_small slds-var-m-top_medium slds-var-m-bottom_x-small"
+        >
+          Save a Contact to Device
+        </h3>
+        <div class="slds-grid slds-wrap slds-gutters_x-small">
+          <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+            <lightning-input
+              label="First name"
+              data-field="givenName"
+              value={form.givenName}
+              onchange={handleFieldChange}
+            ></lightning-input>
+          </div>
+          <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+            <lightning-input
+              label="Last name"
+              data-field="familyName"
+              value={form.familyName}
+              onchange={handleFieldChange}
+            ></lightning-input>
+          </div>
+          <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+            <lightning-input
+              type="tel"
+              label="Phone"
+              data-field="phone"
+              value={form.phone}
+              onchange={handleFieldChange}
+            ></lightning-input>
+          </div>
+          <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+            <lightning-input
+              type="email"
+              label="Email"
+              data-field="email"
+              value={form.email}
+              onchange={handleFieldChange}
+            ></lightning-input>
+          </div>
+          <div class="slds-col slds-size_1-of-1">
+            <lightning-input
+              label="Company"
+              data-field="company"
+              value={form.company}
+              onchange={handleFieldChange}
+            ></lightning-input>
+          </div>
+        </div>
+        <lightning-button
+          label="Save to Contacts"
+          icon-name="utility:save"
+          variant="brand-outline"
+          onclick={handleSave}
+          disabled={isSaveDisabled}
+          class="slds-var-m-top_small"
+        ></lightning-button>
+      </template>
+
+      <template lwc:else>
+        <div
+          class="slds-notify slds-notify_alert slds-theme_info"
+          role="status"
+        >
+          <lightning-icon
+            icon-name="utility:info"
+            alternative-text="Info"
+            size="x-small"
+            class="slds-var-m-right_x-small"
+          ></lightning-icon>
+          Device contacts are not available on this device or surface.
+        </div>
+      </template>
+
+      <template lwc:if={successMessage}>
+        <div
+          class="slds-notify slds-notify_toast slds-theme_success slds-var-m-top_small"
+          role="status"
+        >
+          <lightning-icon
+            icon-name="utility:success"
+            alternative-text="Success"
+            size="x-small"
+            variant="inverse"
+            class="slds-var-m-right_x-small"
+          ></lightning-icon>
+          {successMessage}
+        </div>
+      </template>
+
+      <template lwc:if={errorMessage}>
+        <div
+          class="slds-notify slds-notify_toast slds-theme_error slds-var-m-top_small"
+          role="alert"
+        >
+          <lightning-icon
+            icon-name="utility:error"
+            alternative-text="Error"
+            size="x-small"
+            variant="inverse"
+            class="slds-var-m-right_x-small"
+          ></lightning-icon>
+          {errorMessage}
+        </div>
+      </template>
+    </div>
+  </lightning-card>
+</template>

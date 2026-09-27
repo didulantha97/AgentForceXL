@@ -1,0 +1,109 @@
+<template>
+  <lightning-card title="Biometric Verification" icon-name="utility:lock">
+    <div class="slds-var-p-around_medium">
+      <template lwc:if={isAvailable}>
+        <div
+          class="slds-grid slds-gutters slds-grid_vertical-align-center slds-var-m-bottom_medium"
+        >
+          <div class="slds-col">
+            <lightning-button
+              label="Verify Identity"
+              icon-name="utility:lock"
+              variant="brand"
+              onclick={handleVerify}
+              disabled={isVerifyDisabled}
+            ></lightning-button>
+          </div>
+          <template lwc:if={isVerifying}>
+            <div class="slds-col slds-col_bump-left">
+              <lightning-spinner
+                alternative-text="Verifying..."
+                size="small"
+              ></lightning-spinner>
+            </div>
+          </template>
+        </div>
+
+        <template lwc:if={showNotReady}>
+          <p
+            class="slds-text-body_small slds-text-color_weak slds-var-m-bottom_small"
+          >
+            Biometrics or a device PIN must be set up before you can verify.
+          </p>
+        </template>
+
+        <template lwc:if={isVerified}>
+          <div
+            class="slds-notify slds-notify_alert slds-theme_success"
+            role="status"
+          >
+            <lightning-icon
+              icon-name="utility:success"
+              alternative-text="Success"
+              size="x-small"
+              variant="inverse"
+              class="slds-var-m-right_x-small"
+            ></lightning-icon>
+            Identity verified. You are the device owner.
+          </div>
+        </template>
+
+        <template lwc:if={isRejected}>
+          <div
+            class="slds-notify slds-notify_alert slds-theme_warning"
+            role="status"
+          >
+            <lightning-icon
+              icon-name="utility:warning"
+              alternative-text="Warning"
+              size="x-small"
+              class="slds-var-m-right_x-small"
+            ></lightning-icon>
+            Verification failed. The user could not be confirmed as the device
+            owner.
+          </div>
+        </template>
+
+        <template lwc:if={hasResult}>
+          <lightning-button
+            label="Reset"
+            variant="neutral"
+            onclick={handleReset}
+            class="slds-var-m-top_small"
+          ></lightning-button>
+        </template>
+      </template>
+
+      <template lwc:else>
+        <div
+          class="slds-notify slds-notify_alert slds-theme_info"
+          role="status"
+        >
+          <lightning-icon
+            icon-name="utility:info"
+            alternative-text="Info"
+            size="x-small"
+            class="slds-var-m-right_x-small"
+          ></lightning-icon>
+          Biometric verification is not available on this device or surface.
+        </div>
+      </template>
+
+      <template lwc:if={errorMessage}>
+        <div
+          class="slds-notify slds-notify_toast slds-theme_error slds-var-m-top_small"
+          role="alert"
+        >
+          <lightning-icon
+            icon-name="utility:error"
+            alternative-text="Error"
+            size="x-small"
+            variant="inverse"
+            class="slds-var-m-right_x-small"
+          ></lightning-icon>
+          {errorMessage}
+        </div>
+      </template>
+    </div>
+  </lightning-card>
+</template>

@@ -23,6 +23,10 @@
     {
       "path": "packages/binance",
       "default": false
+    },
+    {
+      "path": "packages/mcp",
+      "default": false
     }
   ],
   "name": "AgentForceXL",
