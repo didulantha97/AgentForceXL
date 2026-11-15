@@ -1,0 +1,123 @@
+<template>
+  <lightning-card title={title} icon-name="custom:custom57">
+    <div slot="actions" class="slds-grid slds-grid_vertical-align-end">
+      <template lwc:if={showSitePicker}>
+        <lightning-combobox
+          class="slds-m-right_x-small"
+          label="Hotel"
+          variant="label-hidden"
+          value={siteId}
+          options={siteOptions}
+          onchange={handleSite}
+        ></lightning-combobox>
+      </template>
+      <lightning-input
+        class="slds-m-right_x-small"
+        type="date"
+        label="From"
+        variant="label-hidden"
+        value={startDate}
+        onchange={handleDate}
+      ></lightning-input>
+      <lightning-button-group>
+        <lightning-button-icon
+          icon-name="utility:chevronleft"
+          alternative-text="Previous week"
+          onclick={prev}
+        ></lightning-button-icon>
+        <lightning-button label="Today" onclick={goToday}></lightning-button>
+        <lightning-button-icon
+          icon-name="utility:chevronright"
+          alternative-text="Next week"
+          onclick={next}
+        ></lightning-button-icon>
+      </lightning-button-group>
+    </div>
+    <div class="slds-p-horizontal_small">
+      <template lwc:if={error}>
+        <div
+          class="slds-notify slds-notify_alert slds-alert_error"
+          role="alert"
+        >
+          {error}
+        </div>
+      </template>
+      <template lwc:if={loading}>
+        <lightning-spinner
+          alternative-text="Loading"
+          size="small"
+        ></lightning-spinner>
+      </template>
+      <template lwc:if={hasRooms}>
+        <div class="pms-scroll">
+          <table class="pms-grid">
+            <thead>
+              <tr>
+                <th class="pms-room-head">Room</th>
+                <template for:each={dateHeaders} for:item="d">
+                  <th key={d.key} class={d.cls}>
+                    <div class="pms-wd">{d.weekday}</div>
+                    <div>{d.day}</div>
+                  </th>
+                </template>
+              </tr>
+            </thead>
+            <tbody>
+              <template for:each={rows} for:item="row">
+                <tr key={row.key}>
+                  <th class="pms-room-head" scope="row">
+                    <div class="pms-room-name">{row.name}</div>
+                    <div class="pms-room-type">{row.roomType}</div>
+                    <span class={row.statusCls} title={row.status}></span>
+                  </th>
+                  <template for:each={row.cells} for:item="c">
+                    <template lwc:if={c.isBooking}>
+                      <td
+                        key={c.key}
+                        colspan={c.colspan}
+                        class="pms-cell"
+                        data-room={c.roomId}
+                        data-date={c.iso}
+                        ondragover={handleDragOver}
+                        ondrop={handleDrop}
+                      >
+                        <div
+                          class={c.cls}
+                          title={c.title}
+                          draggable="true"
+                          data-id={c.bookingId}
+                          ondragstart={handleDragStart}
+                          onclick={openBooking}
+                        >
+                          {c.label}
+                        </div>
+                      </td>
+                    </template>
+                    <template lwc:else>
+                      <td
+                        key={c.key}
+                        class={c.cls}
+                        data-room={c.roomId}
+                        data-date={c.iso}
+                        ondragover={handleDragOver}
+                        ondrop={handleDrop}
+                      ></td>
+                    </template>
+                  </template>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+        <p class="slds-text-body_small slds-text-color_weak slds-m-top_x-small">
+          Drag a booking to another room or day to move it. Click to open it.
+        </p>
+      </template>
+      <template lwc:elseif={data}>
+        <p class="slds-text-color_weak slds-p-around_medium">
+          This hotel has no bookable rooms yet.
+        </p>
+      </template>
+    </div>
+  </lightning-card>
+</template>

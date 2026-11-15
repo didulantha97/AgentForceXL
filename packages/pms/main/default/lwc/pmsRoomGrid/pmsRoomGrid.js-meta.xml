@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>66.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>PMS Room Grid</masterLabel>
+    <description
+  >Hotel tape chart of rooms by date with drag-and-drop moves.</description>
+    <targets>
+        <target>lightning__AppPage</target>
+        <target>lightning__HomePage</target>
+        <target>lightning__RecordPage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+            <objects>
+                <object>PMS_Site__c</object>
+            </objects>
+            <property
+        name="days"
+        type="Integer"
+        label="Days shown"
+        default="14"
+        min="7"
+        max="62"
+      />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

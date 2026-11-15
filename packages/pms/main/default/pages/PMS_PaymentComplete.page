@@ -1,0 +1,57 @@
+<apex:page
+  showHeader="false"
+  sidebar="false"
+  standardStylesheets="false"
+  applyBodyTag="false"
+  docType="html-5.0"
+  title="Payment"
+>
+  <style>
+    body {
+      font-family:
+        -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #f4f6f9;
+      margin: 0;
+    }
+    .card {
+      max-width: 420px;
+      margin: 12vh auto;
+      background: #fff;
+      border-radius: 12px;
+      padding: 32px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+    h1 {
+      font-size: 22px;
+      margin: 0 0 12px;
+      color: #181818;
+    }
+    p {
+      color: #444;
+      line-height: 1.5;
+      margin: 0;
+    }
+  </style>
+  <body>
+    <div class="card">
+      <apex:outputPanel
+        layout="none"
+        rendered="{!$CurrentPage.parameters.status != 'cancelled'}"
+      >
+        <h1>Thank you</h1>
+        <p>
+          Your payment has been received. A receipt is on its way to your email,
+          and you can close this page.
+        </p>
+      </apex:outputPanel>
+      <apex:outputPanel
+        layout="none"
+        rendered="{!$CurrentPage.parameters.status == 'cancelled'}"
+      >
+        <h1>Payment cancelled</h1>
+        <p>No money was taken. You can use the same link again to pay.</p>
+      </apex:outputPanel>
+    </div>
+  </body>
+</apex:page>

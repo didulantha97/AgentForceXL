@@ -1,0 +1,63 @@
+<template>
+  <lightning-quick-action-panel header="Stripe payment link">
+    <template lwc:if={loading}>
+      <lightning-spinner
+        alternative-text="Creating link"
+        size="small"
+      ></lightning-spinner>
+    </template>
+    <template lwc:if={error}>
+      <div
+        class="slds-notify slds-notify_alert slds-alert_error slds-m-bottom_small"
+        role="alert"
+      >
+        {error}
+      </div>
+    </template>
+    <template lwc:if={hasResult}>
+      <p class="slds-m-bottom_x-small">
+        Invoice <strong>{result.invoiceNumber}</strong>:
+        <lightning-formatted-number
+          value={result.amount}
+          format-style="currency"
+          currency-code={result.currencyCode}
+        ></lightning-formatted-number>
+      </p>
+      <lightning-input
+        label="Payment link"
+        value={result.url}
+        readonly
+      ></lightning-input>
+      <p class="slds-text-color_weak slds-m-top_x-small">
+        Send this link to the customer. It expires {expiresLabel}. The payment
+        is posted to the invoice automatically.
+      </p>
+      <template lwc:if={copied}>
+        <p class="slds-text-color_success slds-m-top_x-small">Copied.</p>
+      </template>
+    </template>
+    <template lwc:else>
+      <p>Creates a Stripe Checkout page for this invoice's open balance.</p>
+    </template>
+    <div slot="footer">
+      <lightning-button
+        label="Close"
+        onclick={handleClose}
+        class="slds-m-right_x-small"
+      ></lightning-button>
+      <template lwc:if={hasResult}>
+        <lightning-button
+          label="Copy link"
+          onclick={handleCopy}
+          class="slds-m-right_x-small"
+        ></lightning-button>
+      </template>
+      <lightning-button
+        variant="brand"
+        label={createLabel}
+        onclick={handleCreate}
+        disabled={loading}
+      ></lightning-button>
+    </div>
+  </lightning-quick-action-panel>
+</template>

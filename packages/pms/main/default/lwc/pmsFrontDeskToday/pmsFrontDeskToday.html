@@ -1,0 +1,166 @@
+<template>
+  <lightning-card title="Front desk" icon-name="standard:service_appointment">
+    <div slot="actions" class="slds-grid slds-grid_vertical-align-end">
+      <template lwc:if={showSitePicker}>
+        <lightning-combobox
+          class="slds-m-right_x-small"
+          label="Hotel"
+          variant="label-hidden"
+          value={siteId}
+          options={siteOptions}
+          onchange={handleSite}
+        ></lightning-combobox>
+      </template>
+      <lightning-input
+        type="date"
+        label="Business date"
+        variant="label-hidden"
+        value={businessDate}
+        onchange={handleDate}
+      ></lightning-input>
+      <lightning-button-icon
+        class="slds-m-left_x-small"
+        icon-name="utility:refresh"
+        alternative-text="Refresh"
+        onclick={load}
+      ></lightning-button-icon>
+    </div>
+    <div class="slds-p-horizontal_medium">
+      <template lwc:if={error}>
+        <div
+          class="slds-notify slds-notify_alert slds-alert_error"
+          role="alert"
+        >
+          {error}
+        </div>
+      </template>
+      <template lwc:if={loading}>
+        <lightning-spinner
+          alternative-text="Loading"
+          size="small"
+        ></lightning-spinner>
+      </template>
+
+      <div class="slds-grid slds-wrap slds-gutters_x-small slds-m-bottom_small">
+        <template for:each={kpis} for:item="k">
+          <div
+            key={k.key}
+            class="slds-col slds-size_1-of-3 slds-medium-size_1-of-6"
+          >
+            <div class="slds-box slds-box_x-small slds-text-align_center">
+              <p class="slds-text-heading_medium">{k.value}</p>
+              <p class="slds-text-body_small slds-text-color_weak">{k.label}</p>
+            </div>
+          </div>
+        </template>
+      </div>
+
+      <lightning-tabset>
+        <lightning-tab label={arrivalsLabel}>
+          <template lwc:if={noArrivals}>
+            <p class="slds-text-color_weak">No arrivals today.</p>
+          </template>
+          <template for:each={arrivals} for:item="a">
+            <div
+              key={a.key}
+              class="slds-grid slds-grid_vertical-align-center slds-border_bottom slds-p-vertical_x-small"
+            >
+              <div class="slds-col">
+                <a data-id={a.id} onclick={open}>{a.guest}</a>
+                <p class="slds-text-body_small slds-text-color_weak">
+                  {a.name} · {a.roomType} · {a.startDate} → {a.endDate} ·
+                  {a.adults} adults
+                </p>
+              </div>
+              <div
+                class="slds-col slds-grow-none slds-p-right_x-small"
+                style="min-width: 12rem"
+              >
+                <lightning-combobox
+                  label="Room"
+                  variant="label-hidden"
+                  data-id={a.id}
+                  value={a.selectedRoom}
+                  options={a.options}
+                  onchange={handleRoom}
+                ></lightning-combobox>
+              </div>
+              <div class="slds-col slds-grow-none">
+                <lightning-button
+                  variant="brand"
+                  label="Check in"
+                  data-id={a.id}
+                  onclick={doCheckIn}
+                ></lightning-button>
+              </div>
+            </div>
+          </template>
+        </lightning-tab>
+        <lightning-tab label={inHouseLabel}>
+          <template lwc:if={noInHouse}>
+            <p class="slds-text-color_weak">No guests in house.</p>
+          </template>
+          <template for:each={inHouse} for:item="r">
+            <div
+              key={r.key}
+              class="slds-grid slds-grid_vertical-align-center slds-border_bottom slds-p-vertical_x-small"
+            >
+              <div class="slds-col">
+                <a data-id={r.id} onclick={open}>{r.guest}</a>
+                <p class="slds-text-body_small slds-text-color_weak">
+                  Room {r.room} · until {r.endDate}
+                </p>
+              </div>
+              <div class="slds-col slds-grow-none">
+                <lightning-button
+                  label="Early check-out"
+                  data-id={r.id}
+                  onclick={doCheckOut}
+                ></lightning-button>
+              </div>
+            </div>
+          </template>
+        </lightning-tab>
+        <lightning-tab label={departuresLabel}>
+          <template lwc:if={noDepartures}>
+            <p class="slds-text-color_weak">No departures today.</p>
+          </template>
+          <template for:each={departures} for:item="d">
+            <div
+              key={d.key}
+              class="slds-grid slds-grid_vertical-align-center slds-border_bottom slds-p-vertical_x-small"
+            >
+              <div class="slds-col">
+                <a data-id={d.id} onclick={open}>{d.guest}</a>
+                <p class="slds-text-body_small slds-text-color_weak">
+                  Room {d.room} · {d.name}
+                </p>
+              </div>
+              <div class="slds-col slds-grow-none slds-p-right_small">
+                <template lwc:if={d.owes}>
+                  <lightning-badge
+                    label="Balance due"
+                    class="slds-theme_warning"
+                  ></lightning-badge>
+                  <lightning-formatted-number
+                    class="slds-m-left_x-small"
+                    value={d.balance}
+                    minimum-fraction-digits="2"
+                  ></lightning-formatted-number>
+                </template>
+              </div>
+              <div class="slds-col slds-grow-none">
+                <lightning-button
+                  variant="brand"
+                  label="Check out"
+                  data-id={d.id}
+                  onclick={doCheckOut}
+                ></lightning-button>
+              </div>
+            </div>
+          </template>
+        </lightning-tab>
+      </lightning-tabset>
+    </div>
+  </lightning-card>
+</template>

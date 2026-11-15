@@ -1,0 +1,52 @@
+.pms-scroll {
+  overflow-x: auto;
+}
+.pms-cal {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+.pms-cal th,
+.pms-cal td {
+  border: 1px solid var(--slds-g-color-border-1, #e5e5e5);
+  vertical-align: top;
+  padding: 0.25rem;
+  font-size: 0.75rem;
+}
+.pms-who {
+  width: 11rem;
+  text-align: left;
+}
+.pms-day {
+  min-width: 8rem;
+  height: 5rem;
+}
+.pms-today {
+  background: #e7f1fb;
+}
+.pms-appt {
+  background: #e7f1fb;
+  border-left: 3px solid #0176d3;
+  border-radius: 0.125rem;
+  padding: 0.125rem 0.25rem;
+  margin-bottom: 0.125rem;
+  cursor: pointer;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.pms-appt-completed {
+  border-left-color: #2e844a;
+  background: #ebf7e6;
+}
+.pms-appt-noshow {
+  border-left-color: #ba0517;
+  background: #feded8;
+}
+.pms-add {
+  width: 100%;
+  margin-top: 0.125rem;
+  font-size: 0.6875rem;
+  line-height: 1.25rem;
+  min-height: 1.25rem;
+}

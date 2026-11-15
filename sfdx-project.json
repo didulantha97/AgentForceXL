@@ -27,6 +27,10 @@
     {
       "path": "packages/mcp",
       "default": false
+    },
+    {
+      "path": "packages/pms",
+      "default": false
     }
   ],
   "name": "AgentForceXL",

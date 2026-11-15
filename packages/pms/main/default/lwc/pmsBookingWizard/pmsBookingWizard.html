@@ -1,0 +1,227 @@
+<template>
+  <lightning-card title={title} icon-name="custom:custom57">
+    <div class="slds-p-horizontal_medium">
+      <template lwc:if={error}>
+        <div
+          class="slds-notify slds-notify_alert slds-alert_error slds-m-bottom_small"
+          role="alert"
+        >
+          {error}
+        </div>
+      </template>
+      <template lwc:if={loading}>
+        <lightning-spinner
+          alternative-text="Loading"
+          size="small"
+        ></lightning-spinner>
+      </template>
+
+      <!-- Step 1: what and when -->
+      <template lwc:if={isStep1}>
+        <div class="slds-grid slds-wrap slds-gutters_x-small">
+          <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+            <lightning-combobox
+              label="Module"
+              value={module}
+              options={moduleOptions}
+              onchange={handleModule}
+            ></lightning-combobox>
+          </div>
+          <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+            <lightning-combobox
+              label="Site"
+              value={siteId}
+              options={siteOptions}
+              onchange={handleSite}
+              disabled={siteLocked}
+            ></lightning-combobox>
+          </div>
+          <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+            <lightning-combobox
+              label={labels.space}
+              name="spaceTypeId"
+              value={spaceTypeId}
+              options={spaceTypeOptions}
+              onchange={handleField}
+            ></lightning-combobox>
+          </div>
+          <div class="slds-col slds-size_1-of-2 slds-medium-size_1-of-4">
+            <lightning-input
+              type="date"
+              label={labels.start}
+              name="startDate"
+              value={startDate}
+              onchange={handleField}
+              required
+            ></lightning-input>
+          </div>
+          <div class="slds-col slds-size_1-of-2 slds-medium-size_1-of-4">
+            <lightning-input
+              type="date"
+              label={labels.end}
+              name="endDate"
+              value={endDate}
+              onchange={handleField}
+              required
+            ></lightning-input>
+          </div>
+          <div class="slds-col slds-size_1-of-2 slds-medium-size_1-of-4">
+            <lightning-combobox
+              label="Price list"
+              name="ratePlanId"
+              value={ratePlanId}
+              options={ratePlanOptions}
+              onchange={handleField}
+            ></lightning-combobox>
+          </div>
+          <template lwc:if={isHotel}>
+            <div class="slds-col slds-size_1-of-4 slds-medium-size_1-of-8">
+              <lightning-input
+                type="number"
+                label="Adults"
+                name="adults"
+                value={adults}
+                min="1"
+                onchange={handleField}
+              ></lightning-input>
+            </div>
+            <div class="slds-col slds-size_1-of-4 slds-medium-size_1-of-8">
+              <lightning-input
+                type="number"
+                label="Children"
+                name="children"
+                value={children}
+                min="0"
+                onchange={handleField}
+              ></lightning-input>
+            </div>
+          </template>
+        </div>
+        <div class="slds-m-top_medium slds-text-align_right">
+          <lightning-button
+            variant="brand"
+            label="Search availability"
+            onclick={search}
+            disabled={searchDisabled}
+          ></lightning-button>
+        </div>
+      </template>
+
+      <!-- Step 2: choose -->
+      <template lwc:if={isStep2}>
+        <template lwc:if={noResults}>
+          <p class="slds-text-color_weak slds-p-vertical_medium">
+            Nothing is free for those dates. Try other dates or another type.
+          </p>
+        </template>
+        <template lwc:if={hasResults}>
+          <ul class="slds-has-dividers_bottom-space">
+            <template for:each={results} for:item="r">
+              <li
+                key={r.key}
+                class="slds-item slds-grid slds-grid_vertical-align-center"
+              >
+                <div class="slds-col">
+                  <p class="slds-text-heading_small">
+                    {r.spaceName}
+                    <span class="slds-text-color_weak">· {r.spaceType}</span>
+                  </p>
+                  <p class="slds-text-body_small slds-text-color_weak">
+                    {r.summary}
+                  </p>
+                </div>
+                <div
+                  class="slds-col slds-grow-none slds-text-align_right slds-p-right_small"
+                >
+                  <p class="slds-text-heading_small">
+                    <lightning-formatted-number
+                      value={r.quote.gross}
+                      minimum-fraction-digits="2"
+                    ></lightning-formatted-number>
+                  </p>
+                  <p class="slds-text-body_small slds-text-color_weak">
+                    incl. tax
+                  </p>
+                </div>
+                <div class="slds-col slds-grow-none">
+                  <lightning-button
+                    label="Select"
+                    data-id={r.spaceId}
+                    onclick={select}
+                  ></lightning-button>
+                </div>
+              </li>
+            </template>
+          </ul>
+        </template>
+        <div class="slds-m-top_medium">
+          <lightning-button label="Back" onclick={back}></lightning-button>
+        </div>
+      </template>
+
+      <!-- Step 3: who -->
+      <template lwc:if={isStep3}>
+        <div class="slds-box slds-theme_shade slds-m-bottom_small">
+          <p><strong>{selected.spaceName}</strong> · {selected.spaceType}</p>
+          <p>{startDate} → {endDate}</p>
+          <p>
+            Total
+            <lightning-formatted-number
+              value={selected.quote.gross}
+              minimum-fraction-digits="2"
+            ></lightning-formatted-number>
+            (tax
+            <lightning-formatted-number
+              value={selected.quote.tax}
+              minimum-fraction-digits="2"
+            ></lightning-formatted-number
+            >)
+          </p>
+        </div>
+        <div class="slds-grid slds-wrap slds-gutters_x-small">
+          <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+            <lightning-record-picker
+              label="Customer account"
+              object-api-name="Account"
+              onchange={handleAccount}
+              required
+            ></lightning-record-picker>
+          </div>
+          <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+            <lightning-record-picker
+              label="Main contact"
+              object-api-name="Contact"
+              onchange={handleContact}
+            ></lightning-record-picker>
+          </div>
+          <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+            <lightning-combobox
+              label="Channel"
+              name="channel"
+              value={channel}
+              options={channelOptions}
+              onchange={handleField}
+            ></lightning-combobox>
+          </div>
+          <div class="slds-col slds-size_1-of-1 slds-medium-size_2-of-3">
+            <lightning-textarea
+              label="Special requests"
+              name="specialRequests"
+              value={specialRequests}
+              onchange={handleField}
+            ></lightning-textarea>
+          </div>
+        </div>
+        <div class="slds-m-top_medium slds-grid slds-grid_align-spread">
+          <lightning-button label="Back" onclick={back}></lightning-button>
+          <lightning-button
+            variant="brand"
+            label="Confirm booking"
+            onclick={confirm}
+            disabled={confirmDisabled}
+          ></lightning-button>
+        </div>
+      </template>
+    </div>
+  </lightning-card>
+</template>

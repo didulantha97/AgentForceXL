@@ -1,0 +1,76 @@
+<template>
+  <lightning-card title="Rent roll" icon-name="custom:custom24">
+    <div slot="actions" class="slds-grid slds-grid_vertical-align-end">
+      <template lwc:if={showSitePicker}>
+        <lightning-combobox
+          class="slds-m-right_x-small"
+          label="Property"
+          variant="label-hidden"
+          value={siteId}
+          options={siteOptions}
+          onchange={handleSite}
+        ></lightning-combobox>
+      </template>
+      <lightning-combobox
+        class="slds-m-right_x-small"
+        label="Show"
+        variant="label-hidden"
+        value={filter}
+        options={filterOptions}
+        onchange={handleFilter}
+      ></lightning-combobox>
+      <lightning-button
+        label="Export CSV"
+        icon-name="utility:download"
+        onclick={exportCsv}
+      ></lightning-button>
+    </div>
+    <div class="slds-p-horizontal_medium">
+      <template lwc:if={error}>
+        <div
+          class="slds-notify slds-notify_alert slds-alert_error"
+          role="alert"
+        >
+          {error}
+        </div>
+      </template>
+      <template lwc:if={loading}>
+        <lightning-spinner
+          alternative-text="Loading"
+          size="small"
+        ></lightning-spinner>
+      </template>
+      <div class="slds-grid slds-wrap slds-gutters_x-small slds-m-bottom_small">
+        <template for:each={kpis} for:item="k">
+          <div
+            key={k.key}
+            class="slds-col slds-size_1-of-2 slds-medium-size_1-of-5"
+          >
+            <div class="slds-box slds-box_x-small slds-text-align_center">
+              <p class="slds-text-heading_medium">
+                <template lwc:if={k.isCurrency}>
+                  <lightning-formatted-number
+                    value={k.value}
+                    format-style="decimal"
+                    maximum-fraction-digits="0"
+                  ></lightning-formatted-number>
+                </template>
+                <template lwc:else>{k.value}</template>
+              </p>
+              <p class="slds-text-body_small slds-text-color_weak">{k.label}</p>
+            </div>
+          </div>
+        </template>
+      </div>
+      <lightning-datatable
+        key-field="unitId"
+        data={rows}
+        columns={columns}
+        hide-checkbox-column
+        sorted-by={sortedBy}
+        sorted-direction={sortDirection}
+        onsort={handleSort}
+      ></lightning-datatable>
+    </div>
+  </lightning-card>
+</template>

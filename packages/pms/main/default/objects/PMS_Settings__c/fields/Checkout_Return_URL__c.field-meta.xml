@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Checkout_Return_URL__c</fullName>
+    <description
+  >Page customers return to after Stripe Checkout, e.g. https://codeterriers4.my.salesforce-sites.com/pay/PMS_PaymentComplete</description>
+    <externalId>false</externalId>
+    <label>Checkout Return URL</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Url</type>
+</CustomField>

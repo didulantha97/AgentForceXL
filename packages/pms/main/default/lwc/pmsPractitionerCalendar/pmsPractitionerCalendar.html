@@ -1,0 +1,171 @@
+<template>
+  <lightning-card title="Practice diary" icon-name="standard:event">
+    <div slot="actions" class="slds-grid slds-grid_vertical-align-center">
+      <template lwc:if={showSitePicker}>
+        <lightning-combobox
+          class="slds-m-right_x-small"
+          label="Office"
+          variant="label-hidden"
+          value={siteId}
+          options={siteOptions}
+          onchange={handleSite}
+        ></lightning-combobox>
+      </template>
+      <span class="slds-m-right_x-small slds-text-body_small">{weekLabel}</span>
+      <lightning-button-group>
+        <lightning-button-icon
+          icon-name="utility:chevronleft"
+          alternative-text="Previous week"
+          onclick={prev}
+        ></lightning-button-icon>
+        <lightning-button
+          label="This week"
+          onclick={thisWeek}
+        ></lightning-button>
+        <lightning-button-icon
+          icon-name="utility:chevronright"
+          alternative-text="Next week"
+          onclick={next}
+        ></lightning-button-icon>
+      </lightning-button-group>
+    </div>
+    <div class="slds-p-horizontal_medium">
+      <template lwc:if={error}>
+        <div
+          class="slds-notify slds-notify_alert slds-alert_error"
+          role="alert"
+        >
+          {error}
+        </div>
+      </template>
+      <template lwc:if={loading}>
+        <lightning-spinner
+          alternative-text="Loading"
+          size="small"
+        ></lightning-spinner>
+      </template>
+      <template lwc:if={hasPractitioners}>
+        <div class="pms-scroll">
+          <table class="pms-cal">
+            <thead>
+              <tr>
+                <th class="pms-who">Practitioner</th>
+                <template for:each={days} for:item="d">
+                  <th key={d.key} class={d.cls}>{d.label}</th>
+                </template>
+              </tr>
+            </thead>
+            <tbody>
+              <template for:each={rows} for:item="row">
+                <tr key={row.key}>
+                  <th class="pms-who" scope="row">
+                    <div class="slds-text-title_bold">{row.name}</div>
+                    <div class="slds-text-body_small slds-text-color_weak">
+                      {row.speciality}
+                    </div>
+                  </th>
+                  <template for:each={row.cells} for:item="c">
+                    <td key={c.key} class="pms-day">
+                      <template for:each={c.items} for:item="a">
+                        <div
+                          key={a.key}
+                          class={a.cls}
+                          data-id={a.id}
+                          onclick={open}
+                        >
+                          <strong>{a.time}</strong> {a.text}
+                        </div>
+                      </template>
+                      <button
+                        class="slds-button slds-button_neutral pms-add"
+                        data-practitioner={c.practitionerId}
+                        data-name={c.practitionerName}
+                        data-date={c.iso}
+                        onclick={startBooking}
+                      >
+                        + Book
+                      </button>
+                    </td>
+                  </template>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+      </template>
+      <template lwc:elseif={data}>
+        <p class="slds-text-color_weak slds-p-around_medium">
+          No active practitioners for this office yet.
+        </p>
+      </template>
+    </div>
+
+    <template lwc:if={booking}>
+      <section
+        role="dialog"
+        tabindex="-1"
+        aria-modal="true"
+        class="slds-modal slds-fade-in-open"
+      >
+        <div class="slds-modal__container">
+          <div class="slds-modal__header">
+            <h2 class="slds-text-heading_medium">
+              Book with {booking.practitionerName} · {booking.day}
+            </h2>
+          </div>
+          <div class="slds-modal__content slds-p-around_medium">
+            <lightning-combobox
+              label="Service"
+              value={serviceId}
+              options={serviceOptions}
+              onchange={handleService}
+              required
+            ></lightning-combobox>
+            <template lwc:if={noSlots}>
+              <p class="slds-text-color_error slds-m-vertical_x-small">
+                No free time that day for this service.
+              </p>
+            </template>
+            <lightning-combobox
+              label="Time"
+              value={slot}
+              options={slotOptions}
+              onchange={handleSlot}
+            ></lightning-combobox>
+            <lightning-combobox
+              label="Mode"
+              value={mode}
+              options={modeOptions}
+              onchange={handleMode}
+            ></lightning-combobox>
+            <lightning-record-picker
+              label="Client account"
+              object-api-name="Account"
+              onchange={handleAccount}
+              required
+            ></lightning-record-picker>
+            <lightning-record-picker
+              label="Client contact"
+              object-api-name="Contact"
+              onchange={handleContact}
+            ></lightning-record-picker>
+          </div>
+          <div class="slds-modal__footer">
+            <lightning-button
+              label="Cancel"
+              onclick={closeBooking}
+            ></lightning-button>
+            <lightning-button
+              class="slds-m-left_x-small"
+              variant="brand"
+              label="Book appointment"
+              onclick={confirmBooking}
+              disabled={bookDisabled}
+            ></lightning-button>
+          </div>
+        </div>
+      </section>
+      <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+  </lightning-card>
+</template>

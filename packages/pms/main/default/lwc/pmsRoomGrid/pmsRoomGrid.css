@@ -1,0 +1,94 @@
+.pms-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--slds-g-color-border-1, #e5e5e5);
+  border-radius: 0.25rem;
+}
+.pms-grid {
+  border-collapse: collapse;
+  width: 100%;
+  table-layout: fixed;
+}
+.pms-grid th,
+.pms-grid td {
+  border: 1px solid var(--slds-g-color-border-1, #e5e5e5);
+  height: 2.5rem;
+  min-width: 2.75rem;
+  padding: 0;
+  text-align: center;
+  font-size: 0.75rem;
+}
+.pms-room-head {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  width: 9rem;
+  min-width: 9rem;
+  background: var(--slds-g-color-neutral-base-100, #fff);
+  text-align: left !important;
+  padding: 0 0.5rem !important;
+}
+.pms-room-name {
+  font-weight: 700;
+}
+.pms-room-type {
+  color: var(--slds-g-color-neutral-base-50, #747474);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pms-room-status {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: #2e844a;
+}
+.pms-room-dirty {
+  background: #dd7a01;
+}
+.pms-room-outoforder,
+.pms-room-underrenovation {
+  background: #ba0517;
+}
+.pms-room-occupied {
+  background: #0176d3;
+}
+.pms-wd {
+  color: var(--slds-g-color-neutral-base-50, #747474);
+}
+.pms-weekend {
+  background: #f8f8f8;
+}
+.pms-today {
+  background: #e7f1fb;
+  font-weight: 700;
+}
+.pms-free:hover {
+  background: #eef4ff;
+}
+.pms-cell {
+  padding: 2px !important;
+}
+.pms-booking {
+  height: 100%;
+  border-radius: 0.25rem;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 0.25rem;
+  background: #0176d3;
+}
+.pms-status-active {
+  background: #2e844a;
+}
+.pms-status-tentative {
+  background: #706e6b;
+}
+.pms-status-completed {
+  background: #a0a0a0;
+}
