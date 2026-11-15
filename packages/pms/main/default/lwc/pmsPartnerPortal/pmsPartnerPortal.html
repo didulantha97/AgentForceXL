@@ -1,0 +1,651 @@
+<template>
+  <div class="portal">
+    <div class="hero">
+      <h1>{greeting}</h1>
+      <template lwc:if={home}><p class="muted">{home.accountName}</p></template>
+    </div>
+
+    <template lwc:if={loading}>
+      <div class="center">
+        <lightning-spinner
+          alternative-text="Loading"
+          size="medium"
+        ></lightning-spinner>
+      </div>
+    </template>
+    <template lwc:if={busy}>
+      <lightning-spinner
+        alternative-text="Working"
+        size="small"
+        variant="brand"
+      ></lightning-spinner>
+    </template>
+
+    <template lwc:if={error}>
+      <div class="alert alert-error" role="alert">{error}</div>
+    </template>
+    <template lwc:if={notice}>
+      <div class="alert alert-ok" role="status">
+        <span>{notice}</span>
+        <button class="link" onclick={dismissNotice}>Dismiss</button>
+      </div>
+    </template>
+
+    <template lwc:if={nothingYet}>
+      <div class="card">
+        <h2>Nothing here yet</h2>
+        <p>
+          Your account has no properties or jobs linked to it yet. If you
+          expected to see something, please contact us.
+        </p>
+      </div>
+    </template>
+
+    <template lwc:if={ready}>
+      <lightning-tabset variant="scoped">
+        <!-- ============================================================ OWNERS -->
+        <template lwc:if={home.isOwner}>
+          <lightning-tab label="My properties">
+            <template for:each={sites} for:item="s">
+              <div class="card" key={s.id}>
+                <div class="card-head">
+                  <div>
+                    <h2>{s.name}</h2>
+                    <p class="muted">{s.module} · {s.city}</p>
+                  </div>
+                  <div class="kpi-big">
+                    <span class="kpi-label">Occupancy</span>
+                    <span class="kpi-value">{s.occupancy}</span>
+                    <span class="muted small">{s.occupancyBasis}</span>
+                  </div>
+                </div>
+                <p class="section-label">{s.periodLabel}</p>
+                <div class="kpis">
+                  <div class="kpi">
+                    <span class="kpi-label">Income received</span
+                    ><span class="kpi-value">{s.gross}</span>
+                  </div>
+                  <div class="kpi">
+                    <span class="kpi-label">Expenses</span
+                    ><span class="kpi-value">{s.expenses}</span>
+                  </div>
+                  <div class="kpi">
+                    <span class="kpi-label">{s.feeLabel}</span
+                    ><span class="kpi-value">{s.fee}</span>
+                  </div>
+                  <div class="kpi kpi-strong">
+                    <span class="kpi-label">Net to you</span
+                    ><span class="kpi-value">{s.net}</span>
+                  </div>
+                </div>
+                <p class="muted small">
+                  Open maintenance jobs: {s.openJobs}
+                  <template lwc:if={s.hasArrears}>
+                    · Unpaid rent and invoices due: {s.arrears}</template
+                  >
+                </p>
+                <template lwc:if={s.hasUnits}>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Unit</th>
+                        <th>Status</th>
+                        <th>Lease ends</th>
+                        <th class="num">Rent</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <template for:each={s.units} for:item="u">
+                        <tr key={u.key}>
+                          <td>{u.name}</td>
+                          <td><span class={u.badge}>{u.status}</span></td>
+                          <td>{u.leaseEndLabel}</td>
+                          <td class="num">{u.rentLabel}</td>
+                        </tr>
+                      </template>
+                    </tbody>
+                  </table>
+                </template>
+              </div>
+            </template>
+          </lightning-tab>
+
+          <lightning-tab label="Statements">
+            <template lwc:if={statementView}>
+              <div class="card statement">
+                <div class="card-head">
+                  <div>
+                    <h2>{statementView.title}</h2>
+                    <p class="muted">
+                      {statementView.name} ·
+                      <span class={statementView.badge}
+                        >{statementView.status}</span
+                      >
+                    </p>
+                  </div>
+                  <div class="no-print">
+                    <lightning-button
+                      label="Print / save PDF"
+                      icon-name="utility:print"
+                      onclick={printStatement}
+                    ></lightning-button>
+                    <lightning-button
+                      label="Back"
+                      class="gap"
+                      onclick={closeStatement}
+                    ></lightning-button>
+                  </div>
+                </div>
+                <div class="kpis">
+                  <div class="kpi">
+                    <span class="kpi-label">Income received</span
+                    ><span class="kpi-value">{statementView.gross}</span>
+                  </div>
+                  <div class="kpi">
+                    <span class="kpi-label">Expenses</span
+                    ><span class="kpi-value">{statementView.expenses}</span>
+                  </div>
+                  <div class="kpi">
+                    <span class="kpi-label">{statementView.feeLabel}</span
+                    ><span class="kpi-value">{statementView.fee}</span>
+                  </div>
+                  <div class="kpi kpi-strong">
+                    <span class="kpi-label">Net payout</span
+                    ><span class="kpi-value">{statementView.net}</span>
+                  </div>
+                </div>
+                <p class="muted small">
+                  Occupancy {statementView.occupancy}
+                  ({statementView.occupancyBasis}) · Arrears at month end
+                  {statementView.arrears}
+                </p>
+
+                <h3>Income</h3>
+                <template lwc:if={statementView.hasIncome}>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Date</th>
+                        <th>Reference</th>
+                        <th>Description</th>
+                        <th class="num">Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <template for:each={statementView.income} for:item="l">
+                        <tr key={l.key}>
+                          <td>{l.dateLabel}</td>
+                          <td>{l.reference}</td>
+                          <td>{l.description}</td>
+                          <td class="num">{l.amountLabel}</td>
+                        </tr>
+                      </template>
+                    </tbody>
+                  </table>
+                </template>
+                <template lwc:else
+                  ><p class="muted">
+                    No income received in this period.
+                  </p></template
+                >
+
+                <h3>Expenses</h3>
+                <template lwc:if={statementView.hasCosts}>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Date</th>
+                        <th>Invoice</th>
+                        <th>Vendor and job</th>
+                        <th class="num">Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <template for:each={statementView.costs} for:item="l">
+                        <tr key={l.key}>
+                          <td>{l.dateLabel}</td>
+                          <td>{l.reference}</td>
+                          <td>{l.description}</td>
+                          <td class="num">{l.amountLabel}</td>
+                        </tr>
+                      </template>
+                    </tbody>
+                  </table>
+                </template>
+                <template lwc:else
+                  ><p class="muted">No expenses in this period.</p></template
+                >
+              </div>
+            </template>
+            <template lwc:else>
+              <template lwc:if={hasStatements}>
+                <div class="card">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Month</th>
+                        <th>Property</th>
+                        <th class="num">Income</th>
+                        <th class="num">Expenses</th>
+                        <th class="num">Fee</th>
+                        <th class="num">Net payout</th>
+                        <th>Occupancy</th>
+                        <th>Status</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <template for:each={statements} for:item="s">
+                        <tr key={s.id}>
+                          <td>{s.period}</td>
+                          <td>{s.siteName}</td>
+                          <td class="num">{s.grossLabel}</td>
+                          <td class="num">{s.expensesLabel}</td>
+                          <td class="num">{s.feeLabel}</td>
+                          <td class="num strong">{s.netLabel}</td>
+                          <td>{s.occupancyLabel}</td>
+                          <td><span class={s.badge}>{s.status}</span></td>
+                          <td>
+                            <button
+                              class="link"
+                              data-id={s.id}
+                              onclick={openStatement}
+                            >
+                              View
+                            </button>
+                          </td>
+                        </tr>
+                      </template>
+                    </tbody>
+                  </table>
+                </div>
+              </template>
+              <template lwc:else>
+                <div class="card">
+                  <p>
+                    Your first monthly statement will appear here once it has
+                    been published.
+                  </p>
+                </div>
+              </template>
+            </template>
+          </lightning-tab>
+        </template>
+
+        <!-- ============================================================ VENDORS -->
+        <template lwc:if={home.isVendor}>
+          <lightning-tab label="Work orders">
+            <div class="filters">
+              <template for:each={filterOptions} for:item="o">
+                <lightning-button
+                  key={o.value}
+                  label={o.label}
+                  variant={o.variant}
+                  data-value={o.value}
+                  onclick={setFilter}
+                  class="gap"
+                ></lightning-button>
+              </template>
+            </div>
+            <template lwc:if={hasWorkOrders}>
+              <template for:each={workOrders} for:item="w">
+                <div class="card" key={w.id}>
+                  <div
+                    class="card-head clickable"
+                    data-id={w.id}
+                    onclick={toggleWorkOrder}
+                  >
+                    <div>
+                      <h2>{w.subject}</h2>
+                      <p class="muted">{w.name} · {w.location}</p>
+                    </div>
+                    <div class="right">
+                      <span class={w.badge}>{w.status}</span>
+                      <template lwc:if={w.urgent}
+                        ><span class="badge badge-bad"
+                          >{w.priority}</span
+                        ></template
+                      >
+                      <span class="link">{w.toggleLabel}</span>
+                    </div>
+                  </div>
+
+                  <template lwc:if={w.expanded}>
+                    <dl class="facts">
+                      <template lwc:if={w.scheduledLabel}
+                        ><dt>Scheduled</dt>
+                        <dd>{w.scheduledLabel}</dd></template
+                      >
+                      <template lwc:if={w.nteLabel}
+                        ><dt>Approved up to</dt>
+                        <dd>{w.nteLabel} incl. tax</dd></template
+                      >
+                      <template lwc:if={w.entryPermission}
+                        ><dt>Entry</dt>
+                        <dd>
+                          You may enter without the occupant present.
+                        </dd></template
+                      >
+                      <dt>Raised</dt>
+                      <dd>{w.createdLabel}</dd>
+                    </dl>
+                    <template lwc:if={w.description}
+                      ><h3>The job</h3>
+                      <p class="pre">{w.description}</p></template
+                    >
+                    <template lwc:if={w.accessInstructions}
+                      ><h3>Access</h3>
+                      <p class="pre">{w.accessInstructions}</p></template
+                    >
+                    <template lwc:if={w.vendorNotes}
+                      ><h3>Your report</h3>
+                      <p class="pre">{w.vendorNotes}</p></template
+                    >
+
+                    <template lwc:if={w.noForm}>
+                      <div class="actions">
+                        <template lwc:if={w.canAccept}
+                          ><lightning-button
+                            variant="brand"
+                            label="Accept job"
+                            data-id={w.id}
+                            onclick={accept}
+                          ></lightning-button
+                        ></template>
+                        <template lwc:if={w.canQuote}
+                          ><lightning-button
+                            label="Send quote"
+                            data-id={w.id}
+                            data-type="quote"
+                            onclick={showForm}
+                          ></lightning-button
+                        ></template>
+                        <template lwc:if={w.canStart}
+                          ><lightning-button
+                            label="Start work"
+                            data-id={w.id}
+                            onclick={start}
+                          ></lightning-button
+                        ></template>
+                        <template lwc:if={w.canComplete}
+                          ><lightning-button
+                            variant="brand"
+                            label="Mark completed"
+                            data-id={w.id}
+                            data-type="complete"
+                            onclick={showForm}
+                          ></lightning-button
+                        ></template>
+                        <template lwc:if={w.canBill}
+                          ><lightning-button
+                            variant="brand"
+                            label="Send invoice"
+                            data-id={w.id}
+                            data-type="bill"
+                            onclick={showForm}
+                          ></lightning-button
+                        ></template>
+                        <template lwc:if={w.canUpload}
+                          ><lightning-button
+                            label="Add photo or file"
+                            icon-name="utility:photo"
+                            data-id={w.id}
+                            data-type="photo"
+                            onclick={showForm}
+                          ></lightning-button
+                        ></template>
+                      </div>
+                    </template>
+
+                    <!-- quote form -->
+                    <template lwc:if={w.showQuoteForm}>
+                      <div class="form">
+                        <h3>Your quote</h3>
+                        <div class="row">
+                          <lightning-input
+                            type="number"
+                            label="Amount excl. tax"
+                            step="0.01"
+                            min="0"
+                            data-field="amount"
+                            onchange={handleField}
+                            required
+                          ></lightning-input>
+                          <lightning-input
+                            type="number"
+                            label="Tax (VAT)"
+                            step="0.01"
+                            min="0"
+                            data-field="tax"
+                            onchange={handleField}
+                          ></lightning-input>
+                          <lightning-input
+                            type="date"
+                            label="Valid until"
+                            data-field="validUntil"
+                            onchange={handleField}
+                          ></lightning-input>
+                        </div>
+                        <lightning-textarea
+                          label="What the quote covers"
+                          data-field="description"
+                          onchange={handleField}
+                          required
+                        ></lightning-textarea>
+                        <label class="file"
+                          >Attach your quote (optional, PDF or photo)
+                          <input
+                            type="file"
+                            accept="application/pdf,image/*"
+                            onchange={handleFile}
+                          />
+                        </label>
+                        <p class="muted small">{fileLabel}</p>
+                        <div class="actions">
+                          <lightning-button
+                            variant="brand"
+                            label="Send quote"
+                            onclick={sendQuote}
+                            disabled={busy}
+                          ></lightning-button>
+                          <lightning-button
+                            label="Cancel"
+                            onclick={cancelForm}
+                          ></lightning-button>
+                        </div>
+                      </div>
+                    </template>
+
+                    <!-- complete form -->
+                    <template lwc:if={w.showCompleteForm}>
+                      <div class="form">
+                        <h3>Work report</h3>
+                        <lightning-textarea
+                          label="What did you do? Anything we should know?"
+                          data-field="notes"
+                          onchange={handleField}
+                          required
+                        ></lightning-textarea>
+                        <p class="muted small">
+                          Tip: add before/after photos with "Add photo or file".
+                        </p>
+                        <div class="actions">
+                          <lightning-button
+                            variant="brand"
+                            label="Mark completed"
+                            onclick={sendComplete}
+                            disabled={busy}
+                          ></lightning-button>
+                          <lightning-button
+                            label="Cancel"
+                            onclick={cancelForm}
+                          ></lightning-button>
+                        </div>
+                      </div>
+                    </template>
+
+                    <!-- bill form -->
+                    <template lwc:if={w.showBillForm}>
+                      <div class="form">
+                        <h3>Your invoice</h3>
+                        <div class="row">
+                          <lightning-input
+                            label="Invoice number"
+                            data-field="invoiceNumber"
+                            onchange={handleField}
+                            required
+                          ></lightning-input>
+                          <lightning-input
+                            type="date"
+                            label="Invoice date"
+                            value={form.billDate}
+                            data-field="billDate"
+                            onchange={handleField}
+                          ></lightning-input>
+                          <lightning-input
+                            type="date"
+                            label="Due date"
+                            data-field="dueDate"
+                            onchange={handleField}
+                          ></lightning-input>
+                        </div>
+                        <div class="row">
+                          <lightning-input
+                            type="number"
+                            label="Amount excl. tax"
+                            step="0.01"
+                            min="0"
+                            data-field="amount"
+                            onchange={handleField}
+                            required
+                          ></lightning-input>
+                          <lightning-input
+                            type="number"
+                            label="Tax (VAT)"
+                            step="0.01"
+                            min="0"
+                            data-field="tax"
+                            onchange={handleField}
+                          ></lightning-input>
+                        </div>
+                        <lightning-textarea
+                          label="Notes (optional)"
+                          data-field="notes"
+                          onchange={handleField}
+                        ></lightning-textarea>
+                        <label class="file"
+                          >Attach the invoice (required, PDF or photo)
+                          <input
+                            type="file"
+                            accept="application/pdf,image/*"
+                            onchange={handleFile}
+                          />
+                        </label>
+                        <p class="muted small">{fileLabel}</p>
+                        <div class="actions">
+                          <lightning-button
+                            variant="brand"
+                            label="Send invoice"
+                            onclick={sendBill}
+                            disabled={busy}
+                          ></lightning-button>
+                          <lightning-button
+                            label="Cancel"
+                            onclick={cancelForm}
+                          ></lightning-button>
+                        </div>
+                      </div>
+                    </template>
+
+                    <!-- photo form -->
+                    <template lwc:if={w.showPhotoForm}>
+                      <div class="form">
+                        <h3>Add a photo or file</h3>
+                        <label class="file"
+                          >Take a photo or choose a file
+                          <input
+                            type="file"
+                            accept="image/*,application/pdf"
+                            onchange={handleFile}
+                          />
+                        </label>
+                        <p class="muted small">{fileLabel}</p>
+                        <div class="actions">
+                          <lightning-button
+                            variant="brand"
+                            label="Upload"
+                            onclick={sendPhoto}
+                            disabled={busy}
+                          ></lightning-button>
+                          <lightning-button
+                            label="Cancel"
+                            onclick={cancelForm}
+                          ></lightning-button>
+                        </div>
+                      </div>
+                    </template>
+
+                    <template lwc:if={w.hasQuotes}>
+                      <h3>Quotes</h3>
+                      <ul class="list">
+                        <template for:each={w.quotes} for:item="q">
+                          <li key={q.id}>
+                            <span class={q.badge}>{q.status}</span>
+                            <strong>{q.totalLabel}</strong>
+                            <span class="muted">{q.name} {q.validLabel}</span>
+                            <template lwc:if={q.decisionNotes}
+                              ><div class="muted small">
+                                {q.decisionNotes}
+                              </div></template
+                            >
+                          </li>
+                        </template>
+                      </ul>
+                    </template>
+                    <template lwc:if={w.hasBills}>
+                      <h3>Invoices</h3>
+                      <ul class="list">
+                        <template for:each={w.bills} for:item="b">
+                          <li key={b.id}>
+                            <span class={b.badge}>{b.status}</span>
+                            <strong>{b.totalLabel}</strong>
+                            <span class="muted"
+                              >{b.invoiceNumber} · {b.dateLabel}
+                              {b.paidLabel}</span
+                            >
+                            <template lwc:if={b.notes}
+                              ><div class="muted small">
+                                {b.notes}
+                              </div></template
+                            >
+                          </li>
+                        </template>
+                      </ul>
+                    </template>
+                    <template lwc:if={w.hasFiles}>
+                      <h3>Your files</h3>
+                      <ul class="list">
+                        <template for:each={w.files} for:item="f">
+                          <li key={f.versionId}>
+                            <a href={f.url} target="_blank" rel="noopener"
+                              >{f.label}</a
+                            >
+                          </li>
+                        </template>
+                      </ul>
+                    </template>
+                  </template>
+                </div>
+              </template>
+            </template>
+            <template lwc:else>
+              <div class="card">
+                <p class="muted">No work orders in this list.</p>
+              </div>
+            </template>
+          </lightning-tab>
+        </template>
+      </lightning-tabset>
+    </template>
+  </div>
+</template>

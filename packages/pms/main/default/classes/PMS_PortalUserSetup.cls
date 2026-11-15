@@ -1,12 +1,19 @@
 /**
- * Customer portal users need the PMS Stripe Access permission set (it holds the Stripe named
- * credential principal), or Pay now fails. This assigns it automatically when a user on the
- * PMS Customer Portal User profile is created, activated or moved onto that profile.
+ * Gives portal users the permission sets their portal needs, automatically, when a user on a PMS portal
+ * profile is created, activated or moved onto that profile (from PMS_UserTrigger):
+ *   PMS Customer Portal User  ->  PMS_Stripe_Access (Stripe named credential principal; Pay now fails without it)
+ *   PMS Partner Portal User   ->  PMS_Partner_Portal (access to the partner portal's Apex controller)
  * Runs in @future so it never collides with the DML that created the user.
  */
 public without sharing class PMS_PortalUserSetup {
   public static final String PORTAL_PROFILE = 'PMS Customer Portal User';
   public static final String STRIPE_PERMSET = 'PMS_Stripe_Access';
+  public static final String PARTNER_PROFILE = 'PMS Partner Portal User';
+  public static final String PARTNER_PERMSET = 'PMS_Partner_Portal';
+  public static final Map<String, String> PERMSET_BY_PROFILE = new Map<String, String>{
+    PORTAL_PROFILE => STRIPE_PERMSET,
+    PARTNER_PROFILE => PARTNER_PERMSET
+  };
 
   public static void onUsers(List<User> users, Map<Id, User> oldMap) {
     Set<Id> candidates = new Set<Id>();
@@ -38,38 +45,38 @@ public without sharing class PMS_PortalUserSetup {
   }
 
   public static void assign(Set<Id> userIds) {
-    List<PermissionSet> ps = [
-      SELECT Id
+    Map<String, Id> permSetIds = new Map<String, Id>();
+    for (PermissionSet ps : [
+      SELECT Id, Name
       FROM PermissionSet
-      WHERE Name = :STRIPE_PERMSET
-      LIMIT 1
-    ];
-    if (ps.isEmpty()) {
+      WHERE Name IN :PERMSET_BY_PROFILE.values()
+    ]) {
+      permSetIds.put(ps.Name, ps.Id);
+    }
+    if (permSetIds.isEmpty()) {
       return;
     }
-    Set<Id> already = new Set<Id>();
+    Set<String> already = new Set<String>();
     for (PermissionSetAssignment a : [
-      SELECT AssigneeId
+      SELECT AssigneeId, PermissionSetId
       FROM PermissionSetAssignment
-      WHERE PermissionSetId = :ps[0].Id AND AssigneeId IN :userIds
+      WHERE PermissionSetId IN :permSetIds.values() AND AssigneeId IN :userIds
     ]) {
-      already.add(a.AssigneeId);
+      already.add(a.AssigneeId + ':' + a.PermissionSetId);
     }
     List<PermissionSetAssignment> toAdd = new List<PermissionSetAssignment>();
     for (User u : [
-      SELECT Id
+      SELECT Id, Profile.Name
       FROM User
       WHERE
         Id IN :userIds
         AND IsActive = TRUE
-        AND Profile.Name = :PORTAL_PROFILE
+        AND Profile.Name IN :PERMSET_BY_PROFILE.keySet()
     ]) {
-      if (!already.contains(u.Id)) {
+      Id psId = permSetIds.get(PERMSET_BY_PROFILE.get(u.Profile.Name));
+      if (psId != null && !already.contains(u.Id + ':' + psId)) {
         toAdd.add(
-          new PermissionSetAssignment(
-            AssigneeId = u.Id,
-            PermissionSetId = ps[0].Id
-          )
+          new PermissionSetAssignment(AssigneeId = u.Id, PermissionSetId = psId)
         );
       }
     }
