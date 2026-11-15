@@ -1,0 +1,81 @@
+{
+  "type": "sfdc_cms__view",
+  "title": "Home",
+  "contentBody": {
+    "component": {
+      "children": [
+        {
+          "children": [
+            {
+              "attributes": {
+                "backgroundImageConfig": "",
+                "backgroundImageOverlay": "rgba(0,0,0,0)",
+                "componentSpacerSize": "",
+                "layoutDirectionDesktop": "row",
+                "layoutDirectionMobile": "column",
+                "layoutDirectionTablet": "column",
+                "maxContentWidth": "",
+                "sectionColumnGutterWidth": "",
+                "sectionConfig": "{\"UUID\":\"db74aab9-8426-468a-97a8-4eacea2c6873\",\"columns\":[{\"UUID\":\"2845a608-52e5-4d81-8528-208eb945a7f1\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":null}]}",
+                "sectionMinHeight": "",
+                "sectionVerticalAlign": "flex-start"
+              },
+              "children": [
+                {
+                  "children": [
+                    {
+                      "attributes": {
+                        "heading": "Book online",
+                        "intro": "Rooms, appointments and homes to rent. Pay securely by card."
+                      },
+                      "definition": "c:pmsPublicBooking",
+                      "id": "71ab8438-c6e4-45f5-ad11-14fc0edc29e2",
+                      "type": "component"
+                    }
+                  ],
+                  "id": "2845a608-52e5-4d81-8528-208eb945a7f1",
+                  "name": "col1",
+                  "title": "Column 1",
+                  "type": "region"
+                }
+              ],
+              "definition": "community_layout:section",
+              "id": "db74aab9-8426-468a-97a8-4eacea2c6873",
+              "type": "component"
+            }
+          ],
+          "id": "28a2a04e-bb45-4e80-b47e-d82c8c778c84",
+          "name": "content",
+          "title": "Content",
+          "type": "region"
+        },
+        {
+          "children": [
+            {
+              "attributes": {
+                "customHeadTags": "",
+                "description": "",
+                "pageTitle": "Home",
+                "recordId": "{!recordId}"
+              },
+              "definition": "community_builder:seoAssistant",
+              "id": "8763929a-c05d-40e2-ad03-d5fe8a3ab593",
+              "type": "component"
+            }
+          ],
+          "id": "0c85896d-3b58-43fc-8bfc-5975192a9236",
+          "name": "sfdcHiddenRegion",
+          "title": "sfdcHiddenRegion",
+          "type": "region"
+        }
+      ],
+      "definition": "community_layout:sldsFlexibleLayout",
+      "id": "3bddcb21-69b4-4ff2-8972-a962984ea7ff",
+      "type": "component"
+    },
+    "dataProviders": [],
+    "themeLayoutType": "Inner",
+    "viewType": "home"
+  },
+  "urlName": "home"
+}

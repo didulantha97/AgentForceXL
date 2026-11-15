@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<CustomField xmlns="http://soap.sforce.com/2006/04/metadata"><fullName
-  >Check_In_Key__c</fullName><label>Check-In Link Key</label><inlineHelpText
-  >Secret in the emailed check-in link. Clear it to invalidate the link.</inlineHelpText><length
-  >64</length><type>Text</type><required>false</required></CustomField>

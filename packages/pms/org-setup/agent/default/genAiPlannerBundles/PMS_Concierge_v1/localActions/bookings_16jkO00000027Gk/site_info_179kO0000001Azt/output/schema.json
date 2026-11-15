@@ -1,0 +1,62 @@
+{
+  "unevaluatedProperties": false,
+  "properties": {
+    "module": {
+      "title": "Module",
+      "description": "Property, Hotel, Project or Practice",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": false,
+      "copilotAction:isUsedByPlanner": true
+    },
+    "practitionerList": {
+      "title": "Practitioner List",
+      "description": "Practitioners with practitionerId and working hours",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": false,
+      "copilotAction:isUsedByPlanner": true
+    },
+    "roomTypes": {
+      "title": "Room Types",
+      "description": "Room or unit types with spaceTypeId and default rates",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": false,
+      "copilotAction:isUsedByPlanner": true
+    },
+    "serviceList": {
+      "title": "Service List",
+      "description": "Bookable services with serviceId, duration and price",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": false,
+      "copilotAction:isUsedByPlanner": true
+    },
+    "siteDetails": {
+      "title": "Site Details",
+      "description": "Address, module, currency and phone",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": false,
+      "copilotAction:isUsedByPlanner": true
+    },
+    "siteId": {
+      "title": "Site Id",
+      "description": "Site Id for the other actions; blank if no site matched",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": false,
+      "copilotAction:isUsedByPlanner": true
+    },
+    "siteName": {
+      "title": "Site Name",
+      "description": "Site name",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": false,
+      "copilotAction:isUsedByPlanner": true
+    }
+  },
+  "lightning:type": "lightning__objectType"
+}

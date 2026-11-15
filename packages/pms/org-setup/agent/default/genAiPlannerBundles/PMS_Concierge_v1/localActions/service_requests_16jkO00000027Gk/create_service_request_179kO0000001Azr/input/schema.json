@@ -1,0 +1,49 @@
+{
+  "required": ["subject", "siteId"],
+  "unevaluatedProperties": false,
+  "properties": {
+    "description": {
+      "title": "Description",
+      "description": "Details of the problem",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    },
+    "permissionToEnter": {
+      "title": "Permission To Enter",
+      "description": "True if staff may enter while the occupant is out",
+      "lightning:type": "lightning__booleanType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    },
+    "priority": {
+      "title": "Priority",
+      "description": "One of: Low, Medium, High, Critical",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    },
+    "siteId": {
+      "title": "Site Id",
+      "description": "Site Id from get_site_info",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    },
+    "spaceName": {
+      "title": "Space Name",
+      "description": "Room or unit number, for example 201 or A102 (optional)",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    },
+    "subject": {
+      "title": "Subject",
+      "description": "Short summary of the problem",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    }
+  },
+  "lightning:type": "lightning__objectType"
+}

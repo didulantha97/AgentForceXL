@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<CustomField xmlns="http://soap.sforce.com/2006/04/metadata"><fullName
-  >Vendor_Account__c</fullName><label>Vendor</label><inlineHelpText
-  >The vendor's partner account. Its portal users see this work order.</inlineHelpText><referenceTo
-  >Account</referenceTo><relationshipLabel
-  >Vendor Work Orders</relationshipLabel><relationshipName
-  >PMS_Vendor_Work_Orders</relationshipName><deleteConstraint
-  >SetNull</deleteConstraint><type>Lookup</type><required
-  >false</required></CustomField>

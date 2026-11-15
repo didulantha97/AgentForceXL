@@ -1,0 +1,25 @@
+{
+  "orgName": "PMS Packaging",
+  "edition": "Enterprise",
+  "features": [
+    "Communities",
+    "CustomerCommunityPlus",
+    "PartnerCommunity",
+    "EnableSetPasswordInApi"
+  ],
+  "settings": {
+    "communitiesSettings": {
+      "enableNetworksEnabled": true,
+      "enableOotbProfExtUserOpsEnable": true
+    },
+    "experienceBundleSettings": {
+      "enableExperienceBundleMetadata": true
+    },
+    "lightningExperienceSettings": {
+      "enableS1DesktopEnabled": true
+    },
+    "mobileSettings": {
+      "enableS1EncryptedStoragePref2": false
+    }
+  }
+}

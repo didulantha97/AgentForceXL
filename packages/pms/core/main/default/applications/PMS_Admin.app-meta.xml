@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <brand>
+        <headerColor>#032D60</headerColor>
+        <shouldOverrideOrgTheme>false</shouldOverrideOrgTheme>
+    </brand>
+    <description
+  >Unified PMS administration: every site, space, booking, billing record and module object in one app.</description>
+    <formFactors>Small</formFactors>
+    <formFactors>Large</formFactors>
+    <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
+    <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
+    <isOmniPinnedViewEnabled>false</isOmniPinnedViewEnabled>
+    <label>PMS Admin</label>
+    <navType>Standard</navType>
+    <tabs>standard-home</tabs>
+    <tabs>PMS_Site__c</tabs>
+    <tabs>PMS_Space__c</tabs>
+    <tabs>PMS_Space_Type__c</tabs>
+    <tabs>PMS_Booking__c</tabs>
+    <tabs>PMS_Rate_Plan__c</tabs>
+    <tabs>PMS_Charge__c</tabs>
+    <tabs>PMS_Invoice__c</tabs>
+    <tabs>PMS_Payment__c</tabs>
+    <tabs>PMS_Time_Entry__c</tabs>
+    <tabs>PMS_Inspection__c</tabs>
+    <tabs>PMS_Listing__c</tabs>
+    <tabs>PMS_Application__c</tabs>
+    <tabs>PMS_Owner_Statement__c</tabs>
+    <tabs>PMS_Meter__c</tabs>
+    <tabs>PMS_Group_Block__c</tabs>
+    <tabs>PMS_Inventory_Day__c</tabs>
+    <tabs>PMS_Room_Night__c</tabs>
+    <tabs>PMS_Project__c</tabs>
+    <tabs>PMS_Project_Task__c</tabs>
+    <tabs>PMS_Milestone__c</tabs>
+    <tabs>PMS_Resource__c</tabs>
+    <tabs>PMS_RAID_Item__c</tabs>
+    <tabs>PMS_Matter__c</tabs>
+    <tabs>PMS_Practitioner__c</tabs>
+    <tabs>PMS_Service__c</tabs>
+    <tabs>PMS_Intake_Form__c</tabs>
+    <tabs>standard-Account</tabs>
+    <tabs>standard-Contact</tabs>
+    <tabs>standard-Case</tabs>
+    <tabs>standard-report</tabs>
+    <tabs>standard-Dashboard</tabs>
+    <uiType>Lightning</uiType>
+</CustomApplication>

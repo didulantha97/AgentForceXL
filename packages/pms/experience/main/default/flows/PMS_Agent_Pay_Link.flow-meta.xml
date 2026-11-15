@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Create_Link</name>
+        <label>Create Link</label>
+        <locationX>176</locationX>
+        <locationY>134</locationY>
+        <actionName>PMS_StripeCheckout</actionName>
+        <actionType>apex</actionType>
+        <faultConnector>
+            <targetReference>Set_Error</targetReference>
+        </faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>invoiceIds</name>
+            <value>
+                <elementReference>invoiceId</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>PMS_StripeCheckout</nameSegment>
+        <outputParameters>
+            <assignToReference>payUrl</assignToReference>
+            <name>output</name>
+        </outputParameters>
+    </actionCalls>
+    <apiVersion>66.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <assignments>
+        <name>Set_Error</name>
+        <label>Set Error</label>
+        <locationX>440</locationX>
+        <locationY>254</locationY>
+        <assignmentItems>
+            <assignToReference>errorMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <description
+  >Creates a Stripe Checkout payment link for the open balance of an invoice. Wraps the PMS_StripeCheckout Apex action for the PMS Concierge agent.</description>
+    <interviewLabel>PMS Agent Pay Link {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>PMS Agent: Stripe Pay Link</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Create_Link</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <description
+    >Why the link could not be created, if it failed</description>
+        <name>errorMessage</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>Invoice Id with an open balance</description>
+        <name>invoiceId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Stripe Checkout link, valid for 24 hours</description>
+        <name>payUrl</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+</Flow>

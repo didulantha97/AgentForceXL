@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RAID_Type__c</fullName>
+    <description>Risk, assumption, issue or decision.</description>
+    <inlineHelpText>RAID category.</inlineHelpText>
+    <label>Type</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Risk</fullName>
+                <default>true</default>
+                <label>Risk</label>
+            </value>
+            <value>
+                <fullName>Assumption</fullName>
+                <default>false</default>
+                <label>Assumption</label>
+            </value>
+            <value>
+                <fullName>Issue</fullName>
+                <default>false</default>
+                <label>Issue</label>
+            </value>
+            <value>
+                <fullName>Decision</fullName>
+                <default>false</default>
+                <label>Decision</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Service__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Practice service this price applies to.</description>
+    <inlineHelpText
+  >Use for fee schedules instead of Space Type.</inlineHelpText>
+    <label>Service</label>
+    <referenceTo>PMS_Service__c</referenceTo>
+    <relationshipLabel>Rates</relationshipLabel>
+    <relationshipName>Rates</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

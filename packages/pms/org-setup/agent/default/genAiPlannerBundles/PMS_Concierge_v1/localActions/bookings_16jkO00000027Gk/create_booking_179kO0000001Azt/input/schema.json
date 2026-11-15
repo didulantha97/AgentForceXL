@@ -1,0 +1,98 @@
+{
+  "required": ["module", "siteId"],
+  "unevaluatedProperties": false,
+  "properties": {
+    "accountId": {
+      "title": "Account Id",
+      "description": "Guest account Id from find_or_create_guest",
+      "lightning:type": "lightning__recordIdType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    },
+    "adults": {
+      "title": "Adults",
+      "description": "Number of adults",
+      "lightning:type": "lightning__integerType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    },
+    "children": {
+      "title": "Children",
+      "description": "Number of children",
+      "lightning:type": "lightning__integerType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    },
+    "contactId": {
+      "title": "Contact Id",
+      "description": "Guest contact Id from find_or_create_guest",
+      "lightning:type": "lightning__recordIdType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    },
+    "endDate": {
+      "title": "End Date",
+      "description": "End date (stays and leases)",
+      "lightning:type": "lightning__dateType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    },
+    "module": {
+      "title": "Module",
+      "description": "Property, Hotel, Project or Practice",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    },
+    "practitionerId": {
+      "title": "Practitioner Id",
+      "description": "Practitioner Id (appointments)",
+      "lightning:type": "lightning__recordIdType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    },
+    "serviceId": {
+      "title": "Service Id",
+      "description": "Service Id (appointments)",
+      "lightning:type": "lightning__recordIdType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    },
+    "siteId": {
+      "title": "Site Id",
+      "description": "Site Id",
+      "lightning:type": "lightning__recordIdType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    },
+    "spaceTypeId": {
+      "title": "Space Type Id",
+      "description": "Room or unit type Id (stays and leases)",
+      "lightning:type": "lightning__recordIdType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    },
+    "specialRequests": {
+      "title": "Special Requests",
+      "description": "Special requests (optional)",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    },
+    "startDate": {
+      "title": "Start Date",
+      "description": "Start date (stays and leases)",
+      "lightning:type": "lightning__dateType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    },
+    "startDatetime": {
+      "title": "Start Datetime",
+      "description": "Appointment start date and time (appointments)",
+      "lightning:type": "lightning__dateTimeStringType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    }
+  },
+  "lightning:type": "lightning__objectType"
+}

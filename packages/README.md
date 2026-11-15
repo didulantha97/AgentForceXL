@@ -10,6 +10,7 @@ work and create one directory under `superbadges/` for each Superbadge.
 | `default`                       | General Salesforce development | [default/README.md](default/README.md)                                             |
 | `agents/helpagent`              | Help agent                     | [agents/helpagent/README.md](agents/helpagent/README.md)                           |
 | `binance`                       | Binance market-data agent      | [binance/README.md](binance/README.md)                                             |
+| `pms/core`, `pms/experience`    | PMS managed 2GP packages       | [pms/README.md](pms/README.md)                                                     |
 | `superbadges/apex-callouts`     | Apex Callouts Superbadge       | [superbadges/apex-callouts/README.md](superbadges/apex-callouts/README.md)         |
 | `trailhead-modules/event-comms` | Trailhead module               | [trailhead-modules/event-comms/README.md](trailhead-modules/event-comms/README.md) |
 | `trailhead-modules/trailbread`  | Trailhead module               | –                                                                                  |

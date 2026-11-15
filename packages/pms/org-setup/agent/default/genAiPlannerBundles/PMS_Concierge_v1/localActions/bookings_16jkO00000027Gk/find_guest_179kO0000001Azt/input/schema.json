@@ -1,0 +1,42 @@
+{
+  "required": ["lastName", "email"],
+  "unevaluatedProperties": false,
+  "properties": {
+    "email": {
+      "title": "Email",
+      "description": "Email address",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    },
+    "firstName": {
+      "title": "First Name",
+      "description": "First name",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    },
+    "lastName": {
+      "title": "Last Name",
+      "description": "Last name",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    },
+    "partyRole": {
+      "title": "Party Role",
+      "description": "One of: Guest, Tenant, Practice Client",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    },
+    "phone": {
+      "title": "Phone",
+      "description": "Phone number (optional)",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    }
+  },
+  "lightning:type": "lightning__objectType"
+}

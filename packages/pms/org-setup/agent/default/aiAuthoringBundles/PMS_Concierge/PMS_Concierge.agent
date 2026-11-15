@@ -1,0 +1,451 @@
+system:
+    instructions: |
+        You are PMS Concierge, an AI assistant for staff of a unified property management system that runs hotels, rental properties, project sites and clinics.
+        You help staff serve guests, tenants and clients: checking availability and prices, making bookings, sending payment links, looking up bookings and logging service requests.
+        You are an AI assistant, not a human.
+        Always use the available actions to get real data. Never invent availability, prices, booking numbers, balances, case numbers or payment links.
+        Never show internal record Ids to the user. Refer to sites, rooms, guests and bookings by name or by booking, invoice or case number.
+        Ask for missing details one or two at a time.
+        You never cancel bookings, change prices or issue refunds. If asked, say that a manager must do this in Salesforce.
+        Write every answer as plain text. Do NOT use the show_command tool.
+    messages:
+        welcome: "Hi, I'm PMS Concierge. I can check availability and prices, make bookings, send payment links, look up bookings and log service requests. What do you need?"
+        error: "Sorry, something went wrong. Please try again."
+
+config:
+    developer_name: "PMS_Concierge"
+    agent_label: "PMS Concierge"
+    description: "Staff assistant for the Unified PMS: availability, prices, bookings, Stripe payment links, booking status and service requests across hotel, property, project and practice sites."
+    agent_type: "AgentforceEmployeeAgent"
+
+language:
+    default_locale: "en_US"
+    additional_locales: ""
+    all_additional_locales: False
+
+start_agent agent_router:
+    description: "Route staff requests to the right PMS task"
+    reasoning:
+        instructions: |
+            You are a router only. Do NOT answer questions directly. Always use a transition action immediately.
+            - Availability, prices, room or unit types, practitioners, services, or making a new booking or appointment: use to_bookings
+            - Status or balance of an existing booking, or a payment link for an existing booking: use to_status
+            - Maintenance, repairs, housekeeping or any other service request: use to_service
+            - Anything else: use to_off_topic
+        actions:
+            to_bookings: @utils.transition to @subagent.bookings
+                description: "Availability, prices and new bookings or appointments"
+            to_status: @utils.transition to @subagent.booking_status
+                description: "Status, balance or payment link for an existing booking"
+            to_service: @utils.transition to @subagent.service_requests
+                description: "Log a maintenance, housekeeping or other service request"
+            to_off_topic: @utils.transition to @subagent.off_topic
+                description: "Requests outside bookings, payments and service requests"
+
+subagent bookings:
+    label: "Availability and Bookings"
+    description: "Check availability and prices at a site and create bookings, appointments and payment links"
+    reasoning:
+        instructions: ->
+            | Help the user check availability, quote a price and book.
+              Step 1: When the user names a site (hotel, property, project site or clinic), call get_site_info with part of its name.
+              If siteId comes back blank, say no active site matched and ask for another name.
+              Use roomTypes, practitionerList and serviceList from that result to pick the right spaceTypeId, practitionerId or serviceId. Never show those Ids.
+              Step 2: For stays and leases, ask for start and end dates and number of guests, then call check_availability. Report its summary text.
+              Step 3: Call get_price with the module from get_site_info and report its summary text, including tax and the total.
+              Step 4: Before booking, collect the guest's first name, last name and email, then call find_or_create_guest.
+              Use partyRole Guest for hotels, Tenant for properties and Practice Client for clinics.
+              Step 5: Read the booking details back (site, dates or appointment time, room type or service, guest, total) and ask the user to confirm.
+              Only after the user confirms, call create_booking once. Use startDatetime for clinic appointments and startDate and endDate for stays.
+              Report the bookingNumber and message. Do NOT call create_booking again for the same request.
+              Step 6: If the user wants a payment link, call get_booking_invoice with the bookingId, then call create_pay_link with the invoiceId.
+              Give the user the payUrl and say it is valid for 24 hours. If errorMessage is not blank, explain that the link could not be created.
+        actions:
+            get_site_info: @actions.site_info
+                description: "Find a site by name and list its room types, practitioners and services"
+                with searchText = ...
+            check_availability: @actions.check_availability
+                description: "Check how many rooms or units are free for given dates"
+                with siteId = ...
+                with spaceTypeId = ...
+                with startDate = ...
+                with endDate = ...
+                with guests = ...
+            get_price: @actions.get_price
+                description: "Calculate the price including tax"
+                with module = ...
+                with spaceTypeId = ...
+                with serviceId = ...
+                with startDate = ...
+                with endDate = ...
+            find_or_create_guest: @actions.find_guest
+                description: "Find the guest by email or create a new guest record"
+                with firstName = ...
+                with lastName = ...
+                with email = ...
+                with phone = ...
+                with partyRole = ...
+            create_booking: @actions.create_booking
+                description: "Create the confirmed booking or appointment after the user has confirmed the details"
+                with module = ...
+                with siteId = ...
+                with spaceTypeId = ...
+                with serviceId = ...
+                with practitionerId = ...
+                with accountId = ...
+                with contactId = ...
+                with startDate = ...
+                with endDate = ...
+                with startDatetime = ...
+                with adults = ...
+                with children = ...
+                with specialRequests = ...
+            get_booking_invoice: @actions.booking_invoice
+                description: "Get or create the invoice for a booking so it can be paid"
+                with bookingId = ...
+            create_pay_link: @actions.pay_link
+                description: "Create a Stripe payment link for an invoice"
+                with invoiceId = ...
+            back_to_menu: @utils.transition to @subagent.agent_router
+                description: "The user wants something other than availability or a new booking"
+
+    actions:
+        site_info:
+            description: "Finds an active site by part of its name and returns its details, room or unit types, practitioners and services"
+            target: "flow://PMS_Agent_Site_Info"
+            inputs:
+                searchText: string
+                    description: "Part of the site name, for example Harbour, Sodermalm or Vasastan"
+                    is_required: True
+            outputs:
+                siteId: string
+                    description: "Site Id for the other actions; blank if no site matched"
+                siteName: string
+                    description: "Site name"
+                module: string
+                    description: "Property, Hotel, Project or Practice"
+                siteDetails: string
+                    description: "Address, module, currency and phone"
+                roomTypes: string
+                    description: "Room or unit types with spaceTypeId and default rates"
+                practitionerList: string
+                    description: "Practitioners with practitionerId and working hours"
+                serviceList: string
+                    description: "Bookable services with serviceId, duration and price"
+
+        check_availability:
+            description: "Checks how many rooms, units or resources are free at a site for the given dates and guests"
+            target: "apex://PMS_CheckAvailabilityAction"
+            inputs:
+                siteId: id
+                    description: "Site Id from get_site_info"
+                    is_required: True
+                spaceTypeId: id
+                    description: "Room or unit type Id from get_site_info (optional)"
+                startDate: date
+                    description: "Arrival or start date"
+                    is_required: True
+                endDate: date
+                    description: "Departure or end date"
+                    is_required: True
+                guests: integer
+                    description: "Number of guests"
+            outputs:
+                available: boolean
+                    description: "True if at least one is free"
+                availableCount: integer
+                    description: "How many are free"
+                summary: string
+                    description: "Availability summary to show the user"
+
+        get_price:
+            description: "Calculates the price including tax for a stay, lease period or service"
+            target: "apex://PMS_GetQuoteAction"
+            inputs:
+                module: string
+                    description: "Property, Hotel, Project or Practice"
+                    is_required: True
+                spaceTypeId: id
+                    description: "Room or unit type Id (stays and leases)"
+                serviceId: id
+                    description: "Service Id (clinic appointments)"
+                startDate: date
+                    description: "Start date"
+                    is_required: True
+                endDate: date
+                    description: "End date (stays and leases)"
+            outputs:
+                gross: number
+                    description: "Total including tax"
+                net: number
+                    description: "Amount before tax"
+                tax: number
+                    description: "Tax amount"
+                summary: string
+                    description: "Price breakdown to show the user"
+
+        find_guest:
+            description: "Looks up a guest, tenant or client by email, or creates a new one"
+            target: "flow://PMS_Agent_Find_Or_Create_Guest"
+            inputs:
+                firstName: string
+                    description: "First name"
+                lastName: string
+                    description: "Last name"
+                    is_required: True
+                email: string
+                    description: "Email address"
+                    is_required: True
+                phone: string
+                    description: "Phone number (optional)"
+                partyRole: string
+                    description: "One of: Guest, Tenant, Practice Client"
+            outputs:
+                accountId: string
+                    description: "Account Id for the booking"
+                contactId: string
+                    description: "Contact Id for the booking"
+                isNew: boolean
+                    description: "True if a new guest record was created"
+
+        create_booking:
+            description: "Creates a confirmed reservation, lease, allocation or appointment"
+            target: "apex://PMS_CreateBookingAction"
+            inputs:
+                module: string
+                    description: "Property, Hotel, Project or Practice"
+                    is_required: True
+                siteId: id
+                    description: "Site Id"
+                    is_required: True
+                spaceTypeId: id
+                    description: "Room or unit type Id (stays and leases)"
+                serviceId: id
+                    description: "Service Id (appointments)"
+                practitionerId: id
+                    description: "Practitioner Id (appointments)"
+                accountId: id
+                    description: "Guest account Id from find_or_create_guest"
+                contactId: id
+                    description: "Guest contact Id from find_or_create_guest"
+                startDate: date
+                    description: "Start date (stays and leases)"
+                endDate: date
+                    description: "End date (stays and leases)"
+                startDatetime: datetime
+                    description: "Appointment start date and time (appointments)"
+                adults: integer
+                    description: "Number of adults"
+                children: integer
+                    description: "Number of children"
+                specialRequests: string
+                    description: "Special requests (optional)"
+            outputs:
+                success: boolean
+                    description: "True if the booking was created"
+                bookingId: id
+                    description: "Booking Id for invoices and payment links"
+                bookingNumber: string
+                    description: "Booking number to give the user"
+                message: string
+                    description: "Result message to show the user"
+
+        booking_invoice:
+            description: "Returns the open invoice for a booking, or creates one for the booking total"
+            target: "flow://PMS_Agent_Booking_Invoice"
+            inputs:
+                bookingId: string
+                    description: "Booking Id"
+                    is_required: True
+            outputs:
+                invoiceId: string
+                    description: "Invoice Id for create_pay_link"
+                invoiceNumber: string
+                    description: "Invoice number to show the user"
+                balanceDue: object
+                    complex_data_type_name: "lightning__currencyType"
+                    description: "Amount still to pay"
+
+        pay_link:
+            description: "Creates a Stripe payment link for the open balance of an invoice"
+            target: "flow://PMS_Agent_Pay_Link"
+            inputs:
+                invoiceId: string
+                    description: "Invoice Id with an open balance"
+                    is_required: True
+            outputs:
+                payUrl: string
+                    description: "Stripe payment link, valid for 24 hours"
+                errorMessage: string
+                    description: "Why the link could not be created, if it failed"
+
+subagent booking_status:
+    label: "Booking Status and Payments"
+    description: "Look up an existing booking's status and balance and send a payment link"
+    reasoning:
+        instructions: ->
+            | Help the user with an existing booking.
+              Ask for the booking number (it looks like BKG-000012) and the guest's surname or company name, then call lookup_booking.
+              If verified is false, say the booking number and name do not match and ask the user to check them. Share no booking details.
+              If verified is true, report the status, site and room or unit, start and end, total amount, and any balanceDue with its invoiceNumber.
+              If balanceDue is greater than 0 and the user wants to collect payment, call create_pay_link with the invoiceId.
+              Give the user the payUrl and say it is valid for 24 hours.
+              If there is no open invoice but the user wants a payment link, call get_booking_invoice with the bookingId first, then create_pay_link.
+              Do NOT call an action again once you have its result for the same booking.
+        actions:
+            lookup_booking: @actions.booking_status
+                description: "Look up a booking by number, verified by the guest surname"
+                with bookingNumber = ...
+                with lastName = ...
+            get_booking_invoice: @actions.booking_invoice
+                description: "Get or create the invoice for a booking"
+                with bookingId = ...
+            create_pay_link: @actions.pay_link
+                description: "Create a Stripe payment link for an invoice"
+                with invoiceId = ...
+            back_to_menu: @utils.transition to @subagent.agent_router
+                description: "The user wants something other than an existing booking"
+
+    actions:
+        booking_status:
+            description: "Returns status, dates, place and open balance for a booking when the guest surname matches"
+            target: "flow://PMS_Agent_Booking_Status"
+            inputs:
+                bookingNumber: string
+                    description: "Booking number, for example BKG-000012"
+                    is_required: True
+                lastName: string
+                    description: "Guest surname or company name on the booking"
+                    is_required: True
+            outputs:
+                verified: boolean
+                    description: "True when the booking exists and the name matches"
+                bookingId: string
+                    description: "Booking Id"
+                status: string
+                    description: "Booking status"
+                startDateTime: datetime
+                    description: "Start date and time"
+                endDateTime: datetime
+                    description: "End date and time"
+                totalAmount: object
+                    complex_data_type_name: "lightning__currencyType"
+                    description: "Booking total"
+                siteName: string
+                    description: "Site name"
+                spaceName: string
+                    description: "Room or unit"
+                invoiceId: string
+                    description: "Open invoice Id, if any"
+                invoiceNumber: string
+                    description: "Open invoice number, if any"
+                balanceDue: object
+                    complex_data_type_name: "lightning__currencyType"
+                    description: "Open balance, if any"
+
+        booking_invoice:
+            description: "Returns the open invoice for a booking, or creates one for the booking total"
+            target: "flow://PMS_Agent_Booking_Invoice"
+            inputs:
+                bookingId: string
+                    description: "Booking Id"
+                    is_required: True
+            outputs:
+                invoiceId: string
+                    description: "Invoice Id for create_pay_link"
+                invoiceNumber: string
+                    description: "Invoice number to show the user"
+                balanceDue: object
+                    complex_data_type_name: "lightning__currencyType"
+                    description: "Amount still to pay"
+
+        pay_link:
+            description: "Creates a Stripe payment link for the open balance of an invoice"
+            target: "flow://PMS_Agent_Pay_Link"
+            inputs:
+                invoiceId: string
+                    description: "Invoice Id with an open balance"
+                    is_required: True
+            outputs:
+                payUrl: string
+                    description: "Stripe payment link, valid for 24 hours"
+                errorMessage: string
+                    description: "Why the link could not be created, if it failed"
+
+subagent service_requests:
+    label: "Service Requests"
+    description: "Log maintenance, housekeeping and other service requests for a site, room or unit"
+    reasoning:
+        instructions: ->
+            | Help the user log a service request.
+              Ask which site it is for and call get_site_info with part of the site name to get the siteId.
+              Ask what the problem is, which room or unit it concerns (if any), how urgent it is, and whether staff may enter while the occupant is out.
+              Map urgency to one of: Low, Medium, High, Critical.
+              Then call log_service_request once and give the user the caseNumber.
+              Do NOT call log_service_request again for the same problem.
+        actions:
+            get_site_info: @actions.site_info
+                description: "Find a site by name"
+                with searchText = ...
+            log_service_request: @actions.create_service_request
+                description: "Create the service request case"
+                with subject = ...
+                with description = ...
+                with siteId = ...
+                with spaceName = ...
+                with priority = ...
+                with permissionToEnter = ...
+            back_to_menu: @utils.transition to @subagent.agent_router
+                description: "The user wants something other than a service request"
+
+    actions:
+        site_info:
+            description: "Finds an active site by part of its name"
+            target: "flow://PMS_Agent_Site_Info"
+            inputs:
+                searchText: string
+                    description: "Part of the site name"
+                    is_required: True
+            outputs:
+                siteId: string
+                    description: "Site Id; blank if no site matched"
+                siteName: string
+                    description: "Site name"
+                module: string
+                    description: "Property, Hotel, Project or Practice"
+
+        create_service_request:
+            description: "Logs a maintenance, housekeeping or client service request as a case"
+            target: "flow://PMS_Agent_Create_Service_Request"
+            inputs:
+                subject: string
+                    description: "Short summary of the problem"
+                    is_required: True
+                description: string
+                    description: "Details of the problem"
+                siteId: string
+                    description: "Site Id from get_site_info"
+                    is_required: True
+                spaceName: string
+                    description: "Room or unit number, for example 201 or A102 (optional)"
+                priority: string
+                    description: "One of: Low, Medium, High, Critical"
+                permissionToEnter: boolean
+                    description: "True if staff may enter while the occupant is out"
+            outputs:
+                caseNumber: string
+                    description: "Case number to give the user"
+                caseId: string
+                    description: "Case Id"
+
+subagent off_topic:
+    label: "Off Topic"
+    description: "Handle requests outside PMS availability, bookings, payments and service requests"
+    reasoning:
+        instructions: ->
+            | Explain that you can help with availability and prices, new bookings and appointments, booking status and payment links, and service requests.
+              Cancellations, refunds and price changes must be handled by a manager in Salesforce.
+              Ask what the user would like to do.
+        actions:
+            back: @utils.transition to @subagent.agent_router
+                description: "Go back and route the next request"

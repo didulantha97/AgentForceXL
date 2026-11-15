@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Space_Type__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Space type this price applies to.</description>
+    <inlineHelpText>Room or unit type being priced.</inlineHelpText>
+    <label>Space Type</label>
+    <referenceTo>PMS_Space_Type__c</referenceTo>
+    <relationshipLabel>Rates</relationshipLabel>
+    <relationshipName>Rates</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

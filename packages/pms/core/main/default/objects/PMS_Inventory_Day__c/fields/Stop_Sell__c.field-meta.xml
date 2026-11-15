@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Stop_Sell__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Closes the room type for sale on this date.</description>
+    <inlineHelpText>Pushed to channels.</inlineHelpText>
+    <label>Stop Sell</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

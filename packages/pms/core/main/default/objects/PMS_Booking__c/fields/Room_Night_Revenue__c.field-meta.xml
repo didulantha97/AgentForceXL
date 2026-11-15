@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Room_Night_Revenue__c</fullName>
+    <description>Sum of nightly room rates on a reservation.</description>
+    <inlineHelpText>Calculated from Room Nights.</inlineHelpText>
+    <label>Room Night Revenue</label>
+    <summarizedField>PMS_Room_Night__c.Rate__c</summarizedField>
+    <summaryForeignKey>PMS_Room_Night__c.Reservation__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

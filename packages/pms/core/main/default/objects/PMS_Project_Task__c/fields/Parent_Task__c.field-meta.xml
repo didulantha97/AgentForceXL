@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Parent_Task__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Summary task above this one in the breakdown.</description>
+    <inlineHelpText>Leave blank for top-level tasks.</inlineHelpText>
+    <label>Parent Task</label>
+    <referenceTo>PMS_Project_Task__c</referenceTo>
+    <relationshipLabel>Sub-tasks</relationshipLabel>
+    <relationshipName>Sub_Tasks</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

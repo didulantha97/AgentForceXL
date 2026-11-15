@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Manager__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Staff member responsible for the site.</description>
+    <inlineHelpText>User who manages day-to-day operations.</inlineHelpText>
+    <label>Site Manager</label>
+    <referenceTo>User</referenceTo>
+    <relationshipName>Managed_Sites</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

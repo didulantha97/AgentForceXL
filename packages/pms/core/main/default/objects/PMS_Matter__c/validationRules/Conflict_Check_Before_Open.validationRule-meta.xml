@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Conflict_Check_Before_Open</fullName>
+    <active>true</active>
+    <description
+  >A matter can only be opened once the conflict check is cleared or not required.</description>
+    <errorConditionFormula
+  >AND(OR(ISPICKVAL(Status__c, &apos;Open&apos;), ISPICKVAL(Status__c, &apos;On Hold&apos;)), NOT(ISPICKVAL(Conflict_Check_Status__c, &apos;Cleared&apos;)), NOT(ISPICKVAL(Conflict_Check_Status__c, &apos;Not Required&apos;)))</errorConditionFormula>
+    <errorDisplayField>Conflict_Check_Status__c</errorDisplayField>
+    <errorMessage
+  >Clear the conflict check (or mark it Not Required) before opening this matter.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PMS_ID_Verified__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description
+  >Identity has been verified (BankID, passport, one-time code).</description>
+    <inlineHelpText
+  >Required before sensitive changes by phone or AI agent.</inlineHelpText>
+    <label>ID Verified</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Checkbox</type>
+</CustomField>

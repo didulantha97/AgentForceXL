@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PMS_Party_Role__c</fullName>
+    <description>Roles this account plays in the PMS.</description>
+    <inlineHelpText
+  >An account can be both owner and tenant, for example.</inlineHelpText>
+    <label>PMS Party Role</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Tenant</fullName>
+                <default>false</default>
+                <label>Tenant</label>
+            </value>
+            <value>
+                <fullName>Owner</fullName>
+                <default>false</default>
+                <label>Owner</label>
+            </value>
+            <value>
+                <fullName>Guest</fullName>
+                <default>false</default>
+                <label>Guest</label>
+            </value>
+            <value>
+                <fullName>Corporate Client</fullName>
+                <default>false</default>
+                <label>Corporate Client</label>
+            </value>
+            <value>
+                <fullName>Travel Agent</fullName>
+                <default>false</default>
+                <label>Travel Agent</label>
+            </value>
+            <value>
+                <fullName>Project Client</fullName>
+                <default>false</default>
+                <label>Project Client</label>
+            </value>
+            <value>
+                <fullName>Practice Client</fullName>
+                <default>false</default>
+                <label>Practice Client</label>
+            </value>
+            <value>
+                <fullName>Vendor</fullName>
+                <default>false</default>
+                <label>Vendor</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>5</visibleLines>
+</CustomField>

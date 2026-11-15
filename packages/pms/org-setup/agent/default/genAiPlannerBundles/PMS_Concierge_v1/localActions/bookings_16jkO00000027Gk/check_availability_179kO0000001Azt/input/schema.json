@@ -1,0 +1,42 @@
+{
+  "required": ["siteId", "startDate", "endDate"],
+  "unevaluatedProperties": false,
+  "properties": {
+    "endDate": {
+      "title": "End Date",
+      "description": "Departure or end date",
+      "lightning:type": "lightning__dateType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    },
+    "guests": {
+      "title": "Guests",
+      "description": "Number of guests",
+      "lightning:type": "lightning__integerType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    },
+    "siteId": {
+      "title": "Site Id",
+      "description": "Site Id from get_site_info",
+      "lightning:type": "lightning__recordIdType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    },
+    "spaceTypeId": {
+      "title": "Space Type Id",
+      "description": "Room or unit type Id from get_site_info (optional)",
+      "lightning:type": "lightning__recordIdType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    },
+    "startDate": {
+      "title": "Start Date",
+      "description": "Arrival or start date",
+      "lightning:type": "lightning__dateType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    }
+  },
+  "lightning:type": "lightning__objectType"
+}

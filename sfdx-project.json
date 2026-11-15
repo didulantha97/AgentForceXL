@@ -29,12 +29,37 @@
       "default": false
     },
     {
-      "path": "packages/pms",
+      "path": "packages/pms/core",
+      "default": false,
+      "package": "PMS Core",
+      "versionName": "Spring 27",
+      "versionNumber": "1.0.0.NEXT",
+      "versionDescription": "PMS core data model, services, apps and internal UI",
+      "definitionFile": "packages/pms/config/pms-scratch-def.json"
+    },
+    {
+      "path": "packages/pms/experience",
+      "default": false,
+      "package": "PMS Experience",
+      "versionName": "Spring 27",
+      "versionNumber": "1.0.0.NEXT",
+      "versionDescription": "PMS portals, public booking, Stripe payments and agent actions",
+      "dependencies": [
+        {
+          "package": "PMS Core",
+          "versionNumber": "1.0.0.LATEST"
+        }
+      ],
+      "definitionFile": "packages/pms/config/pms-scratch-def.json"
+    },
+    {
+      "path": "packages/pms/org-setup",
       "default": false
     }
   ],
   "name": "AgentForceXL",
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "67.0"
+  "sourceApiVersion": "67.0",
+  "packageAliases": {}
 }

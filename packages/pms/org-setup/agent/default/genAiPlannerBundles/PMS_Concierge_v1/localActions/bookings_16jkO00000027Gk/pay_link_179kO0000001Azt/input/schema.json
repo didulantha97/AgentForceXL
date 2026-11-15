@@ -1,0 +1,14 @@
+{
+  "required": ["invoiceId"],
+  "unevaluatedProperties": false,
+  "properties": {
+    "invoiceId": {
+      "title": "Invoice Id",
+      "description": "Invoice Id with an open balance",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    }
+  },
+  "lightning:type": "lightning__objectType"
+}

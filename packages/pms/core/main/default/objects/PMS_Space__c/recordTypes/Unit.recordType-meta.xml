@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Unit</fullName>
+    <active>true</active>
+    <description>Apartment, office unit or parking bay</description>
+    <label>Unit</label>
+    <picklistValues>
+        <picklist>Amenities__c</picklist>
+        <values>
+            <fullName>Accessible</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Air Conditioning</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Balcony</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Kitchen</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Parking</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pet Friendly</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Projector</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sea View</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>WiFi</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Operational_Status__c</picklist>
+        <values>
+            <fullName>Available</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Dirty</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Inspected</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Occupied</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Out of Order</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Under Renovation</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

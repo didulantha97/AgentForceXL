@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>View</actionName>
+        <content>Project_Page</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+        <pageOrSobjectType>PMS_Project__c</pageOrSobjectType>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <content>Project_Page</content>
+        <formFactor>Small</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+        <pageOrSobjectType>PMS_Project__c</pageOrSobjectType>
+    </actionOverrides>
+    <brand>
+        <headerColor>#C23934</headerColor>
+        <shouldOverrideOrgTheme>false</shouldOverrideOrgTheme>
+    </brand>
+    <description
+  >Project delivery: projects, tasks, milestones, resources, timesheets, budgets and RAID.</description>
+    <formFactors>Small</formFactors>
+    <formFactors>Large</formFactors>
+    <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
+    <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
+    <isOmniPinnedViewEnabled>false</isOmniPinnedViewEnabled>
+    <label>PMS Projects</label>
+    <navType>Standard</navType>
+    <tabs>standard-home</tabs>
+    <tabs>PMS_Project__c</tabs>
+    <tabs>PMS_Project_Task__c</tabs>
+    <tabs>PMS_Milestone__c</tabs>
+    <tabs>PMS_Resource__c</tabs>
+    <tabs>PMS_Booking__c</tabs>
+    <tabs>New_Booking</tabs>
+    <tabs>PMS_Time_Entry__c</tabs>
+    <tabs>PMS_RAID_Item__c</tabs>
+    <tabs>PMS_Invoice__c</tabs>
+    <tabs>standard-Account</tabs>
+    <tabs>standard-Contact</tabs>
+    <tabs>standard-report</tabs>
+    <tabs>standard-Dashboard</tabs>
+    <uiType>Lightning</uiType>
+</CustomApplication>

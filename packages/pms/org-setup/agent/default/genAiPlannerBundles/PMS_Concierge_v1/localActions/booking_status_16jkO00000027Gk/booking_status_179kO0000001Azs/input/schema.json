@@ -1,0 +1,21 @@
+{
+  "required": ["bookingNumber", "lastName"],
+  "unevaluatedProperties": false,
+  "properties": {
+    "bookingNumber": {
+      "title": "Booking Number",
+      "description": "Booking number, for example BKG-000012",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    },
+    "lastName": {
+      "title": "Last Name",
+      "description": "Guest surname or company name on the booking",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    }
+  },
+  "lightning:type": "lightning__objectType"
+}

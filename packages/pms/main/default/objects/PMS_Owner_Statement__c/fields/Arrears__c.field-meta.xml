@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<CustomField xmlns="http://soap.sforce.com/2006/04/metadata"><fullName
-  >Arrears__c</fullName><label>Arrears</label><inlineHelpText
-  >Unpaid tenant/guest invoices at the site due by the end of the period.</inlineHelpText><precision
-  >16</precision><scale>2</scale><type>Currency</type><required
-  >false</required></CustomField>

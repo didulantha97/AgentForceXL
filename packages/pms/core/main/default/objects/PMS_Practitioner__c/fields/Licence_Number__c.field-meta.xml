@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Licence_Number__c</fullName>
+    <description>Professional registration or licence number.</description>
+    <externalId>false</externalId>
+    <inlineHelpText
+  >Bar number, medical licence or authorisation.</inlineHelpText>
+    <label>Licence Number</label>
+    <length>60</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

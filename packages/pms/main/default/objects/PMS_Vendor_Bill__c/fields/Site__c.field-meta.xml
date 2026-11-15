@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<CustomField xmlns="http://soap.sforce.com/2006/04/metadata"><fullName
-  >Site__c</fullName><label>Site</label><referenceTo
-  >PMS_Site__c</referenceTo><relationshipLabel
-  >Vendor Bills</relationshipLabel><relationshipName
-  >Vendor_Bills</relationshipName><deleteConstraint
-  >SetNull</deleteConstraint><type>Lookup</type><required
-  >false</required></CustomField>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Charge_Type__c</fullName>
+    <description>Category of the charge.</description>
+    <inlineHelpText>Drives GL mapping and reporting.</inlineHelpText>
+    <label>Charge Type</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Rent</fullName>
+                <default>false</default>
+                <label>Rent</label>
+            </value>
+            <value>
+                <fullName>Service Charge</fullName>
+                <default>false</default>
+                <label>Service Charge</label>
+            </value>
+            <value>
+                <fullName>Utilities</fullName>
+                <default>false</default>
+                <label>Utilities</label>
+            </value>
+            <value>
+                <fullName>Parking</fullName>
+                <default>false</default>
+                <label>Parking</label>
+            </value>
+            <value>
+                <fullName>Late Fee</fullName>
+                <default>false</default>
+                <label>Late Fee</label>
+            </value>
+            <value>
+                <fullName>Room Night</fullName>
+                <default>false</default>
+                <label>Room Night</label>
+            </value>
+            <value>
+                <fullName>Food and Beverage</fullName>
+                <default>false</default>
+                <label>Food and Beverage</label>
+            </value>
+            <value>
+                <fullName>Extra</fullName>
+                <default>false</default>
+                <label>Extra</label>
+            </value>
+            <value>
+                <fullName>City Tax</fullName>
+                <default>false</default>
+                <label>City Tax</label>
+            </value>
+            <value>
+                <fullName>Billable Hours</fullName>
+                <default>false</default>
+                <label>Billable Hours</label>
+            </value>
+            <value>
+                <fullName>Expense</fullName>
+                <default>false</default>
+                <label>Expense</label>
+            </value>
+            <value>
+                <fullName>Milestone</fullName>
+                <default>false</default>
+                <label>Milestone</label>
+            </value>
+            <value>
+                <fullName>Consultation Fee</fullName>
+                <default>false</default>
+                <label>Consultation Fee</label>
+            </value>
+            <value>
+                <fullName>Fixed Fee</fullName>
+                <default>false</default>
+                <label>Fixed Fee</label>
+            </value>
+            <value>
+                <fullName>Cancellation Fee</fullName>
+                <default>false</default>
+                <label>Cancellation Fee</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

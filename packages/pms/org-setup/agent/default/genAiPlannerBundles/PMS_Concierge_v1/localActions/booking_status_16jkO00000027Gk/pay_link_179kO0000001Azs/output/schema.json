@@ -1,0 +1,22 @@
+{
+  "unevaluatedProperties": false,
+  "properties": {
+    "errorMessage": {
+      "title": "Error Message",
+      "description": "Why the link could not be created, if it failed",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": false,
+      "copilotAction:isUsedByPlanner": true
+    },
+    "payUrl": {
+      "title": "Pay Url",
+      "description": "Stripe payment link, valid for 24 hours",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": false,
+      "copilotAction:isUsedByPlanner": true
+    }
+  },
+  "lightning:type": "lightning__objectType"
+}

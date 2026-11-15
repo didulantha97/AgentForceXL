@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Rate_Plan__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Negotiated group rate.</description>
+    <inlineHelpText>Applied to pickups.</inlineHelpText>
+    <label>Rate Plan</label>
+    <referenceTo>PMS_Rate_Plan__c</referenceTo>
+    <relationshipLabel>Group Blocks</relationshipLabel>
+    <relationshipName>Group_Blocks</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

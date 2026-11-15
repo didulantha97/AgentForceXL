@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Account__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <description>Account the invoice is addressed to.</description>
+    <inlineHelpText>Tenant, guest, company, client or owner.</inlineHelpText>
+    <label>Bill To Account</label>
+    <referenceTo>Account</referenceTo>
+    <relationshipLabel>PMS Invoices</relationshipLabel>
+    <relationshipName>PMS_Invoices</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

@@ -1,0 +1,30 @@
+{
+  "unevaluatedProperties": false,
+  "properties": {
+    "balanceDue": {
+      "title": "Balance Due",
+      "description": "Amount still to pay",
+      "lightning:type": "lightning__currencyType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": false,
+      "copilotAction:isUsedByPlanner": true
+    },
+    "invoiceId": {
+      "title": "Invoice Id",
+      "description": "Invoice Id for create_pay_link",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": false,
+      "copilotAction:isUsedByPlanner": true
+    },
+    "invoiceNumber": {
+      "title": "Invoice Number",
+      "description": "Invoice number to show the user",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": false,
+      "copilotAction:isUsedByPlanner": true
+    }
+  },
+  "lightning:type": "lightning__objectType"
+}

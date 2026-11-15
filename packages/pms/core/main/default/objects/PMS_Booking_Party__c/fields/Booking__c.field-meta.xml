@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Booking__c</fullName>
+    <description>Booking this person is on.</description>
+    <inlineHelpText>Parent booking.</inlineHelpText>
+    <label>Booking</label>
+    <referenceTo>PMS_Booking__c</referenceTo>
+    <relationshipLabel>Booking Parties</relationshipLabel>
+    <relationshipName>Booking_Parties</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

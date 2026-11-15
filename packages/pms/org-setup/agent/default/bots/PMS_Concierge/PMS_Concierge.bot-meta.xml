@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Bot xmlns="http://soap.sforce.com/2006/04/metadata">
+    <agentDSLEnabled>true</agentDSLEnabled>
+    <agentType>AgentforceEmployeeAgent</agentType>
+    <botMlDomain>
+        <label>PMS Concierge</label>
+        <name>PMS_Concierge</name>
+    </botMlDomain>
+    <botSource>None</botSource>
+    <description
+  >Staff assistant for the Unified PMS: availability, prices, bookings, Stripe payment links, booking status and service requests across hotel, property, project and practice sites.</description>
+    <label>PMS Concierge</label>
+    <logPrivateConversationData>false</logPrivateConversationData>
+    <richContentEnabled>true</richContentEnabled>
+    <sessionTimeout>0</sessionTimeout>
+    <type>InternalCopilot</type>
+</Bot>

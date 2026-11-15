@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Default_Tax_Rate__c</fullName>
+    <description>Default VAT for the module.</description>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>Used when the rate plan has none.</inlineHelpText>
+    <label>Default Tax Rate</label>
+    <precision>5</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <type>Percent</type>
+</CustomField>

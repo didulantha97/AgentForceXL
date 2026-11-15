@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Property</fullName>
+    <active>true</active>
+    <description>Residential or commercial building</description>
+    <label>Property</label>
+    <picklistValues>
+        <picklist>Module__c</picklist>
+        <values>
+            <fullName>Hotel</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Practice</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Project</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Property</fullName>
+            <default>true</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Site_Type__c</picklist>
+        <values>
+            <fullName>Clinic</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Commercial Building</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Hotel</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Mixed Use</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Office</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Project Location</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Residential Building</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Serviced Apartments</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Status__c</picklist>
+        <values>
+            <fullName>Active</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Inactive</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Onboarding</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

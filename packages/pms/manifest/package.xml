@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>std_Abandonment_Score_PMS_Concierge</members>
+        <members>std_Deflection_Score_PMS_Concierge</members>
+        <members>std_Quality_Score_PMS_Concierge</members>
+        <members>std_Session_Notes_PMS_Concierge</members>
+        <name>AiAgentScorerDefinition</name>
+    </types>
+    <types>
+        <members>PMS_Concierge_1</members>
+        <name>AiAuthoringBundle</name>
+    </types>
+    <types>
+        <members>PMS_AgentActions</members>
+        <members>PMS_AvailabilityService</members>
+        <members>PMS_BillingService</members>
+        <members>PMS_BillingTest</members>
+        <members>PMS_BookingInvoiceAction</members>
+        <members>PMS_BookingInvoiceActionTest</members>
+        <members>PMS_BookingService</members>
+        <members>PMS_BookingServiceTest</members>
+        <members>PMS_BookingTriggerHandler</members>
+        <members>PMS_CheckAvailabilityAction</members>
+        <members>PMS_CheckInInvitationJob</members>
+        <members>PMS_CheckInService</members>
+        <members>PMS_CoreServicesTest</members>
+        <members>PMS_CreateBookingAction</members>
+        <members>PMS_CustomerNotifications</members>
+        <members>PMS_DailyJob</members>
+        <members>PMS_DateUtil</members>
+        <members>PMS_Exception</members>
+        <members>PMS_FinanceTriggerHandler</members>
+        <members>PMS_GetQuoteAction</members>
+        <members>PMS_GuestCheckInController</members>
+        <members>PMS_GuestNotifications</members>
+        <members>PMS_GuestNotificationsTest</members>
+        <members>PMS_IntegrationTest</members>
+        <members>PMS_InvoiceBatch</members>
+        <members>PMS_ModuleConfig</members>
+        <members>PMS_NightAuditBatch</members>
+        <members>PMS_OwnerStatementJob</members>
+        <members>PMS_OwnerStatementService</members>
+        <members>PMS_PartnerPortalController</members>
+        <members>PMS_PartnerPortalTest</members>
+        <members>PMS_PaymentWebhook</members>
+        <members>PMS_PortalController</members>
+        <members>PMS_PortalControllerTest</members>
+        <members>PMS_PortalUserSetup</members>
+        <members>PMS_PortalUserSetupTest</members>
+        <members>PMS_PortalV2Controller</members>
+        <members>PMS_PortalV2Test</members>
+        <members>PMS_PricingService</members>
+        <members>PMS_PublicBookingController</members>
+        <members>PMS_PublicBookingControllerTest</members>
+        <members>PMS_RecurringChargeBatch</members>
+        <members>PMS_StripeCheckout</members>
+        <members>PMS_StripeTest</members>
+        <members>PMS_StripeWebhook</members>
+        <members>PMS_TestDataFactory</members>
+        <members>PMS_UIController</members>
+        <members>PMS_UIControllerTest</members>
+        <members>PMS_WebBookingCleanup</members>
+        <members>PMS_WebBookingHold</members>
+        <members>PMS_WorkOrderService</members>
+        <members>PMS_WorkingHours</members>
+        <members>PMS_WorkingHoursTest</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>PMS_PaymentComplete</members>
+        <name>ApexPage</name>
+    </types>
+    <types>
+        <members>PMS_ApprovalRequestTrigger</members>
+        <members>PMS_BookingTrigger</members>
+        <members>PMS_CaseTrigger</members>
+        <members>PMS_ChargeTrigger</members>
+        <members>PMS_DocumentRequestTrigger</members>
+        <members>PMS_InvoiceTrigger</members>
+        <members>PMS_PaymentTrigger</members>
+        <members>PMS_UserTrigger</members>
+        <members>PMS_VendorBillTrigger</members>
+        <members>PMS_VendorQuoteTrigger</members>
+        <members>PMS_WorkOrderTrigger</members>
+        <name>ApexTrigger</name>
+    </types>
+    <types>
+        <members>PMS_Concierge</members>
+        <name>Bot</name>
+    </types>
+    <types>
+        <members>PMS_Concierge.v1</members>
+        <name>BotVersion</name>
+    </types>
+    <types>
+        <members>PMS_Admin</members>
+        <members>PMS_Hotel</members>
+        <members>PMS_Practice</members>
+        <members>PMS_Projects</members>
+        <members>PMS_Property</members>
+        <name>CustomApplication</name>
+    </types>
+    <types>
+        <members>Account.PMS_Party_Role__c</members>
+        <members>Case.Entry_Permission__c</members>
+        <members>Case.PMS_Booking__c</members>
+        <members>Case.PMS_Module__c</members>
+        <members>Case.PMS_Site__c</members>
+        <members>Case.PMS_Space__c</members>
+        <members>Case.SLA_Due__c</members>
+        <members>Contact.PMS_ID_Verified__c</members>
+        <name>CustomField</name>
+    </types>
+    <types>
+        <members>PMS_Module.Hotel</members>
+        <members>PMS_Module.Practice</members>
+        <members>PMS_Module.Project</members>
+        <members>PMS_Module.Property</members>
+        <name>CustomMetadata</name>
+    </types>
+    <types>
+        <members>PMS_Application__c</members>
+        <members>PMS_Approval_Request__c</members>
+        <members>PMS_Booking_Party__c</members>
+        <members>PMS_Booking__c</members>
+        <members>PMS_Budget_Line__c</members>
+        <members>PMS_Charge__c</members>
+        <members>PMS_Check_In__c</members>
+        <members>PMS_Document_Request__c</members>
+        <members>PMS_Group_Block__c</members>
+        <members>PMS_Inspection_Item__c</members>
+        <members>PMS_Inspection__c</members>
+        <members>PMS_Intake_Form__c</members>
+        <members>PMS_Inventory_Day__c</members>
+        <members>PMS_Invoice__c</members>
+        <members>PMS_Lease_Charge_Schedule__c</members>
+        <members>PMS_Listing__c</members>
+        <members>PMS_Matter__c</members>
+        <members>PMS_Meter_Reading__c</members>
+        <members>PMS_Meter__c</members>
+        <members>PMS_Milestone__c</members>
+        <members>PMS_Module__mdt</members>
+        <members>PMS_Owner_Statement__c</members>
+        <members>PMS_Payment__c</members>
+        <members>PMS_Practitioner__c</members>
+        <members>PMS_Project_Task__c</members>
+        <members>PMS_Project__c</members>
+        <members>PMS_RAID_Item__c</members>
+        <members>PMS_Rate_Plan__c</members>
+        <members>PMS_Rate__c</members>
+        <members>PMS_Resource__c</members>
+        <members>PMS_Room_Night__c</members>
+        <members>PMS_Service__c</members>
+        <members>PMS_Settings__c</members>
+        <members>PMS_Site__c</members>
+        <members>PMS_Space_Type__c</members>
+        <members>PMS_Space__c</members>
+        <members>PMS_Time_Entry__c</members>
+        <members>PMS_Vendor_Bill__c</members>
+        <members>PMS_Vendor_Quote__c</members>
+        <members>PMS_Work_Order__c</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>PMS_Booking</members>
+        <members>PMS_Customer_Portal</members>
+        <members>PMS_Partner_Portal</members>
+        <members>PMS_Payments</members>
+        <name>CustomSite</name>
+    </types>
+    <types>
+        <members>PMS_Application__c</members>
+        <members>PMS_Approval_Request__c</members>
+        <members>PMS_Booking__c</members>
+        <members>PMS_Charge__c</members>
+        <members>PMS_Check_In__c</members>
+        <members>PMS_Document_Request__c</members>
+        <members>PMS_Group_Block__c</members>
+        <members>PMS_Inspection__c</members>
+        <members>PMS_Intake_Form__c</members>
+        <members>PMS_Inventory_Day__c</members>
+        <members>PMS_Invoice__c</members>
+        <members>PMS_Listing__c</members>
+        <members>PMS_Matter__c</members>
+        <members>PMS_Meter__c</members>
+        <members>PMS_Milestone__c</members>
+        <members>PMS_Owner_Statement__c</members>
+        <members>PMS_Payment__c</members>
+        <members>PMS_Practitioner__c</members>
+        <members>PMS_Project_Task__c</members>
+        <members>PMS_Project__c</members>
+        <members>PMS_RAID_Item__c</members>
+        <members>PMS_Rate_Plan__c</members>
+        <members>PMS_Resource__c</members>
+        <members>PMS_Room_Night__c</members>
+        <members>PMS_Service__c</members>
+        <members>PMS_Site__c</members>
+        <members>PMS_Space_Type__c</members>
+        <members>PMS_Space__c</members>
+        <members>PMS_Time_Entry__c</members>
+        <members>PMS_Vendor_Bill__c</members>
+        <members>PMS_Vendor_Quote__c</members>
+        <members>PMS_Work_Order__c</members>
+        <members>Diary</members>
+        <members>Front_Desk</members>
+        <members>New_Booking</members>
+        <name>CustomTab</name>
+    </types>
+    <types>
+        <members>PMS_Dashboards</members>
+        <members>PMS_Dashboards/Service_KPIs1</members>
+        <name>Dashboard</name>
+    </types>
+    <types>
+        <members>PMS_Booking1</members>
+        <members>PMS_Customer_Portal1</members>
+        <members>PMS_Partner_Portal1</members>
+        <name>DigitalExperienceConfig</name>
+    </types>
+    <types>
+        <members>site/PMS_Booking1</members>
+        <members>site/PMS_Customer_Portal1</members>
+        <members>site/PMS_Partner_Portal1</members>
+        <name>DigitalExperienceBundle</name>
+    </types>
+    <types>
+        <members>Stripe_API</members>
+        <name>ExternalCredential</name>
+    </types>
+    <types>
+        <members>Diary</members>
+        <members>Front_Desk</members>
+        <members>Hotel_Site_Record_Page</members>
+        <members>New_Booking</members>
+        <members>Project_Page</members>
+        <members>Property_Site_Record_Page1</members>
+        <name>FlexiPage</name>
+    </types>
+    <types>
+        <members>PMS_Agent_Booking_Invoice</members>
+        <members>PMS_Agent_Booking_Status</members>
+        <members>PMS_Agent_Create_Service_Request</members>
+        <members>PMS_Agent_Find_Or_Create_Guest</members>
+        <members>PMS_Agent_Pay_Link</members>
+        <members>PMS_Agent_Site_Info</members>
+        <name>Flow</name>
+    </types>
+    <types>
+        <members>PMS_Concierge_v1</members>
+        <name>GenAiPlannerBundle</name>
+    </types>
+    <types>
+        <members>PMS_Application__c-Rental Application Layout</members>
+        <members>PMS_Approval_Request__c-Approval Request Layout</members>
+        <members>PMS_Booking_Party__c-Booking Party Layout</members>
+        <members>PMS_Booking__c-Booking Layout</members>
+        <members>PMS_Budget_Line__c-Budget Line Layout</members>
+        <members>PMS_Charge__c-Charge Layout</members>
+        <members>PMS_Check_In__c-Online Check-In Layout</members>
+        <members>PMS_Document_Request__c-Document Request Layout</members>
+        <members>PMS_Group_Block__c-Group Block Layout</members>
+        <members>PMS_Inspection_Item__c-Inspection Item Layout</members>
+        <members>PMS_Inspection__c-Inspection Layout</members>
+        <members>PMS_Intake_Form__c-Intake Form Layout</members>
+        <members>PMS_Inventory_Day__c-Inventory Day Layout</members>
+        <members>PMS_Invoice__c-Invoice Layout</members>
+        <members
+    >PMS_Lease_Charge_Schedule__c-Lease Charge Schedule Layout</members>
+        <members>PMS_Listing__c-Listing Layout</members>
+        <members>PMS_Matter__c-Matter Layout</members>
+        <members>PMS_Meter_Reading__c-Meter Reading Layout</members>
+        <members>PMS_Meter__c-Meter Layout</members>
+        <members>PMS_Milestone__c-Milestone Layout</members>
+        <members>PMS_Module__mdt-PMS Module Layout</members>
+        <members>PMS_Owner_Statement__c-Owner Statement Layout</members>
+        <members>PMS_Payment__c-Payment Layout</members>
+        <members>PMS_Practitioner__c-Practitioner Layout</members>
+        <members>PMS_Project_Task__c-Project Task Layout</members>
+        <members>PMS_Project__c-Project Layout</members>
+        <members>PMS_RAID_Item__c-RAID Item Layout</members>
+        <members>PMS_Rate_Plan__c-Rate Plan Layout</members>
+        <members>PMS_Rate__c-Rate Layout</members>
+        <members>PMS_Resource__c-Resource Layout</members>
+        <members>PMS_Room_Night__c-Room Night Layout</members>
+        <members>PMS_Service__c-Service Layout</members>
+        <members>PMS_Site__c-Site Layout</members>
+        <members>PMS_Space_Type__c-Space Type Layout</members>
+        <members>PMS_Space__c-Space Layout</members>
+        <members>PMS_Time_Entry__c-Time Entry Layout</members>
+        <members>PMS_Vendor_Bill__c-Vendor Bill Layout</members>
+        <members>PMS_Vendor_Quote__c-Vendor Quote Layout</members>
+        <members>PMS_Work_Order__c-Work Order Layout</members>
+        <name>Layout</name>
+    </types>
+    <types>
+        <members>pmsBookingWizard</members>
+        <members>pmsCheckInForm</members>
+        <members>pmsCustomerPortal</members>
+        <members>pmsCustomerPortalV2</members>
+        <members>pmsDateUtils</members>
+        <members>pmsFrontDeskToday</members>
+        <members>pmsGanttChart</members>
+        <members>pmsGuestCheckIn</members>
+        <members>pmsPartnerPortal</members>
+        <members>pmsPractitionerCalendar</members>
+        <members>pmsPublicBooking</members>
+        <members>pmsRentRoll</members>
+        <members>pmsRoomGrid</members>
+        <members>pmsStripePayLink</members>
+        <name>LightningComponentBundle</name>
+    </types>
+    <types>
+        <members>Case.PMS_Open_Requests</members>
+        <name>ListView</name>
+    </types>
+    <types>
+        <members>PMS_Standard_User_Muting</members>
+        <name>MutingPermissionSet</name>
+    </types>
+    <types>
+        <members>Stripe_API</members>
+        <name>NamedCredential</name>
+    </types>
+    <types>
+        <members>SFDC_Default_Navigation_PMS_Booking</members>
+        <members>SFDC_Default_Navigation_PMS_Customer_Portal</members>
+        <members>SFDC_Default_Navigation_PMS_Partner_Portal</members>
+        <name>NavigationMenu</name>
+    </types>
+    <types>
+        <members>PMS Booking</members>
+        <members>PMS Customer Portal</members>
+        <members>PMS Partner Portal</members>
+        <name>Network</name>
+    </types>
+    <types>
+        <members>PMS_App_Access</members>
+        <members>PMS_Core_Admin</members>
+        <members>PMS_Customer_Portal</members>
+        <members>PMS_Customer_Portal_Management</members>
+        <members>PMS_Guest_Check_In</members>
+        <members>PMS_Partner_Management</members>
+        <members>PMS_Partner_Portal</members>
+        <members>PMS_Public_Booking</members>
+        <members>PMS_Stripe_Access</members>
+        <name>PermissionSet</name>
+    </types>
+    <types>
+        <members>PMS_Standard_User</members>
+        <name>PermissionSetGroup</name>
+    </types>
+    <types>
+        <members>PMS Booking Profile</members>
+        <members>PMS Customer Portal Profile</members>
+        <members>PMS Customer Portal User</members>
+        <members>PMS Partner Portal Profile</members>
+        <members>PMS Partner Portal User</members>
+        <members>PMS Payments Profile</members>
+        <name>Profile</name>
+    </types>
+    <types>
+        <members>PMS_Invoice__c.Stripe_Pay_Link</members>
+        <name>QuickAction</name>
+    </types>
+    <types>
+        <members>PMS_Reports</members>
+        <members>PMS_Reports/PMS_Arrears_by_Customer_jsG</members>
+        <members>PMS_Reports/PMS_Open_Requests_by_Module_5Fq</members>
+        <members>PMS_Reports/PMS_Spaces_by_Status_7NY</members>
+        <name>Report</name>
+    </types>
+    <types>
+        <members>PMS_Admin</members>
+        <name>Role</name>
+    </types>
+    <types>
+        <members>PMS_Application__c</members>
+        <members>PMS_Approval_Request__c</members>
+        <members>PMS_Booking__c</members>
+        <members>PMS_Charge__c</members>
+        <members>PMS_Check_In__c</members>
+        <members>PMS_Document_Request__c</members>
+        <members>PMS_Group_Block__c</members>
+        <members>PMS_Inspection__c</members>
+        <members>PMS_Intake_Form__c</members>
+        <members>PMS_Invoice__c</members>
+        <members>PMS_Listing__c</members>
+        <members>PMS_Matter__c</members>
+        <members>PMS_Meter__c</members>
+        <members>PMS_Owner_Statement__c</members>
+        <members>PMS_Payment__c</members>
+        <members>PMS_Practitioner__c</members>
+        <members>PMS_Project__c</members>
+        <members>PMS_Rate_Plan__c</members>
+        <members>PMS_Resource__c</members>
+        <members>PMS_Service__c</members>
+        <members>PMS_Site__c</members>
+        <members>PMS_Space_Type__c</members>
+        <members>PMS_Time_Entry__c</members>
+        <members>PMS_Vendor_Bill__c</members>
+        <members>PMS_Work_Order__c</members>
+        <name>SharingRules</name>
+    </types>
+    <types>
+        <members>SNA_1vvtr_sf_default_cdn_PMS_Booking1</members>
+        <members>SNA_cklUb_sf_default_cdn_PMS_Customer_Portal1</members>
+        <members>SNA_qRJK5_sf_default_cdn_PMS_Partner_Portal1</members>
+        <members>pmsPdfLib</members>
+        <name>StaticResource</name>
+    </types>
+    <version>67.0</version>
+</Package>

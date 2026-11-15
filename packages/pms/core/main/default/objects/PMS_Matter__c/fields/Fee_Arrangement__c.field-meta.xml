@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Fee_Arrangement__c</fullName>
+    <description>How the client is billed.</description>
+    <inlineHelpText>Drives billing automation.</inlineHelpText>
+    <label>Fee Arrangement</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Hourly</fullName>
+                <default>true</default>
+                <label>Hourly</label>
+            </value>
+            <value>
+                <fullName>Fixed Fee</fullName>
+                <default>false</default>
+                <label>Fixed Fee</label>
+            </value>
+            <value>
+                <fullName>Retainer</fullName>
+                <default>false</default>
+                <label>Retainer</label>
+            </value>
+            <value>
+                <fullName>Per Appointment</fullName>
+                <default>false</default>
+                <label>Per Appointment</label>
+            </value>
+            <value>
+                <fullName>Insurance</fullName>
+                <default>false</default>
+                <label>Insurance</label>
+            </value>
+            <value>
+                <fullName>Pro Bono</fullName>
+                <default>false</default>
+                <label>Pro Bono</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

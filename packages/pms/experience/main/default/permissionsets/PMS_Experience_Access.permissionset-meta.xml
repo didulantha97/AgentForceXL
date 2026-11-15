@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <classAccesses>
+        <apexClass>PMS_AgentActions</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>PMS_BookingInvoiceAction</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>PMS_CheckAvailabilityAction</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>PMS_CreateBookingAction</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>PMS_GetQuoteAction</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>PMS_PaymentWebhook</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <description
+  >Internal-user access to PMS Experience Apex (agent actions, booking invoice, payment webhook). Assign together with PMS App Access.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>PMS Experience Access</label>
+</PermissionSet>

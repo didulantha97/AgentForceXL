@@ -49,3 +49,6 @@ $RECYCLE.BIN/
 **/__pycache__/
 **/.venv/
 **/venv/
+
+# PMS org-setup build output (scripts/pms-package.sh)
+pms-build/

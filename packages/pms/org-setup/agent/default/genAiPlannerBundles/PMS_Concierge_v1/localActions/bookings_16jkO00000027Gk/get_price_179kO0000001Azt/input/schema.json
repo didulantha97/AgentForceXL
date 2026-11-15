@@ -1,0 +1,42 @@
+{
+  "required": ["module", "startDate"],
+  "unevaluatedProperties": false,
+  "properties": {
+    "endDate": {
+      "title": "End Date",
+      "description": "End date (stays and leases)",
+      "lightning:type": "lightning__dateType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    },
+    "module": {
+      "title": "Module",
+      "description": "Property, Hotel, Project or Practice",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    },
+    "serviceId": {
+      "title": "Service Id",
+      "description": "Service Id (clinic appointments)",
+      "lightning:type": "lightning__recordIdType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    },
+    "spaceTypeId": {
+      "title": "Space Type Id",
+      "description": "Room or unit type Id (stays and leases)",
+      "lightning:type": "lightning__recordIdType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    },
+    "startDate": {
+      "title": "Start Date",
+      "description": "Start date",
+      "lightning:type": "lightning__dateType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    }
+  },
+  "lightning:type": "lightning__objectType"
+}

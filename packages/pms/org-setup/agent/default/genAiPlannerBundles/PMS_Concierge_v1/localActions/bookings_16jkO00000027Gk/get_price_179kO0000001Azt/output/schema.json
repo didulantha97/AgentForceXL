@@ -1,0 +1,38 @@
+{
+  "unevaluatedProperties": false,
+  "properties": {
+    "gross": {
+      "title": "Gross",
+      "description": "Total including tax",
+      "lightning:type": "lightning__numberType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": false,
+      "copilotAction:isUsedByPlanner": true
+    },
+    "net": {
+      "title": "Net",
+      "description": "Amount before tax",
+      "lightning:type": "lightning__numberType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": false,
+      "copilotAction:isUsedByPlanner": true
+    },
+    "summary": {
+      "title": "Summary",
+      "description": "Price breakdown to show the user",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": false,
+      "copilotAction:isUsedByPlanner": true
+    },
+    "tax": {
+      "title": "Tax",
+      "description": "Tax amount",
+      "lightning:type": "lightning__numberType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": false,
+      "copilotAction:isUsedByPlanner": true
+    }
+  },
+  "lightning:type": "lightning__objectType"
+}

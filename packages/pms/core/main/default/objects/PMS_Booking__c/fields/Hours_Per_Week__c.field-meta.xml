@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Hours_Per_Week__c</fullName>
+    <description>Planned allocation hours per week.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Project module only.</inlineHelpText>
+    <label>Hours per Week</label>
+    <precision>5</precision>
+    <required>false</required>
+    <scale>1</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

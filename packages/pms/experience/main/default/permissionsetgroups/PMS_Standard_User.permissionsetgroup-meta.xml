@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<PermissionSetGroup xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description
+  >Day-to-day PMS staff (front desk, property managers, project and practice staff). Full PMS app access without delete on financial records or View All / Modify All on any PMS object.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>PMS Standard User</label>
+    <mutingPermissionSets>PMS_Standard_User_Muting</mutingPermissionSets>
+    <permissionSets>PMS_App_Access</permissionSets>
+    <permissionSets>PMS_Core_Admin</permissionSets>
+    <permissionSets>PMS_Partner_Management</permissionSets>
+    <permissionSets>PMS_Stripe_Access</permissionSets>
+    <status>Updated</status>
+</PermissionSetGroup>

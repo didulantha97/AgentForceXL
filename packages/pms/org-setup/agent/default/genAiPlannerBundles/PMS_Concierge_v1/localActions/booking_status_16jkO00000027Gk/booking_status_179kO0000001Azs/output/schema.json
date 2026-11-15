@@ -1,0 +1,94 @@
+{
+  "unevaluatedProperties": false,
+  "properties": {
+    "balanceDue": {
+      "title": "Balance Due",
+      "description": "Open balance, if any",
+      "lightning:type": "lightning__currencyType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": false,
+      "copilotAction:isUsedByPlanner": true
+    },
+    "bookingId": {
+      "title": "Booking Id",
+      "description": "Booking Id",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": false,
+      "copilotAction:isUsedByPlanner": true
+    },
+    "endDateTime": {
+      "title": "End Date Time",
+      "description": "End date and time",
+      "lightning:type": "lightning__dateTimeStringType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": false,
+      "copilotAction:isUsedByPlanner": true
+    },
+    "invoiceId": {
+      "title": "Invoice Id",
+      "description": "Open invoice Id, if any",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": false,
+      "copilotAction:isUsedByPlanner": true
+    },
+    "invoiceNumber": {
+      "title": "Invoice Number",
+      "description": "Open invoice number, if any",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": false,
+      "copilotAction:isUsedByPlanner": true
+    },
+    "siteName": {
+      "title": "Site Name",
+      "description": "Site name",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": false,
+      "copilotAction:isUsedByPlanner": true
+    },
+    "spaceName": {
+      "title": "Space Name",
+      "description": "Room or unit",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": false,
+      "copilotAction:isUsedByPlanner": true
+    },
+    "startDateTime": {
+      "title": "Start Date Time",
+      "description": "Start date and time",
+      "lightning:type": "lightning__dateTimeStringType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": false,
+      "copilotAction:isUsedByPlanner": true
+    },
+    "status": {
+      "title": "Status",
+      "description": "Booking status",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": false,
+      "copilotAction:isUsedByPlanner": true
+    },
+    "totalAmount": {
+      "title": "Total Amount",
+      "description": "Booking total",
+      "lightning:type": "lightning__currencyType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": false,
+      "copilotAction:isUsedByPlanner": true
+    },
+    "verified": {
+      "title": "Verified",
+      "description": "True when the booking exists and the name matches",
+      "lightning:type": "lightning__booleanType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": false,
+      "copilotAction:isUsedByPlanner": true
+    }
+  },
+  "lightning:type": "lightning__objectType"
+}

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Budget_Lines_Total__c</fullName>
+    <description>Sum of budget amounts across budget lines.</description>
+    <inlineHelpText>Calculated from Budget Lines.</inlineHelpText>
+    <label>Budget Lines Total</label>
+    <summarizedField>PMS_Budget_Line__c.Budget_Amount__c</summarizedField>
+    <summaryForeignKey>PMS_Budget_Line__c.Project__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

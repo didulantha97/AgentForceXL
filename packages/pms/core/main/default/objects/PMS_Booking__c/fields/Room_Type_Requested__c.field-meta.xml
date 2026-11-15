@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Room_Type_Requested__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description
+  >Space type booked before a specific room is assigned.</description>
+    <inlineHelpText>Hotel module: the room type sold.</inlineHelpText>
+    <label>Room Type Requested</label>
+    <referenceTo>PMS_Space_Type__c</referenceTo>
+    <relationshipLabel>Requested Bookings</relationshipLabel>
+    <relationshipName>Requested_Bookings</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

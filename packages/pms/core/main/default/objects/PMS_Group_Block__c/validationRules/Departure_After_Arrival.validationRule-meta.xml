@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Departure_After_Arrival</fullName>
+    <active>true</active>
+    <description
+  >Group departure must be after arrival, picked-up rooms cannot exceed the block.</description>
+    <errorConditionFormula
+  >OR(AND(NOT(ISBLANK(Arrival_Date__c)), NOT(ISBLANK(Departure_Date__c)), Departure_Date__c &lt;= Arrival_Date__c), Rooms_Picked_Up__c &gt; Rooms_Blocked__c)</errorConditionFormula>
+    <errorMessage
+  >Departure must be after Arrival, and Rooms Picked Up cannot exceed Rooms Blocked.</errorMessage>
+</ValidationRule>

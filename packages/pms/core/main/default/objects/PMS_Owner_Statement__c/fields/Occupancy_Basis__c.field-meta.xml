@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Occupancy_Basis__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText
+  >How occupancy was measured, e.g. &apos;5 of 7 units let at month end&apos; or &apos;182 of 300 room nights&apos;.</inlineHelpText>
+    <label>Occupancy Basis</label>
+    <length>120</length>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

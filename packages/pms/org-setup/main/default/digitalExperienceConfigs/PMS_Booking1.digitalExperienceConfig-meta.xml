@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<DigitalExperienceConfig xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>PMS Booking</label>
+    <site>
+        <urlPathPrefix>book</urlPathPrefix>
+    </site>
+    <space>site/PMS_Booking1</space>
+</DigitalExperienceConfig>

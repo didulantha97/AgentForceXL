@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPlannerBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Staff assistant for the Unified PMS: availability, prices, bookings, Stripe payment links, booking status and service requests across hotel, property, project and practice sites.</description>
+    <localTopicLinks>
+        <genAiPluginName>agent_router_16jkO00000027Gk</genAiPluginName>
+    </localTopicLinks>
+    <localTopicLinks>
+        <genAiPluginName>booking_status_16jkO00000027Gk</genAiPluginName>
+    </localTopicLinks>
+    <localTopicLinks>
+        <genAiPluginName>bookings_16jkO00000027Gk</genAiPluginName>
+    </localTopicLinks>
+    <localTopicLinks>
+        <genAiPluginName>off_topic_16jkO00000027Gk</genAiPluginName>
+    </localTopicLinks>
+    <localTopicLinks>
+        <genAiPluginName>service_requests_16jkO00000027Gk</genAiPluginName>
+    </localTopicLinks>
+    <localTopics>
+        <fullName>bookings_16jkO00000027Gk</fullName>
+        <canEscalate>false</canEscalate>
+        <description>Check availability and prices at a site and create bookings, appointments and payment links</description>
+        <developerName>bookings_16jkO00000027Gk</developerName>
+        <genAiPluginInstructions>
+            <description>You are PMS Concierge, an AI assistant for staff of a unified property management system that runs hotels, rental properties, project sites and clinics.
+You help staff serve guests, tenants and clients: checking availability and prices, making bookings, sending payment links, looking up bookings and logging service requests.
+You are an AI assistant, not a human.
+Always use the available actions to get real data. Never invent availability, prices, booking numbers, balances, case numbers or payment links.
+Never show internal record Ids to the user. Refer to sites, rooms, guests and bookings by name or by booking, invoice or case number.
+Ask for missing details one or two at a time.
+You never cancel bookings, change prices or issue refunds. If asked, say that a manager must do this in Salesforce.
+Write every answer as plain text. Do NOT use the show_command tool.</description>
+            <developerName>instruction0_179kO0000001Azt</developerName>
+            <language>en_US</language>
+            <masterLabel>instruction0_179kO0000001Azt</masterLabel>
+            <sortOrder>1</sortOrder>
+        </genAiPluginInstructions>
+        <language>en_US</language>
+        <localActionLinks>
+            <functionName>pay_link_179kO0000001Azt</functionName>
+        </localActionLinks>
+        <localActionLinks>
+            <functionName>find_guest_179kO0000001Azt</functionName>
+        </localActionLinks>
+        <localActionLinks>
+            <functionName>booking_invoice_179kO0000001Azt</functionName>
+        </localActionLinks>
+        <localActionLinks>
+            <functionName>site_info_179kO0000001Azt</functionName>
+        </localActionLinks>
+        <localActionLinks>
+            <functionName>get_price_179kO0000001Azt</functionName>
+        </localActionLinks>
+        <localActionLinks>
+            <functionName>create_booking_179kO0000001Azt</functionName>
+        </localActionLinks>
+        <localActionLinks>
+            <functionName>check_availability_179kO0000001Azt</functionName>
+        </localActionLinks>
+        <localActions>
+            <fullName>site_info_179kO0000001Azt</fullName>
+            <description>Finds an active site by part of its name and returns its details, room or unit types, practitioners and services</description>
+            <developerName>site_info_179kO0000001Azt</developerName>
+            <invocationTarget>PMS_Agent_Site_Info</invocationTarget>
+            <invocationTargetType>flow</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>false</isIncludeInProgressIndicator>
+            <localDeveloperName>site_info</localDeveloperName>
+            <masterLabel>Site Info</masterLabel>
+        </localActions>
+        <localActions>
+            <fullName>booking_invoice_179kO0000001Azt</fullName>
+            <description>Returns the open invoice for a booking, or creates one for the booking total</description>
+            <developerName>booking_invoice_179kO0000001Azt</developerName>
+            <invocationTarget>PMS_Agent_Booking_Invoice</invocationTarget>
+            <invocationTargetType>flow</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>false</isIncludeInProgressIndicator>
+            <localDeveloperName>booking_invoice</localDeveloperName>
+            <masterLabel>Booking Invoice</masterLabel>
+        </localActions>
+        <localActions>
+            <fullName>find_guest_179kO0000001Azt</fullName>
+            <description>Looks up a guest, tenant or client by email, or creates a new one</description>
+            <developerName>find_guest_179kO0000001Azt</developerName>
+            <invocationTarget>PMS_Agent_Find_Or_Create_Guest</invocationTarget>
+            <invocationTargetType>flow</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>false</isIncludeInProgressIndicator>
+            <localDeveloperName>find_guest</localDeveloperName>
+            <masterLabel>Find Guest</masterLabel>
+        </localActions>
+        <localActions>
+            <fullName>get_price_179kO0000001Azt</fullName>
+            <description>Calculates the price including tax for a stay, lease period or service</description>
+            <developerName>get_price_179kO0000001Azt</developerName>
+            <invocationTarget>PMS_GetQuoteAction</invocationTarget>
+            <invocationTargetType>apex</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>false</isIncludeInProgressIndicator>
+            <localDeveloperName>get_price</localDeveloperName>
+            <masterLabel>Get Price</masterLabel>
+        </localActions>
+        <localActions>
+            <fullName>pay_link_179kO0000001Azt</fullName>
+            <description>Creates a Stripe payment link for the open balance of an invoice</description>
+            <developerName>pay_link_179kO0000001Azt</developerName>
+            <invocationTarget>PMS_Agent_Pay_Link</invocationTarget>
+            <invocationTargetType>flow</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>false</isIncludeInProgressIndicator>
+            <localDeveloperName>pay_link</localDeveloperName>
+            <masterLabel>Pay Link</masterLabel>
+        </localActions>
+        <localActions>
+            <fullName>create_booking_179kO0000001Azt</fullName>
+            <description>Creates a confirmed reservation, lease, allocation or appointment</description>
+            <developerName>create_booking_179kO0000001Azt</developerName>
+            <invocationTarget>PMS_CreateBookingAction</invocationTarget>
+            <invocationTargetType>apex</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>false</isIncludeInProgressIndicator>
+            <localDeveloperName>create_booking</localDeveloperName>
+            <masterLabel>Create Booking</masterLabel>
+        </localActions>
+        <localActions>
+            <fullName>check_availability_179kO0000001Azt</fullName>
+            <description>Checks how many rooms, units or resources are free at a site for the given dates and guests</description>
+            <developerName>check_availability_179kO0000001Azt</developerName>
+            <invocationTarget>PMS_CheckAvailabilityAction</invocationTarget>
+            <invocationTargetType>apex</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>false</isIncludeInProgressIndicator>
+            <localDeveloperName>check_availability</localDeveloperName>
+            <masterLabel>Check Availability</masterLabel>
+        </localActions>
+        <localDeveloperName>bookings</localDeveloperName>
+        <masterLabel>Availability and Bookings</masterLabel>
+        <pluginType>Topic</pluginType>
+    </localTopics>
+    <localTopics>
+        <fullName>booking_status_16jkO00000027Gk</fullName>
+        <canEscalate>false</canEscalate>
+        <description>Look up an existing booking&apos;s status and balance and send a payment link</description>
+        <developerName>booking_status_16jkO00000027Gk</developerName>
+        <genAiPluginInstructions>
+            <description>You are PMS Concierge, an AI assistant for staff of a unified property management system that runs hotels, rental properties, project sites and clinics.
+You help staff serve guests, tenants and clients: checking availability and prices, making bookings, sending payment links, looking up bookings and logging service requests.
+You are an AI assistant, not a human.
+Always use the available actions to get real data. Never invent availability, prices, booking numbers, balances, case numbers or payment links.
+Never show internal record Ids to the user. Refer to sites, rooms, guests and bookings by name or by booking, invoice or case number.
+Ask for missing details one or two at a time.
+You never cancel bookings, change prices or issue refunds. If asked, say that a manager must do this in Salesforce.
+Write every answer as plain text. Do NOT use the show_command tool.</description>
+            <developerName>instruction0_179kO0000001Azs</developerName>
+            <language>en_US</language>
+            <masterLabel>instruction0_179kO0000001Azs</masterLabel>
+            <sortOrder>1</sortOrder>
+        </genAiPluginInstructions>
+        <language>en_US</language>
+        <localActionLinks>
+            <functionName>booking_status_179kO0000001Azs</functionName>
+        </localActionLinks>
+        <localActionLinks>
+            <functionName>pay_link_179kO0000001Azs</functionName>
+        </localActionLinks>
+        <localActionLinks>
+            <functionName>booking_invoice_179kO0000001Azs</functionName>
+        </localActionLinks>
+        <localActions>
+            <fullName>booking_invoice_179kO0000001Azs</fullName>
+            <description>Returns the open invoice for a booking, or creates one for the booking total</description>
+            <developerName>booking_invoice_179kO0000001Azs</developerName>
+            <invocationTarget>PMS_Agent_Booking_Invoice</invocationTarget>
+            <invocationTargetType>flow</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>false</isIncludeInProgressIndicator>
+            <localDeveloperName>booking_invoice</localDeveloperName>
+            <masterLabel>Booking Invoice</masterLabel>
+        </localActions>
+        <localActions>
+            <fullName>booking_status_179kO0000001Azs</fullName>
+            <description>Returns status, dates, place and open balance for a booking when the guest surname matches</description>
+            <developerName>booking_status_179kO0000001Azs</developerName>
+            <invocationTarget>PMS_Agent_Booking_Status</invocationTarget>
+            <invocationTargetType>flow</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>false</isIncludeInProgressIndicator>
+            <localDeveloperName>booking_status</localDeveloperName>
+            <masterLabel>Booking Status</masterLabel>
+        </localActions>
+        <localActions>
+            <fullName>pay_link_179kO0000001Azs</fullName>
+            <description>Creates a Stripe payment link for the open balance of an invoice</description>
+            <developerName>pay_link_179kO0000001Azs</developerName>
+            <invocationTarget>PMS_Agent_Pay_Link</invocationTarget>
+            <invocationTargetType>flow</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>false</isIncludeInProgressIndicator>
+            <localDeveloperName>pay_link</localDeveloperName>
+            <masterLabel>Pay Link</masterLabel>
+        </localActions>
+        <localDeveloperName>booking_status</localDeveloperName>
+        <masterLabel>Booking Status and Payments</masterLabel>
+        <pluginType>Topic</pluginType>
+    </localTopics>
+    <localTopics>
+        <fullName>service_requests_16jkO00000027Gk</fullName>
+        <canEscalate>false</canEscalate>
+        <description>Log maintenance, housekeeping and other service requests for a site, room or unit</description>
+        <developerName>service_requests_16jkO00000027Gk</developerName>
+        <genAiPluginInstructions>
+            <description>You are PMS Concierge, an AI assistant for staff of a unified property management system that runs hotels, rental properties, project sites and clinics.
+You help staff serve guests, tenants and clients: checking availability and prices, making bookings, sending payment links, looking up bookings and logging service requests.
+You are an AI assistant, not a human.
+Always use the available actions to get real data. Never invent availability, prices, booking numbers, balances, case numbers or payment links.
+Never show internal record Ids to the user. Refer to sites, rooms, guests and bookings by name or by booking, invoice or case number.
+Ask for missing details one or two at a time.
+You never cancel bookings, change prices or issue refunds. If asked, say that a manager must do this in Salesforce.
+Write every answer as plain text. Do NOT use the show_command tool.</description>
+            <developerName>instruction0_179kO0000001Azr</developerName>
+            <language>en_US</language>
+            <masterLabel>instruction0_179kO0000001Azr</masterLabel>
+            <sortOrder>1</sortOrder>
+        </genAiPluginInstructions>
+        <language>en_US</language>
+        <localActionLinks>
+            <functionName>create_service_request_179kO0000001Azr</functionName>
+        </localActionLinks>
+        <localActionLinks>
+            <functionName>site_info_179kO0000001Azr</functionName>
+        </localActionLinks>
+        <localActions>
+            <fullName>create_service_request_179kO0000001Azr</fullName>
+            <description>Logs a maintenance, housekeeping or client service request as a case</description>
+            <developerName>create_service_request_179kO0000001Azr</developerName>
+            <invocationTarget>PMS_Agent_Create_Service_Request</invocationTarget>
+            <invocationTargetType>flow</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>false</isIncludeInProgressIndicator>
+            <localDeveloperName>create_service_request</localDeveloperName>
+            <masterLabel>Create Service Request</masterLabel>
+        </localActions>
+        <localActions>
+            <fullName>site_info_179kO0000001Azr</fullName>
+            <description>Finds an active site by part of its name</description>
+            <developerName>site_info_179kO0000001Azr</developerName>
+            <invocationTarget>PMS_Agent_Site_Info</invocationTarget>
+            <invocationTargetType>flow</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>false</isIncludeInProgressIndicator>
+            <localDeveloperName>site_info</localDeveloperName>
+            <masterLabel>Site Info</masterLabel>
+        </localActions>
+        <localDeveloperName>service_requests</localDeveloperName>
+        <masterLabel>Service Requests</masterLabel>
+        <pluginType>Topic</pluginType>
+    </localTopics>
+    <localTopics>
+        <fullName>off_topic_16jkO00000027Gk</fullName>
+        <canEscalate>false</canEscalate>
+        <description>Handle requests outside PMS availability, bookings, payments and service requests</description>
+        <developerName>off_topic_16jkO00000027Gk</developerName>
+        <genAiPluginInstructions>
+            <description>You are PMS Concierge, an AI assistant for staff of a unified property management system that runs hotels, rental properties, project sites and clinics.
+You help staff serve guests, tenants and clients: checking availability and prices, making bookings, sending payment links, looking up bookings and logging service requests.
+You are an AI assistant, not a human.
+Always use the available actions to get real data. Never invent availability, prices, booking numbers, balances, case numbers or payment links.
+Never show internal record Ids to the user. Refer to sites, rooms, guests and bookings by name or by booking, invoice or case number.
+Ask for missing details one or two at a time.
+You never cancel bookings, change prices or issue refunds. If asked, say that a manager must do this in Salesforce.
+Write every answer as plain text. Do NOT use the show_command tool.</description>
+            <developerName>instruction0_179kO0000001Azq</developerName>
+            <language>en_US</language>
+            <masterLabel>instruction0_179kO0000001Azq</masterLabel>
+            <sortOrder>1</sortOrder>
+        </genAiPluginInstructions>
+        <language>en_US</language>
+        <localDeveloperName>off_topic</localDeveloperName>
+        <masterLabel>Off Topic</masterLabel>
+        <pluginType>Topic</pluginType>
+    </localTopics>
+    <localTopics>
+        <fullName>agent_router_16jkO00000027Gk</fullName>
+        <canEscalate>false</canEscalate>
+        <description>Route staff requests to the right PMS task</description>
+        <developerName>agent_router_16jkO00000027Gk</developerName>
+        <genAiPluginInstructions>
+            <description>You are PMS Concierge, an AI assistant for staff of a unified property management system that runs hotels, rental properties, project sites and clinics.
+You help staff serve guests, tenants and clients: checking availability and prices, making bookings, sending payment links, looking up bookings and logging service requests.
+You are an AI assistant, not a human.
+Always use the available actions to get real data. Never invent availability, prices, booking numbers, balances, case numbers or payment links.
+Never show internal record Ids to the user. Refer to sites, rooms, guests and bookings by name or by booking, invoice or case number.
+Ask for missing details one or two at a time.
+You never cancel bookings, change prices or issue refunds. If asked, say that a manager must do this in Salesforce.
+Write every answer as plain text. Do NOT use the show_command tool.</description>
+            <developerName>instruction0_179kO0000001Azp</developerName>
+            <language>en_US</language>
+            <masterLabel>instruction0_179kO0000001Azp</masterLabel>
+            <sortOrder>1</sortOrder>
+        </genAiPluginInstructions>
+        <language>en_US</language>
+        <localDeveloperName>agent_router</localDeveloperName>
+        <masterLabel>Agent Router</masterLabel>
+        <pluginType>Topic</pluginType>
+    </localTopics>
+    <masterLabel>PMS Concierge</masterLabel>
+    <plannerType>Atlas__ConcurrentMultiAgentOrchestration</plannerType>
+</GenAiPlannerBundle>

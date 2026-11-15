@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <classAccesses>
+        <apexClass>PMS_PublicBookingController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <description
+  >For the PMS Booking site guest user only: lets anonymous visitors call the booking controller. All reads and writes go through PMS_PublicBookingController.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>PMS Public Booking</label>
+</PermissionSet>

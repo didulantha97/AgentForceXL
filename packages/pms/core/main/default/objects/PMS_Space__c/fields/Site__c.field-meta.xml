@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Site__c</fullName>
+    <description>The site this space belongs to.</description>
+    <inlineHelpText
+  >Building, hotel, office or clinic that contains this space.</inlineHelpText>
+    <label>Site</label>
+    <referenceTo>PMS_Site__c</referenceTo>
+    <relationshipLabel>Spaces</relationshipLabel>
+    <relationshipName>Spaces</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>
