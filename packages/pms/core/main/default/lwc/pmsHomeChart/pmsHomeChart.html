@@ -1,0 +1,201 @@
+<template>
+  <article class="chart-card">
+    <header class="chart-head">
+      <div class="chart-titles">
+        <h3 class="chart-title">{chart.title}</h3>
+        <p lwc:if={chart.subtitle} class="chart-subtitle">{chart.subtitle}</p>
+      </div>
+      <button
+        class="slds-button table-toggle"
+        onclick={toggleTable}
+        aria-pressed={showTable}
+      >
+        {tableLabel}
+      </button>
+    </header>
+
+    <template lwc:if={isEmpty}>
+      <div class="chart-empty">No data yet</div>
+    </template>
+
+    <template lwc:elseif={showTable}>
+      <table
+        class="slds-table slds-table_bordered slds-table_cell-buffer chart-table"
+      >
+        <thead>
+          <tr class="slds-line-height_reset">
+            <th scope="col">Item</th>
+            <th scope="col" class="num">Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <template for:each={rows} for:item="r">
+            <tr key={r.key}>
+              <td>{r.label}</td>
+              <td class="num">{r.value}</td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
+    </template>
+
+    <template lwc:else>
+      <div class={plotClass}>
+        <svg
+          viewBox={viewBox}
+          role="img"
+          aria-label={ariaLabel}
+          preserveAspectRatio="xMidYMid meet"
+        >
+          <!-- Column chart -->
+          <template lwc:if={isBar}>
+            <template for:each={gridLines} for:item="g">
+              <g key={g.key}>
+                <line x1={g.x1} x2={g.x2} y1={g.y} y2={g.y} class="grid"></line>
+                <text x={g.labelX} y={g.labelY} class="axis" text-anchor="end">
+                  {g.label}
+                </text>
+              </g>
+            </template>
+            <template for:each={bars} for:item="b">
+              <g key={b.key}>
+                <path d={b.d} fill={b.fill}></path>
+                <rect
+                  x={b.hitX}
+                  y={b.hitY}
+                  width={b.hitW}
+                  height={b.hitH}
+                  class="hit"
+                  data-index={b.index}
+                  onmouseenter={handleEnter}
+                  onmouseleave={handleLeave}
+                ></rect>
+              </g>
+            </template>
+            <template for:each={xLabels} for:item="l">
+              <text
+                key={l.key}
+                x={l.x}
+                y={l.y}
+                class="axis"
+                text-anchor="middle"
+              >
+                {l.label}
+              </text>
+            </template>
+          </template>
+
+          <!-- Horizontal bars -->
+          <template lwc:elseif={isHbar}>
+            <template for:each={hbars} for:item="b">
+              <g key={b.key}>
+                <text x="0" y={b.labelY} class="label">{b.label}</text>
+                <path d={b.track} class="track"></path>
+                <path d={b.d} fill={b.fill}></path>
+                <text x={b.valueX} y={b.labelY} class="value">{b.value}</text>
+                <rect
+                  x="0"
+                  y={b.hitY}
+                  width="480"
+                  height={b.hitH}
+                  class="hit"
+                  data-index={b.index}
+                  onmouseenter={handleEnter}
+                  onmouseleave={handleLeave}
+                ></rect>
+              </g>
+            </template>
+          </template>
+
+          <!-- Line with area and crosshair -->
+          <template lwc:elseif={isLine}>
+            <template for:each={gridLines} for:item="g">
+              <g key={g.key}>
+                <line x1={g.x1} x2={g.x2} y1={g.y} y2={g.y} class="grid"></line>
+                <text x={g.labelX} y={g.labelY} class="axis" text-anchor="end">
+                  {g.label}
+                </text>
+              </g>
+            </template>
+            <path d={areaPath} class="area"></path>
+            <path d={linePath} class="line"></path>
+            <template lwc:if={hoverPoint}>
+              <line
+                x1={hoverPoint.x}
+                x2={hoverPoint.x}
+                y1={crosshairY1}
+                y2={crosshairY2}
+                class="crosshair"
+              ></line>
+              <circle
+                cx={hoverPoint.x}
+                cy={hoverPoint.y}
+                r="5"
+                class="marker"
+              ></circle>
+            </template>
+            <template for:each={linePoints} for:item="p">
+              <rect
+                key={p.key}
+                x={p.hitX}
+                y="0"
+                width={p.hitW}
+                height="220"
+                class="hit"
+                data-index={p.index}
+                onmouseenter={handleEnter}
+                onmouseleave={handleLeave}
+              ></rect>
+            </template>
+            <template for:each={xLabels} for:item="l">
+              <text
+                key={l.key}
+                x={l.x}
+                y={l.y}
+                class="axis"
+                text-anchor="middle"
+              >
+                {l.label}
+              </text>
+            </template>
+          </template>
+
+          <!-- Donut -->
+          <template lwc:elseif={isDonut}>
+            <template for:each={slices} for:item="s">
+              <path
+                key={s.key}
+                d={s.d}
+                fill={s.color}
+                data-index={s.index}
+                class="slice"
+                onmouseenter={handleEnter}
+                onmouseleave={handleLeave}
+              ></path>
+            </template>
+            <text x="110" y="108" class="donut-total" text-anchor="middle">
+              {donutTotal}
+            </text>
+            <text x="110" y="128" class="axis" text-anchor="middle">total</text>
+          </template>
+        </svg>
+
+        <div class="tip" style={tipStyle} role="status">
+          <span class="tip-label">{tipLabel}</span>
+          <span class="tip-value">{tipValue}</span>
+        </div>
+
+        <ul lwc:if={isDonut} class="legend">
+          <template for:each={slices} for:item="s">
+            <li key={s.key} class="legend-item">
+              <span class="swatch" style={s.swatchStyle}></span>
+              <span class="legend-label">{s.label}</span>
+              <span class="legend-value">{s.value}</span>
+              <span class="legend-share">{s.share}</span>
+            </li>
+          </template>
+        </ul>
+      </div>
+    </template>
+  </article>
+</template>

@@ -1,0 +1,181 @@
+:host {
+  display: block;
+  height: 100%;
+  --chart-surface: var(--slds-g-color-surface-container-1, #ffffff);
+  --chart-ink: var(--slds-g-color-on-surface-3, #181818);
+  --chart-ink-2: var(--slds-g-color-on-surface-2, #5c5c5c);
+  --chart-grid: var(--slds-g-color-border-1, #e5e5e5);
+  --chart-series: #2a78d6;
+}
+.chart-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--chart-surface);
+  border: 1px solid var(--chart-grid);
+  border-radius: 0.75rem;
+  padding: 0.875rem 1rem 1rem;
+}
+.chart-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.chart-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--chart-ink);
+}
+.chart-subtitle {
+  font-size: 0.75rem;
+  color: var(--chart-ink-2);
+}
+.table-toggle {
+  font-size: 0.75rem;
+  color: var(--chart-ink-2);
+  white-space: nowrap;
+  padding: 0 0.25rem;
+}
+.table-toggle:hover {
+  text-decoration: underline;
+}
+.plot {
+  position: relative;
+  flex: 1;
+}
+.plot-donut {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.plot-donut svg {
+  width: 45%;
+  max-width: 180px;
+  flex-shrink: 0;
+}
+svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+.grid {
+  stroke: var(--chart-grid);
+  stroke-width: 1;
+}
+.axis {
+  font-size: 11px;
+  fill: var(--chart-ink-2);
+}
+.label {
+  font-size: 12px;
+  fill: var(--chart-ink);
+}
+.value {
+  font-size: 12px;
+  fill: var(--chart-ink-2);
+  font-variant-numeric: tabular-nums;
+}
+.track {
+  fill: var(--chart-grid);
+  opacity: 0.45;
+}
+.line {
+  fill: none;
+  stroke: var(--chart-series);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.area {
+  fill: var(--chart-series);
+  opacity: 0.1;
+}
+.crosshair {
+  stroke: var(--chart-ink-2);
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+}
+.marker {
+  fill: var(--chart-series);
+  stroke: var(--chart-surface);
+  stroke-width: 2;
+}
+.hit {
+  fill: transparent;
+  cursor: default;
+}
+.slice {
+  transition: opacity 120ms ease;
+}
+.slice:hover {
+  opacity: 0.85;
+}
+.donut-total {
+  font-size: 22px;
+  font-weight: 600;
+  fill: var(--chart-ink);
+}
+.tip {
+  position: absolute;
+  transform: translate(-50%, calc(-100% - 8px));
+  background: var(--chart-ink);
+  color: var(--chart-surface);
+  border-radius: 0.375rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  pointer-events: none;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+  z-index: 2;
+}
+.tip-label {
+  margin-right: 0.375rem;
+  opacity: 0.8;
+}
+.tip-value {
+  font-weight: 600;
+}
+.legend {
+  flex: 1;
+  min-width: 0;
+}
+.legend-item {
+  display: grid;
+  grid-template-columns: 10px 1fr auto 2.5rem;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  padding: 0.2rem 0;
+  color: var(--chart-ink);
+}
+.swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+.legend-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.legend-value,
+.legend-share {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--chart-ink-2);
+}
+.chart-empty {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 140px;
+  color: var(--chart-ink-2);
+  font-size: 0.8125rem;
+}
+.chart-table .num {
+  text-align: right;
+}

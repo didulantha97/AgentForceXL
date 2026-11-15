@@ -1,0 +1,300 @@
+<template>
+  <div class="home">
+    <!-- Header -->
+    <header class="hero">
+      <div class="hero-main">
+        <lightning-icon
+          icon-name={meta.icon}
+          size="medium"
+          class="hero-icon"
+          alternative-text=""
+        ></lightning-icon>
+        <div>
+          <p class="hero-eyebrow">{meta.title} · {todayLabel}</p>
+          <h1 class="hero-title">{greeting}</h1>
+          <p class="hero-tagline">{meta.tagline}</p>
+        </div>
+      </div>
+      <div class="hero-controls">
+        <template lwc:if={hasSiteChoice}>
+          <lightning-combobox
+            class="site-picker"
+            label="Site"
+            variant="label-hidden"
+            value={siteId}
+            options={siteOptions}
+            onchange={handleSiteChange}
+          ></lightning-combobox>
+        </template>
+        <div class="refresh">
+          <span class="updated">{updatedLabel}</span>
+          <lightning-button-icon
+            icon-name="utility:refresh"
+            alternative-text="Refresh"
+            title="Refresh"
+            variant="border-filled"
+            onclick={refresh}
+            disabled={refreshing}
+          ></lightning-button-icon>
+        </div>
+      </div>
+    </header>
+
+    <template lwc:if={loading}>
+      <div class="skeleton">
+        <div class="skeleton-row">
+          <div class="skeleton-tile"></div>
+          <div class="skeleton-tile"></div>
+          <div class="skeleton-tile"></div>
+          <div class="skeleton-tile"></div>
+          <div class="skeleton-tile"></div>
+          <div class="skeleton-tile"></div>
+        </div>
+        <div class="skeleton-row">
+          <div class="skeleton-chart"></div>
+          <div class="skeleton-chart"></div>
+        </div>
+        <lightning-spinner
+          alternative-text="Loading"
+          size="small"
+          variant="brand"
+        ></lightning-spinner>
+      </div>
+    </template>
+
+    <template lwc:elseif={error}>
+      <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">
+        <h2>This page couldn't load: {errorText}</h2>
+      </div>
+    </template>
+
+    <template lwc:else>
+      <!-- Quick actions -->
+      <template lwc:if={quickActionsVisible}>
+        <nav class="actions" aria-label="Quick actions">
+          <template for:each={quickActions} for:item="a">
+            <button
+              key={a.key}
+              class="action"
+              data-key={a.key}
+              onclick={handleQuickAction}
+            >
+              <span class="action-icon">
+                <lightning-icon
+                  icon-name={a.icon}
+                  size="small"
+                  alternative-text=""
+                ></lightning-icon>
+              </span>
+              <span class="action-label">{a.label}</span>
+            </button>
+          </template>
+        </nav>
+      </template>
+
+      <template lwc:if={hasWarnings}>
+        <div class="warning-note" role="status">
+          <lightning-icon
+            icon-name="utility:info"
+            size="x-small"
+            alternative-text="Note"
+          ></lightning-icon>
+          <span>{warningSummary}</span>
+        </div>
+      </template>
+
+      <!-- KPI tiles -->
+      <section class="kpis" aria-label="Key figures">
+        <template for:each={kpis} for:item="k">
+          <button
+            key={k.key}
+            class={k.className}
+            data-key={k.key}
+            onclick={handleKpiClick}
+            aria-label={k.ariaLabel}
+            disabled={k.notClickable}
+          >
+            <span class="kpi-top">
+              <span class="kpi-label">{k.label}</span>
+              <span class="kpi-icon">
+                <lightning-icon
+                  icon-name={k.icon}
+                  size="x-small"
+                  alternative-text=""
+                ></lightning-icon>
+              </span>
+            </span>
+            <span class="kpi-value">{k.display}</span>
+            <span class="kpi-sub">
+              <span class="kpi-dot"></span>
+              {k.sub}
+            </span>
+          </button>
+        </template>
+      </section>
+
+      <!-- Charts -->
+      <section class="charts" aria-label="Charts">
+        <template for:each={charts} for:item="c">
+          <c-pms-home-chart
+            key={c.cardKey}
+            chart={c}
+            currency-code={currencyCode}
+          ></c-pms-home-chart>
+        </template>
+      </section>
+
+      <!-- Work queues and agenda -->
+      <section class={lowerClass}>
+        <article class="panel queues">
+          <header class="panel-head">
+            <h2 class="panel-title">Needs attention</h2>
+          </header>
+          <div
+            class="queue-tabs"
+            role="tablist"
+            aria-label="Work queues"
+            onkeydown={handleTabKey}
+          >
+            <template for:each={sectionTabs} for:item="t">
+              <button
+                key={t.key}
+                class={t.className}
+                data-key={t.key}
+                role="tab"
+                aria-selected={t.selected}
+                tabindex={t.tabIndex}
+                onclick={handleTab}
+              >
+                <span>{t.title}</span>
+                <span class={t.countClass}>{t.total}</span>
+              </button>
+            </template>
+          </div>
+
+          <template lwc:if={activeQueue}>
+            <div role="tabpanel" class="queue-panel">
+              <template lwc:if={activeQueue.hasItems}>
+                <ul class="items">
+                  <template for:each={activeQueue.items} for:item="i">
+                    <li key={i.key}>
+                      <button
+                        class="item"
+                        data-id={i.recordId}
+                        onclick={openRecord}
+                      >
+                        <span class="item-main">
+                          <span class="item-title">{i.title}</span>
+                          <span class="item-sub">{i.subtitle}</span>
+                        </span>
+                        <span class="item-meta">
+                          <template lwc:if={i.amountLabel}>
+                            <span class="item-amount">{i.amountLabel}</span>
+                          </template>
+                          <template lwc:if={i.hasDate}>
+                            <span class="item-date">
+                              <template lwc:if={i.isDateTime}>
+                                <lightning-formatted-date-time
+                                  value={i.whenDt}
+                                  month="short"
+                                  day="numeric"
+                                  hour="2-digit"
+                                  minute="2-digit"
+                                ></lightning-formatted-date-time>
+                              </template>
+                              <template lwc:else>
+                                <lightning-formatted-date-time
+                                  value={i.whenDate}
+                                  month="short"
+                                  day="numeric"
+                                  time-zone="UTC"
+                                ></lightning-formatted-date-time>
+                              </template>
+                            </span>
+                          </template>
+                          <template lwc:if={i.badge}>
+                            <span class={i.badgeClass}>{i.badge}</span>
+                          </template>
+                        </span>
+                      </button>
+                    </li>
+                  </template>
+                </ul>
+              </template>
+              <template lwc:else>
+                <div class="empty">
+                  <lightning-icon
+                    icon-name="utility:success"
+                    size="small"
+                    alternative-text=""
+                  ></lightning-icon>
+                  <span>{activeQueue.emptyText}</span>
+                </div>
+              </template>
+              <template lwc:if={activeQueue.more}>
+                <button class="view-all" onclick={handleViewAll}>
+                  {activeQueue.more}
+                </button>
+              </template>
+            </div>
+          </template>
+        </article>
+
+        <template lwc:if={agendaVisible}>
+          <article class="panel agenda">
+            <header class="panel-head">
+              <h2 class="panel-title">{agendaTitle}</h2>
+            </header>
+            <template lwc:if={hasAgenda}>
+              <ol class="timeline">
+                <template for:each={agenda} for:item="i">
+                  <li key={i.key} class="tl-item">
+                    <span class="tl-time">
+                      <template lwc:if={i.isDateTime}>
+                        <lightning-formatted-date-time
+                          value={i.whenDt}
+                          hour="2-digit"
+                          minute="2-digit"
+                        ></lightning-formatted-date-time>
+                      </template>
+                      <template lwc:else>
+                        <lightning-formatted-date-time
+                          value={i.whenDate}
+                          weekday="short"
+                          day="numeric"
+                          time-zone="UTC"
+                        ></lightning-formatted-date-time>
+                      </template>
+                    </span>
+                    <span class="tl-dot"></span>
+                    <button
+                      class="tl-body"
+                      data-id={i.recordId}
+                      onclick={openRecord}
+                    >
+                      <span class="item-title">{i.title}</span>
+                      <span class="item-sub">{i.subtitle}</span>
+                    </button>
+                    <template lwc:if={i.badge}>
+                      <span class={i.badgeClass}>{i.badge}</span>
+                    </template>
+                  </li>
+                </template>
+              </ol>
+            </template>
+            <template lwc:else>
+              <div class="empty">
+                <lightning-icon
+                  icon-name="utility:event"
+                  size="small"
+                  alternative-text=""
+                ></lightning-icon>
+                <span>Nothing scheduled.</span>
+              </div>
+            </template>
+          </article>
+        </template>
+      </section>
+    </template>
+  </div>
+</template>

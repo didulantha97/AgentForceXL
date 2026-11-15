@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>66.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>PMS App Home</masterLabel>
+    <description
+  >Home page for a PMS app: quick actions, live KPIs, charts, work queues and today's agenda for one module.</description>
+    <targets>
+        <target>lightning__HomePage</target>
+        <target>lightning__AppPage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__HomePage,lightning__AppPage">
+            <property
+        name="module"
+        type="String"
+        label="Module"
+        datasource="Admin,Hotel,Property,Projects,Practice"
+        default="Admin"
+        description="Which PMS app this home page is for. Picks the KPIs, charts, queues and quick actions."
+      />
+            <property
+        name="hideQuickActions"
+        type="Boolean"
+        label="Hide quick actions"
+        default="false"
+      />
+            <property
+        name="hideAgenda"
+        type="Boolean"
+        label="Hide today's agenda"
+        default="false"
+      />
+            <property
+        name="refreshMinutes"
+        type="Integer"
+        label="Auto-refresh (minutes, 0 = off)"
+        default="5"
+        min="0"
+        max="60"
+      />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>
