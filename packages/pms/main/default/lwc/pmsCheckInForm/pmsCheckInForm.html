@@ -1,0 +1,231 @@
+<template>
+  <div class="form">
+    <template lwc:if={error}
+      ><div class="alert" role="alert">{error}</div></template
+    >
+
+    <template lwc:if={isHotel}>
+      <div class="row">
+        <lightning-input
+          label="Full name"
+          value={values.fullName}
+          data-field="fullName"
+          onchange={handleValue}
+          required
+        ></lightning-input>
+        <lightning-input
+          type="tel"
+          label="Mobile phone"
+          value={values.phone}
+          data-field="phone"
+          onchange={handleValue}
+        ></lightning-input>
+      </div>
+      <div class="row">
+        <lightning-input
+          type="time"
+          label="Expected arrival time"
+          data-field="arrivalTime"
+          onchange={handleValue}
+          required
+        ></lightning-input>
+        <lightning-input
+          type="number"
+          label="Number of guests"
+          min="1"
+          max="10"
+          value={values.guests}
+          data-field="guests"
+          onchange={handleValue}
+        ></lightning-input>
+      </div>
+      <p class="hint">
+        Registration details (required by law for guests from outside the Nordic
+        countries):
+      </p>
+      <div class="row">
+        <lightning-input
+          label="Nationality"
+          data-field="nationality"
+          onchange={handleValue}
+        ></lightning-input>
+        <lightning-input
+          type="date"
+          label="Date of birth"
+          data-field="dateOfBirth"
+          onchange={handleValue}
+        ></lightning-input>
+      </div>
+      <div class="row">
+        <lightning-combobox
+          label="ID document"
+          options={idTypes}
+          data-field="idType"
+          onchange={handleValue}
+          placeholder="Choose"
+        ></lightning-combobox>
+        <lightning-input
+          label="ID document number"
+          data-field="idNumber"
+          onchange={handleValue}
+        ></lightning-input>
+      </div>
+      <lightning-textarea
+        label="Home address"
+        data-field="address"
+        onchange={handleValue}
+      ></lightning-textarea>
+      <div class="row">
+        <lightning-input
+          label="Car registration (if parking)"
+          data-field="vehicle"
+          onchange={handleValue}
+        ></lightning-input>
+      </div>
+      <lightning-textarea
+        label="Special requests"
+        data-field="requests"
+        onchange={handleValue}
+      ></lightning-textarea>
+      <lightning-input
+        type="checkbox"
+        label="I accept the house rules (no smoking, quiet hours 22-07)"
+        data-field="terms"
+        onchange={handleValue}
+        required
+      ></lightning-input>
+    </template>
+
+    <template lwc:if={isMoveIn}>
+      <div class="row">
+        <lightning-input
+          label="Full name"
+          value={values.fullName}
+          data-field="fullName"
+          onchange={handleValue}
+          required
+        ></lightning-input>
+        <lightning-input
+          type="tel"
+          label="Mobile phone"
+          value={values.phone}
+          data-field="phone"
+          onchange={handleValue}
+        ></lightning-input>
+      </div>
+      <div class="row">
+        <lightning-input
+          type="date"
+          label="Moving in on"
+          value={values.moveInDate}
+          data-field="moveInDate"
+          onchange={handleValue}
+        ></lightning-input>
+        <lightning-input
+          type="number"
+          label="People living in the home"
+          min="1"
+          max="20"
+          data-field="occupants"
+          onchange={handleValue}
+        ></lightning-input>
+      </div>
+      <lightning-input
+        label="Emergency contact (name and phone)"
+        data-field="emergencyContact"
+        onchange={handleValue}
+      ></lightning-input>
+      <lightning-input
+        label="Car registration (if parking)"
+        data-field="vehicle"
+        onchange={handleValue}
+      ></lightning-input>
+      <template lwc:if={hasMeters}>
+        <p class="hint">
+          Meter readings on the day you move in (you can also send them later):
+        </p>
+        <div class="row">
+          <template for:each={meters} for:item="m">
+            <lightning-input
+              key={m.id}
+              type="number"
+              step="0.001"
+              min="0"
+              label={m.label}
+              field-level-help={m.help}
+              data-id={m.id}
+              onchange={handleReading}
+            ></lightning-input>
+          </template>
+        </div>
+      </template>
+      <lightning-textarea
+        label="Anything we should know before you move in?"
+        data-field="requests"
+        onchange={handleValue}
+      ></lightning-textarea>
+      <lightning-input
+        type="checkbox"
+        label="The details above are correct"
+        data-field="terms"
+        onchange={handleValue}
+        required
+      ></lightning-input>
+    </template>
+
+    <template lwc:if={isClinic}>
+      <template for:each={questions} for:item="q">
+        <div key={q.key} class="q">
+          <template lwc:if={q.isTextarea}>
+            <lightning-textarea
+              label={q.label}
+              data-key={q.key}
+              onchange={handleAnswer}
+              required={q.required}
+            ></lightning-textarea>
+          </template>
+          <template lwc:if={q.isText}>
+            <lightning-input
+              label={q.label}
+              data-key={q.key}
+              onchange={handleAnswer}
+              required={q.required}
+            ></lightning-input>
+          </template>
+          <template lwc:if={q.isSelect}>
+            <lightning-combobox
+              label={q.label}
+              options={q.options}
+              data-key={q.key}
+              onchange={handleAnswer}
+              required={q.required}
+              placeholder="Choose"
+            ></lightning-combobox>
+          </template>
+        </div>
+      </template>
+      <lightning-input
+        type="checkbox"
+        label="I consent to assessment and treatment"
+        data-field="consentTreatment"
+        onchange={handleValue}
+        required
+      ></lightning-input>
+      <lightning-input
+        type="checkbox"
+        label="I agree that my health information is stored for my care"
+        data-field="consentData"
+        onchange={handleValue}
+      ></lightning-input>
+    </template>
+
+    <div class="actions">
+      <lightning-button
+        variant="brand"
+        label={submitLabel}
+        onclick={submit}
+        disabled={busy}
+      ></lightning-button>
+    </div>
+  </div>
+</template>

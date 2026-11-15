@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata"><label
+  >PMS Customer Portal</label><description
+  >Customer portal users: documents and e-signature, online check-in and project approvals (PMS_PortalV2Controller). Assigned automatically to users on the PMS Customer Portal User profile.</description><hasActivationRequired
+  >false</hasActivationRequired><classAccesses><apexClass
+    >PMS_PortalV2Controller</apexClass><enabled
+    >true</enabled></classAccesses></PermissionSet>

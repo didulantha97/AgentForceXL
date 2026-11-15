@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata"><fullName
+  >Booking__c</fullName><label>Booking / Lease</label><referenceTo
+  >PMS_Booking__c</referenceTo><relationshipLabel
+  >Online Check-Ins</relationshipLabel><relationshipName
+  >Online_Check_Ins</relationshipName><deleteConstraint
+  >SetNull</deleteConstraint><type>Lookup</type><required
+  >false</required></CustomField>

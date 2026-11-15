@@ -493,6 +493,14 @@ private class PMS_PublicBookingControllerTest {
 
   @isTest
   static void cleanupSchedules() {
+    // Live jobs are rolled back after the test: free the names so this test can schedule them.
+    for (CronTrigger ct : [
+      SELECT Id
+      FROM CronTrigger
+      WHERE CronJobDetail.Name LIKE 'PMS Web Booking Cleanup%'
+    ]) {
+      System.abortJob(ct.Id);
+    }
     Test.startTest();
     List<Id> ids = PMS_WebBookingCleanup.scheduleEvery15Minutes();
     Test.stopTest();

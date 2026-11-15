@@ -1,0 +1,35 @@
+<template>
+  <template lwc:if={active}>
+    <div class="wrap">
+      <h1>{heading}</h1>
+      <template lwc:if={loading}
+        ><div class="center">
+          <lightning-spinner
+            alternative-text="Loading"
+          ></lightning-spinner></div
+      ></template>
+      <template lwc:if={error}
+        ><div class="alert" role="alert">{error}</div></template
+      >
+      <template lwc:if={checkIn}>
+        <div class="card">
+          <h2>{checkIn.title}</h2>
+          <p class="muted">{checkIn.subtitle} · {checkIn.bookingNumber}</p>
+          <template lwc:if={isDone}>
+            <div class="ok">
+              Thank you! We have your details and look forward to seeing you.
+            </div>
+          </template>
+          <template lwc:if={showForm}>
+            <c-pms-check-in-form
+              check-in={checkIn}
+              busy={busy}
+              error={formError}
+              oncheckinsubmit={handleSubmit}
+            ></c-pms-check-in-form>
+          </template>
+        </div>
+      </template>
+    </div>
+  </template>
+</template>

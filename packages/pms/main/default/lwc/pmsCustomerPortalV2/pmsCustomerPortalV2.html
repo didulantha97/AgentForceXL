@@ -1,0 +1,336 @@
+<template>
+  <div class="portal">
+    <div class="hero">
+      <h1>{greeting}</h1>
+      <template lwc:if={ready}><p class="muted">{actionsLabel}</p></template>
+    </div>
+    <template lwc:if={loading}
+      ><div class="center">
+        <lightning-spinner alternative-text="Loading"></lightning-spinner></div
+    ></template>
+    <template lwc:if={busy}
+      ><lightning-spinner
+        alternative-text="Working"
+        size="small"
+        variant="brand"
+      ></lightning-spinner
+    ></template>
+    <template lwc:if={error}
+      ><div class="alert alert-error" role="alert">{error}</div></template
+    >
+    <template lwc:if={notice}>
+      <div class="alert alert-ok" role="status">
+        <span>{notice}</span
+        ><button class="link" onclick={dismissNotice}>Dismiss</button>
+      </div>
+    </template>
+
+    <template lwc:if={ready}>
+      <lightning-tabset variant="scoped">
+        <!-- ================================================== DOCUMENTS -->
+        <lightning-tab label="Documents">
+          <template lwc:if={hasDocuments}>
+            <template for:each={documents} for:item="d">
+              <div class="card" key={d.id}>
+                <div class="card-head">
+                  <div>
+                    <h2>{d.title}</h2>
+                    <p class="muted small">
+                      {d.name}<template lwc:if={d.relatedTo}>
+                        · {d.relatedTo}</template
+                      >
+                    </p>
+                  </div>
+                  <span class={d.badge}>{d.status}</span>
+                </div>
+                <template lwc:if={d.message}
+                  ><p class="pre">{d.message}</p></template
+                >
+                <template lwc:if={d.dueLabel}
+                  ><p class="small strong">{d.dueLabel}</p></template
+                >
+                <template lwc:if={d.signedLabel}
+                  ><p class="small">{d.signedLabel}</p></template
+                >
+
+                <template lwc:if={d.idle}>
+                  <div class="actions">
+                    <template lwc:if={d.hasFile}>
+                      <lightning-button
+                        label="Read document"
+                        icon-name="utility:preview"
+                        data-id={d.id}
+                        onclick={openDocument}
+                      ></lightning-button>
+                    </template>
+                    <template lwc:if={d.canSign}>
+                      <lightning-button
+                        variant="brand"
+                        label="Sign"
+                        icon-name="utility:signature"
+                        data-id={d.id}
+                        onclick={startSigning}
+                      ></lightning-button>
+                    </template>
+                    <template lwc:if={d.canDecline}>
+                      <lightning-button
+                        variant="base"
+                        label="I can't sign this"
+                        data-id={d.id}
+                        onclick={startDecline}
+                      ></lightning-button>
+                    </template>
+                    <template lwc:if={d.hasSignedCopy}>
+                      <lightning-button
+                        label="Download signed copy"
+                        icon-name="utility:download"
+                        data-id={d.id}
+                        onclick={openSigned}
+                      ></lightning-button>
+                    </template>
+                  </div>
+                </template>
+
+                <template lwc:if={d.signing}>
+                  <div class="panel">
+                    <p class="small">
+                      Please read the document first. Then type your full name
+                      and sign in the box with your finger or mouse.
+                    </p>
+                    <lightning-input
+                      label="Your full name"
+                      value={signerName}
+                      onchange={handleSignerName}
+                      required
+                    ></lightning-input>
+                    <p class="small muted pad-label">Signature</p>
+                    <canvas class="pad"></canvas>
+                    <button class="link small" onclick={clearPad}>
+                      Clear signature
+                    </button>
+                    <lightning-input
+                      type="checkbox"
+                      class="consent"
+                      label="I have read the document and agree that my typed name and drawn signature are my electronic signature."
+                      onchange={handleConsent}
+                    ></lightning-input>
+                    <div class="actions">
+                      <lightning-button
+                        variant="brand"
+                        label="Sign document"
+                        onclick={sign}
+                        disabled={signDisabled}
+                      ></lightning-button>
+                      <lightning-button
+                        label="Cancel"
+                        onclick={cancelSigning}
+                      ></lightning-button>
+                    </div>
+                    <p class="muted tiny">
+                      We record your name, the time, your IP address and a
+                      fingerprint of the document as evidence of your signature.
+                    </p>
+                  </div>
+                </template>
+
+                <template lwc:if={d.declining}>
+                  <div class="panel">
+                    <lightning-textarea
+                      label="What is wrong or unclear?"
+                      onchange={handleDeclineReason}
+                      required
+                    ></lightning-textarea>
+                    <div class="actions">
+                      <lightning-button
+                        variant="destructive"
+                        label="Send to the team"
+                        onclick={sendDecline}
+                        disabled={busy}
+                      ></lightning-button>
+                      <lightning-button
+                        label="Cancel"
+                        onclick={cancelDecline}
+                      ></lightning-button>
+                    </div>
+                  </div>
+                </template>
+              </div>
+            </template>
+          </template>
+          <template lwc:else
+            ><div class="card">
+              <p class="muted">No documents have been shared with you yet.</p>
+            </div></template
+          >
+        </lightning-tab>
+
+        <!-- ================================================== CHECK-IN -->
+        <lightning-tab label="Check-in">
+          <template lwc:if={hasCheckIns}>
+            <template for:each={checkIns} for:item="c">
+              <div class="card" key={c.bookingId}>
+                <div
+                  class="card-head clickable"
+                  data-id={c.bookingId}
+                  onclick={toggleCheckIn}
+                >
+                  <div>
+                    <h2>{c.title}</h2>
+                    <p class="muted small">{c.subtitle} · {c.bookingNumber}</p>
+                  </div>
+                  <div class="right">
+                    <span class="muted small">{c.kindLabel}</span>
+                    <span class={c.badge}>{c.statusLabel}</span>
+                  </div>
+                </div>
+                <template lwc:if={c.open}>
+                  <c-pms-check-in-form
+                    check-in={c}
+                    busy={busy}
+                    error={checkInError}
+                    oncheckinsubmit={handleCheckIn}
+                  ></c-pms-check-in-form>
+                </template>
+              </div>
+            </template>
+          </template>
+          <template lwc:else
+            ><div class="card">
+              <p class="muted">
+                No upcoming stays, appointments or move-ins need online
+                check-in.
+              </p>
+            </div></template
+          >
+        </lightning-tab>
+
+        <!-- ================================================== PROJECTS -->
+        <template lwc:if={hasProjects}>
+          <lightning-tab label="Projects">
+            <template for:each={projects} for:item="p">
+              <div class="card" key={p.id}>
+                <div class="card-head">
+                  <div>
+                    <h2>{p.name}</h2>
+                    <p class="muted small">
+                      {p.status} · {p.dates}<template lwc:if={p.siteName}>
+                        · {p.siteName}</template
+                      >
+                    </p>
+                  </div>
+                  <div class="progress-wrap">
+                    <span class="small">{p.progress}% complete</span>
+                    <div class="progress">
+                      <div class="bar" style={p.progressStyle}></div>
+                    </div>
+                  </div>
+                </div>
+
+                <h3>Milestones</h3>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Milestone</th>
+                      <th>Due</th>
+                      <th class="num">Amount</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <template for:each={p.milestones} for:item="m">
+                      <tr key={m.id}>
+                        <td>
+                          {m.name}
+                          <template lwc:if={m.canAccept}>
+                            <div class="decide">
+                              <lightning-input
+                                variant="label-hidden"
+                                placeholder="Comment (optional, required for questions)"
+                                data-id={m.id}
+                                onchange={handleComment}
+                              ></lightning-input>
+                              <lightning-button
+                                variant="brand"
+                                label="Accept"
+                                data-id={m.id}
+                                onclick={accept}
+                              ></lightning-button>
+                              <lightning-button
+                                label="Not yet: ask a question"
+                                data-id={m.id}
+                                onclick={query}
+                              ></lightning-button>
+                            </div>
+                          </template>
+                          <template lwc:if={m.acceptedLabel}
+                            ><div class="muted tiny">
+                              {m.acceptedLabel}
+                            </div></template
+                          >
+                        </td>
+                        <td>{m.dueLabel}</td>
+                        <td class="num">{m.amountLabel}</td>
+                        <td><span class={m.badge}>{m.status}</span></td>
+                      </tr>
+                    </template>
+                  </tbody>
+                </table>
+
+                <template lwc:if={p.hasApprovals}>
+                  <h3>Decisions</h3>
+                  <template for:each={p.approvals} for:item="a">
+                    <div class="approval" key={a.id}>
+                      <div class="card-head">
+                        <strong>{a.type}: {a.title}</strong>
+                        <span class={a.badge}>{a.status}</span>
+                      </div>
+                      <template lwc:if={a.details}
+                        ><p class="pre small">{a.details}</p></template
+                      >
+                      <p class="small">
+                        {a.amountLabel}
+                        <template lwc:if={a.scheduleLabel}>
+                          · {a.scheduleLabel}</template
+                        >
+                        <template lwc:if={a.dueLabel}> · {a.dueLabel}</template>
+                      </p>
+                      <template lwc:if={a.canDecide}>
+                        <div class="decide">
+                          <lightning-input
+                            variant="label-hidden"
+                            placeholder="Comment (required if you reject)"
+                            data-id={a.id}
+                            onchange={handleComment}
+                          ></lightning-input>
+                          <lightning-button
+                            variant="brand"
+                            label="Approve"
+                            data-id={a.id}
+                            onclick={approve}
+                          ></lightning-button>
+                          <lightning-button
+                            variant="destructive-text"
+                            label="Reject"
+                            data-id={a.id}
+                            onclick={reject}
+                          ></lightning-button>
+                        </div>
+                      </template>
+                      <template lwc:if={a.decidedLabel}
+                        ><p class="muted tiny">
+                          {a.decidedLabel}<template lwc:if={a.comment}
+                            >: "{a.comment}"</template
+                          >
+                        </p></template
+                      >
+                    </div>
+                  </template>
+                </template>
+              </div>
+            </template>
+          </lightning-tab>
+        </template>
+      </lightning-tabset>
+    </template>
+  </div>
+</template>
