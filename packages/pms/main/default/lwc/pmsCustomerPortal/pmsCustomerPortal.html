@@ -1,0 +1,348 @@
+<template>
+  <div class="portal">
+    <template lwc:if={showHeader}>
+      <div class="portal-header">
+        <h1 class="portal-title">{greeting}</h1>
+        <template lwc:if={context}>
+          <p class="portal-sub">{context.accountName}</p>
+        </template>
+      </div>
+    </template>
+
+    <template lwc:if={notice}>
+      <div class="msg msg_ok" role="status">
+        <span>{notice}</span>
+        <button class="link" onclick={dismissNotice}>Dismiss</button>
+      </div>
+    </template>
+    <template lwc:if={error}>
+      <div class="msg msg_err" role="alert">{error}</div>
+    </template>
+
+    <template lwc:if={loading}>
+      <div class="loading">
+        <lightning-spinner
+          alternative-text="Loading"
+          size="small"
+        ></lightning-spinner>
+      </div>
+    </template>
+    <template lwc:else>
+      <lightning-tabset active-tab-value={activeTab}>
+        <!-- OVERVIEW -->
+        <lightning-tab label="Overview" value="overview" onactive={handleTab}>
+          <template lwc:if={context}>
+            <h2 class="section-title">{greeting}</h2>
+            <div class="tiles">
+              <button class="tile" onclick={goBookings}>
+                <span class="tile-value">{context.activeBookings}</span>
+                <span class="tile-label">Active bookings</span>
+              </button>
+              <button class={overdueClass} onclick={goInvoices}>
+                <span class="tile-value">
+                  <lightning-formatted-number
+                    value={context.openBalance}
+                    format-style="currency"
+                    currency-code={currency}
+                  ></lightning-formatted-number>
+                </span>
+                <span class="tile-label"
+                  >To pay ({context.openInvoices} open,
+                  {context.overdueInvoices} overdue)</span
+                >
+              </button>
+              <button class="tile" onclick={goRequests}>
+                <span class="tile-value">{context.openRequests}</span>
+                <span class="tile-label">Open requests</span>
+              </button>
+            </div>
+
+            <h3 class="sub-title">Current and upcoming</h3>
+            <template lwc:if={hasUpcoming}>
+              <ul class="list">
+                <template for:each={upcomingBookings} for:item="b">
+                  <li key={b.id} class="row">
+                    <div class="row-main">
+                      <span class="row-title">{b.kind}: {b.spaceName}</span>
+                      <span class="row-meta">{b.siteName}</span>
+                      <span class="row-meta">
+                        <lightning-formatted-date-time
+                          value={b.startAt}
+                          year="numeric"
+                          month="short"
+                          day="numeric"
+                        ></lightning-formatted-date-time>
+                        &nbsp;to&nbsp;
+                        <lightning-formatted-date-time
+                          value={b.endAt}
+                          year="numeric"
+                          month="short"
+                          day="numeric"
+                        ></lightning-formatted-date-time>
+                      </span>
+                    </div>
+                    <span class={b.badge}>{b.status}</span>
+                  </li>
+                </template>
+              </ul>
+            </template>
+            <template lwc:else>
+              <p class="empty">Nothing coming up.</p>
+            </template>
+
+            <template lwc:if={hasOpenInvoices}>
+              <h3 class="sub-title">Waiting for payment</h3>
+              <ul class="list">
+                <template for:each={openInvoices} for:item="i">
+                  <li key={i.id} class="row">
+                    <div class="row-main">
+                      <span class="row-title">Invoice {i.name}</span>
+                      <span class="row-meta"
+                        >Due
+                        <lightning-formatted-date-time
+                          value={i.dueDate}
+                          year="numeric"
+                          month="short"
+                          day="numeric"
+                          time-zone="UTC"
+                        ></lightning-formatted-date-time
+                      ></span>
+                    </div>
+                    <div class="row-side">
+                      <span class="amount"
+                        ><lightning-formatted-number
+                          value={i.balance}
+                          format-style="currency"
+                          currency-code={i.currencyCode}
+                        ></lightning-formatted-number
+                      ></span>
+                      <lightning-button
+                        variant="brand"
+                        label="Pay now"
+                        data-id={i.id}
+                        onclick={handlePay}
+                        disabled={i.isPaying}
+                      ></lightning-button>
+                    </div>
+                  </li>
+                </template>
+              </ul>
+            </template>
+          </template>
+        </lightning-tab>
+
+        <!-- BOOKINGS -->
+        <lightning-tab
+          label="My bookings"
+          value="bookings"
+          onactive={handleTab}
+        >
+          <template lwc:if={hasBookings}>
+            <ul class="list">
+              <template for:each={bookings} for:item="b">
+                <li key={b.id} class="row">
+                  <div class="row-main">
+                    <span class="row-title">{b.kind}: {b.spaceName}</span>
+                    <span class="row-meta">{b.siteName} · {b.name}</span>
+                    <span class="row-meta">
+                      <lightning-formatted-date-time
+                        value={b.startAt}
+                        year="numeric"
+                        month="short"
+                        day="numeric"
+                      ></lightning-formatted-date-time>
+                      &nbsp;to&nbsp;
+                      <lightning-formatted-date-time
+                        value={b.endAt}
+                        year="numeric"
+                        month="short"
+                        day="numeric"
+                      ></lightning-formatted-date-time>
+                    </span>
+                  </div>
+                  <div class="row-side">
+                    <span class={b.badge}>{b.status}</span>
+                    <template lwc:if={b.hasBalance}>
+                      <span class="row-meta"
+                        >Balance
+                        <lightning-formatted-number
+                          value={b.balance}
+                          format-style="currency"
+                          currency-code={currency}
+                        ></lightning-formatted-number
+                      ></span>
+                    </template>
+                  </div>
+                </li>
+              </template>
+            </ul>
+          </template>
+          <template lwc:else>
+            <p class="empty">You have no bookings with us yet.</p>
+          </template>
+        </lightning-tab>
+
+        <!-- INVOICES -->
+        <lightning-tab label="Invoices" value="invoices" onactive={handleTab}>
+          <template lwc:if={hasInvoices}>
+            <ul class="list">
+              <template for:each={invoices} for:item="i">
+                <li key={i.id} class="row">
+                  <div class="row-main">
+                    <span class="row-title">Invoice {i.name}</span>
+                    <span class="row-meta">
+                      Issued
+                      <lightning-formatted-date-time
+                        value={i.issueDate}
+                        year="numeric"
+                        month="short"
+                        day="numeric"
+                        time-zone="UTC"
+                      ></lightning-formatted-date-time>
+                      · Due
+                      <lightning-formatted-date-time
+                        value={i.dueDate}
+                        year="numeric"
+                        month="short"
+                        day="numeric"
+                        time-zone="UTC"
+                      ></lightning-formatted-date-time>
+                    </span>
+                    <span class="row-meta"
+                      >Total
+                      <lightning-formatted-number
+                        value={i.total}
+                        format-style="currency"
+                        currency-code={i.currencyCode}
+                      ></lightning-formatted-number
+                    ></span>
+                  </div>
+                  <div class="row-side">
+                    <span class={i.badge}>{i.statusLabel}</span>
+                    <template lwc:if={i.payable}>
+                      <span class="amount"
+                        ><lightning-formatted-number
+                          value={i.balance}
+                          format-style="currency"
+                          currency-code={i.currencyCode}
+                        ></lightning-formatted-number
+                      ></span>
+                      <lightning-button
+                        variant="brand"
+                        label="Pay now"
+                        data-id={i.id}
+                        onclick={handlePay}
+                        disabled={i.isPaying}
+                      ></lightning-button>
+                    </template>
+                  </div>
+                </li>
+              </template>
+            </ul>
+            <p class="hint">
+              Payments are handled securely by Stripe. A paid invoice updates
+              here within a minute.
+            </p>
+          </template>
+          <template lwc:else>
+            <p class="empty">No invoices yet.</p>
+          </template>
+        </lightning-tab>
+
+        <!-- REQUESTS -->
+        <lightning-tab label="Requests" value="requests" onactive={handleTab}>
+          <div class="toolbar">
+            <template lwc:if={showNewButton}>
+              <lightning-button
+                variant="brand"
+                label="New request"
+                icon-name="utility:add"
+                onclick={openForm}
+              ></lightning-button>
+            </template>
+          </div>
+
+          <template lwc:if={showForm}>
+            <div class="form">
+              <h3 class="sub-title">New request</h3>
+              <template lwc:if={formError}>
+                <div class="msg msg_err" role="alert">{formError}</div>
+              </template>
+              <lightning-input
+                label="What's the problem?"
+                value={subject}
+                onchange={handleSubject}
+                max-length="255"
+                required
+                placeholder="For example: kitchen tap is leaking"
+              ></lightning-input>
+              <lightning-textarea
+                label="Details"
+                value={description}
+                onchange={handleDescription}
+                placeholder="Where is it, when did it start, anything we should know?"
+              ></lightning-textarea>
+              <lightning-combobox
+                label="Which booking is it about?"
+                value={bookingId}
+                options={bookingOptions}
+                onchange={handleBooking}
+              ></lightning-combobox>
+              <template lwc:if={selectedIsLease}>
+                <lightning-input
+                  type="checkbox"
+                  label="You may enter my home if I'm not in"
+                  checked={entryPermission}
+                  onchange={handleEntry}
+                ></lightning-input>
+              </template>
+              <div class="form-actions">
+                <lightning-button
+                  label="Cancel"
+                  onclick={cancelForm}
+                ></lightning-button>
+                <lightning-button
+                  variant="brand"
+                  label="Send request"
+                  onclick={submitRequest}
+                  disabled={submitDisabled}
+                ></lightning-button>
+              </div>
+            </div>
+          </template>
+
+          <template lwc:if={hasRequests}>
+            <ul class="list">
+              <template for:each={requests} for:item="r">
+                <li key={r.id} class="row">
+                  <div class="row-main">
+                    <span class="row-title">{r.subject}</span>
+                    <span class="row-meta">
+                      #{r.caseNumber} ·
+                      <lightning-formatted-date-time
+                        value={r.createdDate}
+                        year="numeric"
+                        month="short"
+                        day="numeric"
+                      ></lightning-formatted-date-time>
+                      <template lwc:if={r.spaceName}
+                        >&nbsp;· {r.spaceName}</template
+                      >
+                    </span>
+                  </div>
+                  <span class={r.badge}>{r.status}</span>
+                </li>
+              </template>
+            </ul>
+          </template>
+          <template lwc:else>
+            <p class="empty">
+              No requests yet. Use New request to report a problem or ask for
+              help.
+            </p>
+          </template>
+        </lightning-tab>
+      </lightning-tabset>
+    </template>
+  </div>
+</template>

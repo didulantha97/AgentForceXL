@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>66.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>PMS Public Booking</masterLabel>
+    <description
+  >Public booking engine: hotel stays, appointments and homes to rent, with Stripe payment.</description>
+    <targets>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightningCommunity__Default">
+            <property
+        name="heading"
+        type="String"
+        label="Heading"
+        default="Book online"
+      />
+            <property
+        name="intro"
+        type="String"
+        label="Intro text"
+        default="Rooms, appointments and homes to rent. Pay securely by card."
+      />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

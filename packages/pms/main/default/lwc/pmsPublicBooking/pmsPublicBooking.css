@@ -1,0 +1,238 @@
+:host {
+  display: block;
+  --pms-accent: var(--dxp-g-brand, #0b5cab);
+  --pms-text: var(--dxp-g-root-contrast, #181818);
+  --pms-muted: #5c6670;
+  --pms-border: #dde1e6;
+  --pms-surface: var(--dxp-g-root, #ffffff);
+  --pms-soft: #f4f6f9;
+}
+.pms {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+  color: var(--pms-text);
+}
+.pms-header {
+  margin-bottom: 1.25rem;
+}
+.pms-title {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0 0 0.25rem;
+}
+.pms-intro {
+  color: var(--pms-muted);
+  margin: 0;
+}
+.pms-loading {
+  position: relative;
+  min-height: 6rem;
+}
+
+.pms-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+.pms-tab {
+  border: 1px solid var(--pms-border);
+  background: var(--pms-surface);
+  color: var(--pms-text);
+  border-radius: 999px;
+  padding: 0.5rem 1.1rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+.pms-tab:hover {
+  border-color: var(--pms-accent);
+}
+.pms-tab_active {
+  background: var(--pms-accent);
+  border-color: var(--pms-accent);
+  color: #fff;
+}
+
+.pms-card {
+  position: relative;
+  background: var(--pms-surface);
+  border: 1px solid var(--pms-border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+}
+.pms-alert {
+  background: #fef1ee;
+  border: 1px solid #f3b8aa;
+  color: #8c1d06;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+}
+.pms-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem 1rem;
+}
+.pms-details .pms-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.pms-span-2 {
+  grid-column: span 2;
+}
+.pms-actions {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+.pms-actions_split {
+  justify-content: space-between;
+}
+
+.pms-list {
+  display: grid;
+  gap: 0;
+}
+.pms-option {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.pms-option-main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.pms-option-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 0 0 0.35rem;
+}
+.pms-option-price {
+  flex: 0 0 auto;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.35rem;
+}
+.pms-price {
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+.pms-desc {
+  margin: 0.5rem 0 0;
+  white-space: pre-line;
+}
+.pms-muted {
+  color: var(--pms-muted);
+}
+.pms-small {
+  font-size: 0.85rem;
+}
+.pms-few {
+  color: #a34d00;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.pms-badge {
+  background: var(--pms-soft);
+  border-radius: 999px;
+  padding: 0.25rem 0.75rem;
+  color: var(--pms-muted);
+}
+
+.pms-slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.pms-slot {
+  border: 1px solid var(--pms-accent);
+  color: var(--pms-accent);
+  background: var(--pms-surface);
+  border-radius: 8px;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+  min-width: 4.5rem;
+}
+.pms-slot:hover,
+.pms-slot:focus {
+  background: var(--pms-accent);
+  color: #fff;
+}
+
+.pms-two-col {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  gap: 1rem;
+  align-items: start;
+}
+.pms-summary {
+  background: var(--pms-soft);
+}
+.pms-summary-lines {
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+}
+.pms-summary-lines li {
+  padding: 0.2rem 0;
+}
+.pms-summary-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-top: 1px solid var(--pms-border);
+  padding-top: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+.pms-center {
+  text-align: center;
+}
+.pms-center .pms-price {
+  margin: 0.5rem 0 1rem;
+}
+
+/* Spam trap: kept out of sight and out of the tab order. */
+.pms-hp {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+@media (max-width: 760px) {
+  .pms-grid,
+  .pms-details .pms-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .pms-two-col {
+    grid-template-columns: 1fr;
+  }
+  .pms-option {
+    flex-direction: column;
+  }
+  .pms-option-price {
+    align-items: flex-start;
+    text-align: left;
+  }
+}
+@media (max-width: 480px) {
+  .pms-grid,
+  .pms-details .pms-grid {
+    grid-template-columns: 1fr;
+  }
+  .pms-span-2 {
+    grid-column: span 1;
+  }
+  .pms-title {
+    font-size: 1.6rem;
+  }
+}

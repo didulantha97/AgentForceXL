@@ -111,19 +111,6 @@ private class PMS_CoreServicesTest {
       'Space type default rate 1000 x 2 nights'
     );
 
-    PMS_TestDataFactory.Practice pr = PMS_TestDataFactory.practice();
-    PMS_PricingService.QuoteRequest sq = new PMS_PricingService.QuoteRequest();
-    sq.module = 'Practice';
-    sq.serviceId = pr.service.Id;
-    sq.startDate = Date.today().addDays(5);
-    sq.endDate = sq.startDate;
-    sq.hours = 0.5;
-    PMS_TestDataFactory.num(
-      400,
-      PMS_PricingService.quote(sq).net,
-      'Per hour: 800 x 0.5'
-    );
-
     PMS_TestDataFactory.Property p = PMS_TestDataFactory.property();
     PMS_PricingService.QuoteRequest lq = new PMS_PricingService.QuoteRequest();
     lq.module = 'Property';
@@ -133,6 +120,53 @@ private class PMS_CoreServicesTest {
     PMS_PricingService.Quote leaseQuote = PMS_PricingService.quote(lq);
     PMS_TestDataFactory.num(6, leaseQuote.units, 'months');
     PMS_TestDataFactory.num(9000, leaseQuote.unitPrice, 'rent');
+  }
+
+  @isTest
+  static void servicesArePricedPerSessionWithTheirOwnTax() {
+    PMS_TestDataFactory.Practice pr = PMS_TestDataFactory.practice();
+    PMS_PricingService.QuoteRequest sq = new PMS_PricingService.QuoteRequest();
+    sq.module = 'Practice';
+    sq.serviceId = pr.service.Id;
+    sq.startDate = Date.today().addDays(5);
+    sq.endDate = sq.startDate;
+    sq.hours = 0.5;
+
+    PMS_PricingService.Quote q = PMS_PricingService.quote(sq);
+    Assert.areEqual(PMS_PricingService.PER_SESSION, q.pricingBasis);
+    PMS_TestDataFactory.num(1, q.units, 'one session, whatever its length');
+    PMS_TestDataFactory.num(800, q.net, 'service price');
+    PMS_TestDataFactory.num(
+      25,
+      q.taxRate,
+      'no service tax rate: module default'
+    );
+    PMS_TestDataFactory.num(1000, q.gross, 'gross');
+
+    update new PMS_Service__c(Id = pr.service.Id, Tax_Rate__c = 0);
+    q = PMS_PricingService.quote(sq);
+    PMS_TestDataFactory.num(0, q.taxRate, 'VAT-exempt service');
+    PMS_TestDataFactory.num(800, q.gross, 'no VAT added');
+
+    // A rate plan can still price a service by the hour.
+    PMS_Rate_Plan__c hourly = new PMS_Rate_Plan__c(
+      Name = 'Hourly',
+      Site__c = pr.site.Id,
+      Module__c = 'Practice',
+      Pricing_Basis__c = 'Per Hour',
+      Tax_Rate__c = 25,
+      Active__c = true
+    );
+    insert hourly;
+    insert new PMS_Rate__c(
+      Rate_Plan__c = hourly.Id,
+      Service__c = pr.service.Id,
+      Amount__c = 1200
+    );
+    sq.ratePlanId = hourly.Id;
+    q = PMS_PricingService.quote(sq);
+    PMS_TestDataFactory.num(600, q.net, '1200/h x 0.5h');
+    PMS_TestDataFactory.num(750, q.gross, 'plan tax applies');
   }
 
   @isTest

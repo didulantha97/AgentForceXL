@@ -3,9 +3,15 @@
  * honouring seasons (date ranges), days of the week and minimum stay.
  * Falls back to Space Base Rate, Space Type Default Rate or Service Price.
  *
+ * Services without a rate plan are priced per session: one unit at the service's Price,
+ * taxed at the service's own Tax Rate when set (else the module default). A rate plan can
+ * still price services per hour by setting its Pricing Basis to Per Hour.
+ *
  * Note: percent fields hold whole numbers in Apex (12 = 12%).
  */
 public inherited sharing class PMS_PricingService {
+  public static final String PER_SESSION = 'Per Session';
+
   public class QuoteLine {
     @AuraEnabled
     public Date serviceDate;
@@ -54,17 +60,25 @@ public inherited sharing class PMS_PricingService {
   public static Quote quote(QuoteRequest req) {
     Quote q = new Quote();
     PMS_Rate_Plan__c plan = loadPlan(req.ratePlanId);
+    PMS_Service__c service = loadService(req.serviceId);
     q.ratePlanId = plan == null ? null : plan.Id;
-    q.pricingBasis = plan != null && String.isNotBlank(plan.Pricing_Basis__c)
-      ? plan.Pricing_Basis__c
-      : PMS_ModuleConfig.pricingBasis(req.module);
+    if (plan != null && String.isNotBlank(plan.Pricing_Basis__c)) {
+      q.pricingBasis = plan.Pricing_Basis__c;
+    } else if (service != null) {
+      q.pricingBasis = PER_SESSION;
+    } else {
+      q.pricingBasis = PMS_ModuleConfig.pricingBasis(req.module);
+    }
     q.currencyCode = plan == null ? null : plan.Currency_Code__c;
-    q.taxRate = plan != null &&
-      plan.Tax_Rate__c != null
-      ? plan.Tax_Rate__c
-      : PMS_ModuleConfig.defaultTaxRate(req.module);
+    if (plan != null && plan.Tax_Rate__c != null) {
+      q.taxRate = plan.Tax_Rate__c;
+    } else if (service != null && service.Tax_Rate__c != null) {
+      q.taxRate = service.Tax_Rate__c;
+    } else {
+      q.taxRate = PMS_ModuleConfig.defaultTaxRate(req.module);
+    }
 
-    Decimal fallback = fallbackPrice(req);
+    Decimal fallback = fallbackPrice(req, service);
     List<PMS_Rate__c> rates = plan == null
       ? new List<PMS_Rate__c>()
       : plan.Rates__r;
@@ -149,6 +163,18 @@ public inherited sharing class PMS_PricingService {
     return plans.isEmpty() ? null : plans[0];
   }
 
+  private static PMS_Service__c loadService(Id serviceId) {
+    if (serviceId == null) {
+      return null;
+    }
+    List<PMS_Service__c> services = [
+      SELECT Id, Price__c, Tax_Rate__c
+      FROM PMS_Service__c
+      WHERE Id = :serviceId
+    ];
+    return services.isEmpty() ? null : services[0];
+  }
+
   /** Most specific matching rate: the narrowest season wins; undated rates are the fallback. */
   @TestVisible
   private static PMS_Rate__c bestRate(
@@ -218,7 +244,10 @@ public inherited sharing class PMS_PricingService {
     return best;
   }
 
-  private static Decimal fallbackPrice(QuoteRequest req) {
+  private static Decimal fallbackPrice(
+    QuoteRequest req,
+    PMS_Service__c service
+  ) {
     if (req.spaceId != null) {
       List<PMS_Space__c> spaces = [
         SELECT Base_Rate__c, Space_Type__r.Default_Rate__c
@@ -247,15 +276,8 @@ public inherited sharing class PMS_PricingService {
         return types[0].Default_Rate__c;
       }
     }
-    if (req.serviceId != null) {
-      List<PMS_Service__c> services = [
-        SELECT Price__c
-        FROM PMS_Service__c
-        WHERE Id = :req.serviceId
-      ];
-      if (!services.isEmpty() && services[0].Price__c != null) {
-        return services[0].Price__c;
-      }
+    if (service != null && service.Price__c != null) {
+      return service.Price__c;
     }
     return 0;
   }

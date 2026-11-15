@@ -1,0 +1,407 @@
+<template>
+  <div class="pms">
+    <header class="pms-header">
+      <h1 class="pms-title">{heading}</h1>
+      <p class="pms-intro">{intro}</p>
+    </header>
+
+    <template lwc:if={loading}>
+      <div class="pms-loading">
+        <lightning-spinner
+          alternative-text="Loading"
+          size="medium"
+        ></lightning-spinner>
+      </div>
+    </template>
+    <template lwc:if={loadError}>
+      <div class="pms-alert" role="alert">{loadError}</div>
+    </template>
+    <template lwc:if={nothingToBook}>
+      <div class="pms-card">
+        Online booking is not open right now. Please call us.
+      </div>
+    </template>
+
+    <template lwc:if={showTabs}>
+      <div class="pms-tabs" role="tablist">
+        <template for:each={modes} for:item="m">
+          <button
+            key={m.key}
+            class={m.className}
+            role="tab"
+            aria-selected={m.selected}
+            data-mode={m.key}
+            onclick={handleMode}
+          >
+            {m.label}
+          </button>
+        </template>
+      </div>
+    </template>
+
+    <template lwc:if={error}>
+      <div class="pms-alert" role="alert">{error}</div>
+    </template>
+
+    <!-- ============ Browse ============ -->
+    <template lwc:if={isBrowse}>
+      <!-- Hotel stay -->
+      <template lwc:if={isStay}>
+        <section class="pms-card pms-stay-search">
+          <div class="pms-grid">
+            <template lwc:if={multipleHotels}>
+              <lightning-combobox
+                class="pms-span-2"
+                label="Hotel"
+                options={hotelOptions}
+                value={hotelId}
+                data-field="hotelId"
+                onchange={handleStayField}
+                required
+              ></lightning-combobox>
+            </template>
+            <lightning-input
+              type="date"
+              label="Arrival"
+              value={checkIn}
+              min={today}
+              data-field="checkIn"
+              onchange={handleStayField}
+              required
+            ></lightning-input>
+            <lightning-input
+              type="date"
+              label="Departure"
+              value={checkOut}
+              min={minCheckOut}
+              data-field="checkOut"
+              onchange={handleStayField}
+              required
+            ></lightning-input>
+            <lightning-input
+              type="number"
+              label="Adults"
+              value={adults}
+              min="1"
+              max="10"
+              data-field="adults"
+              onchange={handleStayField}
+              required
+            ></lightning-input>
+            <lightning-input
+              type="number"
+              label="Children"
+              value={children}
+              min="0"
+              max="9"
+              data-field="children"
+              onchange={handleStayField}
+            ></lightning-input>
+          </div>
+          <div class="pms-actions">
+            <lightning-button
+              variant="brand"
+              label="Check availability"
+              onclick={handleSearchStays}
+              disabled={busy}
+            ></lightning-button>
+          </div>
+        </section>
+
+        <template lwc:if={stayResults}>
+          <template lwc:if={noStayResults}>
+            <div class="pms-card pms-muted">
+              Nothing is free for those dates. Try other dates or fewer guests.
+            </div>
+          </template>
+          <div class="pms-list">
+            <template for:each={stayResults} for:item="o">
+              <article key={o.spaceTypeId} class="pms-card pms-option">
+                <div class="pms-option-main">
+                  <h2 class="pms-option-title">{o.name}</h2>
+                  <p class="pms-muted">{o.guestsText}</p>
+                  <template lwc:if={o.description}
+                    ><p class="pms-desc">{o.description}</p></template
+                  >
+                </div>
+                <div class="pms-option-price">
+                  <template lwc:if={o.soldOut}>
+                    <span class="pms-badge">Sold out</span>
+                  </template>
+                  <template lwc:else>
+                    <div class="pms-price">{o.totalText}</div>
+                    <div class="pms-muted">{o.nightsText}, tax included</div>
+                    <template lwc:if={o.fewLeft}
+                      ><div class="pms-few">
+                        Only {o.available} left
+                      </div></template
+                    >
+                    <lightning-button
+                      variant="brand"
+                      label="Book"
+                      data-id={o.spaceTypeId}
+                      onclick={handleChooseStay}
+                    ></lightning-button>
+                  </template>
+                </div>
+              </article>
+            </template>
+          </div>
+        </template>
+      </template>
+
+      <!-- Appointment -->
+      <template lwc:if={isAppointment}>
+        <section class="pms-card pms-appt-search">
+          <div class="pms-grid">
+            <lightning-combobox
+              class="pms-span-2"
+              label="Treatment"
+              options={serviceOptions}
+              value={serviceId}
+              data-field="serviceId"
+              onchange={handleApptField}
+              required
+            ></lightning-combobox>
+            <lightning-combobox
+              label="Practitioner"
+              options={practitionerOptions}
+              value={practitionerId}
+              data-field="practitionerId"
+              onchange={handleApptField}
+            ></lightning-combobox>
+            <lightning-input
+              type="date"
+              label="Date"
+              value={apptDate}
+              min={today}
+              max={maxApptDate}
+              data-field="apptDate"
+              onchange={handleApptField}
+              required
+            ></lightning-input>
+          </div>
+          <div class="pms-actions">
+            <lightning-button
+              variant="brand"
+              label="Show times"
+              onclick={handleFindSlots}
+              disabled={busy}
+            ></lightning-button>
+          </div>
+        </section>
+        <template lwc:if={noSlots}>
+          <div class="pms-card pms-muted">
+            No free times that day. Try another date or practitioner.
+          </div>
+        </template>
+        <template lwc:if={slotGroups}>
+          <template for:each={slotGroups} for:item="g">
+            <section key={g.key} class="pms-card">
+              <h2 class="pms-option-title">{g.name}</h2>
+              <div class="pms-slots">
+                <template for:each={g.slots} for:item="s">
+                  <button
+                    key={s.key}
+                    class="pms-slot"
+                    data-key={s.key}
+                    onclick={handleChooseSlot}
+                  >
+                    {s.label}
+                  </button>
+                </template>
+              </div>
+            </section>
+          </template>
+        </template>
+      </template>
+
+      <!-- Homes to rent -->
+      <template lwc:if={isHomes}>
+        <div class="pms-list">
+          <template for:each={homes} for:item="h">
+            <article key={h.id} class="pms-card pms-option">
+              <div class="pms-option-main">
+                <h2 class="pms-option-title">{h.name}</h2>
+                <p class="pms-muted">
+                  {h.siteName}<template lwc:if={h.address}>
+                    · {h.address}</template
+                  >
+                </p>
+                <p>{h.facts}</p>
+                <template lwc:if={h.amenityText}
+                  ><p class="pms-muted">{h.amenityText}</p></template
+                >
+              </div>
+              <div class="pms-option-price">
+                <div class="pms-price">{h.rentText}</div>
+                <lightning-button
+                  variant="brand"
+                  label="Request a viewing"
+                  data-id={h.id}
+                  onclick={handleChooseHome}
+                ></lightning-button>
+              </div>
+            </article>
+          </template>
+        </div>
+      </template>
+    </template>
+
+    <!-- ============ Details ============ -->
+    <template lwc:if={isDetails}>
+      <div class="pms-two-col">
+        <section class="pms-card pms-details">
+          <h2 class="pms-option-title">Your details</h2>
+          <div class="pms-grid">
+            <lightning-input
+              label="First name"
+              value={guest.firstName}
+              data-field="firstName"
+              max-length="40"
+              autocomplete="given-name"
+              onchange={handleGuestField}
+              required
+            ></lightning-input>
+            <lightning-input
+              label="Last name"
+              value={guest.lastName}
+              data-field="lastName"
+              max-length="80"
+              autocomplete="family-name"
+              onchange={handleGuestField}
+              required
+            ></lightning-input>
+            <lightning-input
+              type="email"
+              label="Email"
+              value={guest.email}
+              data-field="email"
+              max-length="80"
+              autocomplete="email"
+              onchange={handleGuestField}
+              required
+            ></lightning-input>
+            <lightning-input
+              type="tel"
+              label="Phone"
+              value={guest.phone}
+              data-field="phone"
+              max-length="40"
+              autocomplete="tel"
+              onchange={handleGuestField}
+              required={isEnquiry}
+            ></lightning-input>
+            <lightning-textarea
+              class="pms-span-2"
+              label={notesLabel}
+              value={guest.notes}
+              data-field="notes"
+              max-length="2000"
+              onchange={handleGuestField}
+            ></lightning-textarea>
+          </div>
+          <!-- Spam trap: hidden from people, filled in by bots. -->
+          <div class="pms-hp" aria-hidden="true">
+            <label
+              >Website
+              <input
+                type="text"
+                name="website"
+                tabindex="-1"
+                autocomplete="off"
+                value={honeypot}
+                onchange={handleHoneypot}
+            /></label>
+          </div>
+          <div class="pms-actions pms-actions_split">
+            <lightning-button
+              label="Back"
+              onclick={backToBrowse}
+              disabled={busy}
+            ></lightning-button>
+            <lightning-button
+              variant="brand"
+              label={submitLabel}
+              onclick={handleSubmit}
+              disabled={busy}
+            ></lightning-button>
+          </div>
+          <template lwc:if={busy}
+            ><lightning-spinner
+              alternative-text="Working"
+              size="small"
+            ></lightning-spinner
+          ></template>
+        </section>
+
+        <aside class="pms-card pms-summary">
+          <h2 class="pms-option-title">{summaryTitle}</h2>
+          <ul class="pms-summary-lines">
+            <template for:each={summaryLines} for:item="line">
+              <li key={line}>{line}</li>
+            </template>
+          </ul>
+          <template lwc:if={summaryTotal}>
+            <div class="pms-summary-total">
+              <span>Total to pay now</span
+              ><span class="pms-price">{summaryTotal}</span>
+            </div>
+            <p class="pms-muted pms-small">
+              Card payment on Stripe's secure page. Your booking is held for 35
+              minutes while you pay.
+            </p>
+          </template>
+          <template lwc:if={cancellationPolicy}>
+            <p class="pms-small">
+              <strong>Cancellation:</strong> {cancellationPolicy}
+            </p>
+          </template>
+        </aside>
+      </div>
+    </template>
+
+    <!-- ============ Paying ============ -->
+    <template lwc:if={isPaying}>
+      <section class="pms-card pms-center">
+        <h2 class="pms-option-title">
+          Booking {booking.bookingNumber} is held for you
+        </h2>
+        <p>{booking.summary}</p>
+        <p class="pms-price">{bookingAmountText}</p>
+        <template lwc:if={busy}>
+          <p class="pms-muted">Taking you to secure payment…</p>
+          <lightning-spinner
+            alternative-text="Redirecting"
+            size="small"
+          ></lightning-spinner>
+        </template>
+        <template lwc:else>
+          <p class="pms-muted">
+            Complete payment within {booking.holdMinutes} minutes to confirm.
+          </p>
+          <lightning-button
+            variant="brand"
+            label="Pay now"
+            onclick={goToPayment}
+          ></lightning-button>
+        </template>
+      </section>
+    </template>
+
+    <!-- ============ Done (enquiry) ============ -->
+    <template lwc:if={isDone}>
+      <section class="pms-card pms-center">
+        <h2 class="pms-option-title">Thank you, we've got your request</h2>
+        <p>
+          Your reference is <strong>{caseNumber}</strong>. We'll contact you
+          shortly to arrange a viewing.
+        </p>
+        <lightning-button
+          label="See more homes"
+          onclick={backToBrowse}
+        ></lightning-button>
+      </section>
+    </template>
+  </div>
+</template>

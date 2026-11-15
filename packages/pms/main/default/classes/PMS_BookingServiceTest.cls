@@ -258,9 +258,9 @@ private class PMS_BookingServiceTest {
       'minutes'
     );
     PMS_TestDataFactory.num(
-      500,
+      1000,
       b.Total_Amount__c,
-      '800/h x 0.5h = 400 + 25% VAT'
+      '800 per session + 25% module VAT (service has no tax rate)'
     );
   }
 }
