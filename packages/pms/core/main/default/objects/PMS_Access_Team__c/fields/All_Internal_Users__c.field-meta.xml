@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata"><fullName
+  >All_Internal_Users__c</fullName><defaultValue
+  >false</defaultValue><inlineHelpText
+  >Tick to make this team mean every internal user. Members are then ignored.</inlineHelpText><label
+  >Everyone (all internal users)</label><type>Checkbox</type></CustomField>

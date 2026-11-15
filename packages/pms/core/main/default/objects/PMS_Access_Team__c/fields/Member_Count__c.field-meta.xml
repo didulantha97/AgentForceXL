@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata"><fullName
+  >Member_Count__c</fullName><label>Members</label><summaryForeignKey
+  >PMS_Access_Team_Member__c.Team__c</summaryForeignKey><summaryOperation
+  >count</summaryOperation><type>Summary</type></CustomField>

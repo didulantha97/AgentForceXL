@@ -1,0 +1,261 @@
+<template>
+  <lightning-card title="Access Setup" icon-name="standard:user_role">
+    <div slot="actions">
+      <lightning-button-group>
+        <lightning-button
+          label="New team"
+          icon-name="utility:groups"
+          onclick={handleNewTeam}
+          disabled={cannotManage}
+        ></lightning-button>
+        <lightning-button
+          label="New rule"
+          icon-name="utility:rules"
+          onclick={handleNewRule}
+          disabled={cannotManage}
+        ></lightning-button>
+        <lightning-button
+          label="Recalculate now"
+          icon-name="utility:refresh"
+          onclick={handleRecalc}
+          disabled={cannotManage}
+        ></lightning-button>
+        <lightning-button-icon
+          icon-name="utility:sync"
+          alternative-text="Reload"
+          onclick={handleRefresh}
+        ></lightning-button-icon>
+      </lightning-button-group>
+    </div>
+
+    <div class="slds-p-horizontal_medium">
+      <template lwc:if={loading}>
+        <lightning-spinner
+          alternative-text="Loading"
+          size="small"
+        ></lightning-spinner>
+      </template>
+      <template lwc:if={error}>
+        <div
+          class="slds-notify slds-notify_alert slds-alert_error"
+          role="alert"
+        >
+          {error}
+        </div>
+      </template>
+
+      <template lwc:if={data}>
+        <p class="slds-text-body_regular slds-m-bottom_small">
+          Teams say <strong>who</strong>. Rules say
+          <strong>which sites and modules</strong> a team can see, and whether
+          it can change them. A person sees a record when any of their teams has
+          a matching rule. Spaces follow their site.
+        </p>
+        <template lwc:if={cannotManage}>
+          <div
+            class="slds-notify slds-notify_alert slds-alert_warning slds-m-bottom_small"
+            role="alert"
+          >
+            You can look, but changing teams and rules needs the PMS Access
+            Manager permission set.
+          </div>
+        </template>
+        <template lwc:if={notAppliedYet}>
+          <div
+            class="slds-notify slds-notify_alert slds-alert_offline slds-m-bottom_small"
+            role="alert"
+          >
+            Rules are saved but not applied yet: every PMS object is still
+            Public Read/Write, so all staff see everything. See the Objects tab.
+          </div>
+        </template>
+
+        <lightning-tabset variant="scoped">
+          <lightning-tab label="Overview">
+            <template lwc:if={hasTeams}>
+              <div class="matrix-wrap">
+                <table
+                  class="slds-table slds-table_bordered slds-table_cell-buffer matrix"
+                >
+                  <thead>
+                    <tr class="slds-line-height_reset">
+                      <th scope="col">Team</th>
+                      <template for:each={modules} for:item="m">
+                        <th key={m} scope="col">{m}</th>
+                      </template>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <template for:each={matrix} for:item="row">
+                      <tr key={row.id}>
+                        <th scope="row">
+                          <a href={row.url}>{row.name}</a>
+                          <template lwc:if={row.inactive}
+                            ><span class="slds-badge slds-m-left_x-small"
+                              >Inactive</span
+                            ></template
+                          >
+                        </th>
+                        <template for:each={row.cells} for:item="cell">
+                          <td key={cell.key}>
+                            <template for:each={cell.items} for:item="it">
+                              <div key={it.key} class={it.cls}>
+                                {it.text} · {it.level}
+                              </div>
+                            </template>
+                          </td>
+                        </template>
+                      </tr>
+                    </template>
+                  </tbody>
+                </table>
+              </div>
+            </template>
+            <template lwc:else>
+              <p class="slds-p-around_medium">
+                No teams yet. Start with <strong>New team</strong>.
+              </p>
+            </template>
+            <p class="slds-text-color_weak slds-m-top_small">
+              Rules applied on {appliedCount} of {objectCount} kinds of records.
+            </p>
+          </lightning-tab>
+
+          <lightning-tab label="Rules">
+            <lightning-datatable
+              key-field="Id"
+              data={rules}
+              columns={ruleColumns}
+              hide-checkbox-column
+              onrowaction={handleRowAction}
+            ></lightning-datatable>
+          </lightning-tab>
+
+          <lightning-tab label="Teams">
+            <lightning-datatable
+              key-field="Id"
+              data={teams}
+              columns={teamColumns}
+              hide-checkbox-column
+              onrowaction={handleRowAction}
+            ></lightning-datatable>
+          </lightning-tab>
+
+          <lightning-tab label="Check access">
+            <div class="slds-grid slds-wrap slds-gutters slds-p-vertical_small">
+              <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                <lightning-record-picker
+                  label="User"
+                  object-api-name="User"
+                  placeholder="Search people"
+                  onchange={handleUser}
+                ></lightning-record-picker>
+              </div>
+              <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                <lightning-input
+                  label="Record link or Id"
+                  value={checkRecord}
+                  onchange={handleRecord}
+                  placeholder="Paste the record's URL"
+                ></lightning-input>
+              </div>
+              <div
+                class="slds-col slds-size_1-of-1 slds-medium-size_1-of-6 slds-align-bottom"
+              >
+                <lightning-button
+                  variant="brand"
+                  label="Check"
+                  onclick={handleCheck}
+                  disabled={checkDisabled}
+                ></lightning-button>
+              </div>
+            </div>
+            <template lwc:if={checkResult}>
+              <div class="slds-box slds-m-top_small">
+                <p class={checkResult.verdictCls}>
+                  {checkResult.userName}: {checkResult.verdict}
+                </p>
+                <p class="slds-text-color_weak">
+                  {checkResult.recordName} · {checkResult.where}
+                </p>
+                <p class="slds-m-top_x-small">
+                  Sharing default: {checkResult.defaultLabel}
+                </p>
+                <template lwc:if={checkResult.viewAllData}>
+                  <p class="slds-m-top_x-small">
+                    This user's profile can view all data, so rules don't limit
+                    them.
+                  </p>
+                </template>
+                <template lwc:if={checkResult.notRestricted}>
+                  <p class="slds-m-top_x-small">
+                    Rules aren't applied to this kind of record yet (Public
+                    Read/Write).
+                  </p>
+                </template>
+                <template lwc:if={checkResult.hasGranting}>
+                  <p class="slds-m-top_small">
+                    <strong>Rules that give this user access</strong>
+                  </p>
+                  <ul class="slds-list_dotted">
+                    <template for:each={checkResult.granting} for:item="g"
+                      ><li key={g}>{g}</li></template
+                    >
+                  </ul>
+                </template>
+                <template lwc:if={checkResult.hasOthers}>
+                  <p class="slds-m-top_small">
+                    <strong
+                      >Rules that match the record, but the user isn't in the
+                      team</strong
+                    >
+                  </p>
+                  <ul class="slds-list_dotted">
+                    <template for:each={checkResult.others} for:item="o"
+                      ><li key={o}>{o}</li></template
+                    >
+                  </ul>
+                </template>
+                <p class="slds-text-color_weak slds-m-top_small">
+                  Owners, the role hierarchy and manual shares can also give
+                  access.
+                </p>
+              </div>
+            </template>
+          </lightning-tab>
+
+          <lightning-tab label="Objects">
+            <lightning-datatable
+              key-field="objectApi"
+              data={objects}
+              columns={objectColumns}
+              hide-checkbox-column
+            ></lightning-datatable>
+          </lightning-tab>
+
+          <lightning-tab label="Jobs">
+            <div class="slds-m-bottom_small">
+              <lightning-button
+                label={nightlyLabel}
+                icon-name="utility:clock"
+                onclick={handleNightly}
+                disabled={nightlyDisabled}
+              ></lightning-button>
+            </div>
+            <template lwc:if={hasJobs}>
+              <lightning-datatable
+                key-field="id"
+                data={jobs}
+                columns={jobColumns}
+                hide-checkbox-column
+              ></lightning-datatable>
+            </template>
+            <template lwc:else>
+              <p>No runs yet.</p>
+            </template>
+          </lightning-tab>
+        </lightning-tabset>
+      </template>
+    </div>
+  </lightning-card>
+</template>

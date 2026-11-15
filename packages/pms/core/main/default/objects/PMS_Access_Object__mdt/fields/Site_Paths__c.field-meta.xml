@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata"><fullName
+  >Site_Paths__c</fullName><fieldManageability
+  >DeveloperControlled</fieldManageability><inlineHelpText
+  >Comma-separated paths to the Site Id, tried in order. Use Id for the Site object itself.</inlineHelpText><label
+  >Site Paths</label><length>255</length><required>true</required><type
+  >Text</type></CustomField>

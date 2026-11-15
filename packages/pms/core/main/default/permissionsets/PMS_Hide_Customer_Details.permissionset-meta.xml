@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<PermissionSet
+  xmlns="http://soap.sforce.com/2006/04/metadata"
+><customPermissions><enabled>true</enabled><name
+    >PMS_Hide_Customer_Details</name></customPermissions><description
+  >Managed by the PMS access engine from Access Team settings. Don't assign by hand: the nightly sync removes manual assignments.</description><hasActivationRequired
+  >false</hasActivationRequired><label
+  >PMS Hide Customer Details</label></PermissionSet>

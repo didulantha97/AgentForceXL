@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata"><fullName
+  >Hide_Customer_Details__c</fullName><defaultValue
+  >false</defaultValue><inlineHelpText
+  >Members don't see the customer, contact and special requests on Booking and Invoice pages.</inlineHelpText><label
+  >Hide customer details</label><type>Checkbox</type></CustomField>

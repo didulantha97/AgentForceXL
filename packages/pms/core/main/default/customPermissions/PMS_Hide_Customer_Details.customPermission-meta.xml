@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomPermission xmlns="http://soap.sforce.com/2006/04/metadata"><description
+  >Hides customer and contact fields on PMS record pages. Assigned automatically from Access Teams.</description><isLicensed
+  >false</isLicensed><label>PMS Hide Customer Details</label></CustomPermission>

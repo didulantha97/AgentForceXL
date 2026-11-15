@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata"><description
+  >Objects the PMS access engine shares, and the field path(s) that lead from a record to its Site.</description><label
+  >PMS Access Object</label><pluralLabel
+  >PMS Access Objects</pluralLabel><visibility
+  >Public</visibility></CustomObject>

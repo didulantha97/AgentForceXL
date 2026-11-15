@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata"><fullName
+  >Hide_Amounts__c</fullName><defaultValue>false</defaultValue><inlineHelpText
+  >Members don't see amount sections (rates, totals, payments) on Booking, Invoice, Space and Site pages.</inlineHelpText><label
+  >Hide amounts</label><type>Checkbox</type></CustomField>
