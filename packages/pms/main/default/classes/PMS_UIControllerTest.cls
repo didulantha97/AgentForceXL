@@ -227,14 +227,15 @@ private class PMS_UIControllerTest {
         slots.size(),
         '08:00-16:00, 30 min service, 15 min steps'
       );
-      Assert.isTrue(
+      Assert.areEqual(
+        0,
         PMS_UIController.getFreeSlots(
             pr.practitioner.Id,
             pr.service.Id,
             monday.addDays(5)
           )
-          .size() > 0,
-        'Explicit hours apply every day'
+          .size(),
+        'Hours without days apply on weekdays only'
       );
 
       Id apptId = PMS_UIController.bookAppointment(
@@ -269,6 +270,75 @@ private class PMS_UIControllerTest {
       Assert.areEqual(
         Time.newInstance(17, 0, 0, 0),
         PMS_UIController.workingHours('flexible')[1]
+      );
+    }
+  }
+
+  @isTest
+  static void diaryRespectsDayRanges() {
+    User u = pmsUser();
+    System.runAs(u) {
+      PMS_TestDataFactory.Practice pr = PMS_TestDataFactory.practice();
+      Date monday = PMS_TestDataFactory.futureMonday();
+      Date friday = monday.addDays(4);
+      Date saturday = monday.addDays(5);
+
+      update new PMS_Practitioner__c(
+        Id = pr.practitioner.Id,
+        Working_Hours__c = 'Mon-Fri 08:00-16:00'
+      );
+      Assert.areEqual(
+        31,
+        PMS_UIController.getFreeSlots(pr.practitioner.Id, pr.service.Id, friday)
+          .size(),
+        'Friday is a working day'
+      );
+      Assert.areEqual(
+        0,
+        PMS_UIController.getFreeSlots(
+            pr.practitioner.Id,
+            pr.service.Id,
+            saturday
+          )
+          .size(),
+        'No Saturday slots for Mon-Fri'
+      );
+
+      update new PMS_Practitioner__c(
+        Id = pr.practitioner.Id,
+        Working_Hours__c = 'Tue-Sat 09:00-17:00'
+      );
+      Assert.areEqual(
+        0,
+        PMS_UIController.getFreeSlots(pr.practitioner.Id, pr.service.Id, monday)
+          .size(),
+        'No Monday slots for Tue-Sat'
+      );
+      List<Datetime> sat = PMS_UIController.getFreeSlots(
+        pr.practitioner.Id,
+        pr.service.Id,
+        saturday
+      );
+      Assert.areEqual(31, sat.size(), 'Saturday 09:00-17:00');
+      Assert.areEqual(
+        Datetime.newInstance(saturday, Time.newInstance(9, 0, 0, 0)),
+        sat[0]
+      );
+
+      update new PMS_Site__c(Id = pr.site.Id, Time_Zone__c = 'Asia/Colombo');
+      sat = PMS_UIController.getFreeSlots(
+        pr.practitioner.Id,
+        pr.service.Id,
+        saturday
+      );
+      Assert.areEqual(
+        PMS_DateUtil.toDatetime(
+          saturday,
+          Time.newInstance(9, 0, 0, 0),
+          'Asia/Colombo'
+        ),
+        sat[0],
+        'Clinic time zone'
       );
     }
   }

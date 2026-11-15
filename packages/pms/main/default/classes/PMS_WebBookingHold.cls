@@ -183,18 +183,29 @@ public without sharing class PMS_WebBookingHold {
       return;
     }
     List<PMS_Booking__c> toConfirm = new List<PMS_Booking__c>();
+    Set<Id> toEmail = new Set<Id>();
     for (PMS_Booking__c b : [
-      SELECT Id
+      SELECT Id, Confirmation_Sent__c
       FROM PMS_Booking__c
       WHERE
         Id IN :bookingIds
         AND Channel__c = :CHANNEL
         AND Status__c = 'Tentative'
     ]) {
-      toConfirm.add(new PMS_Booking__c(Id = b.Id, Status__c = 'Confirmed'));
+      toConfirm.add(
+        new PMS_Booking__c(
+          Id = b.Id,
+          Status__c = 'Confirmed',
+          Confirmation_Sent__c = true
+        )
+      );
+      if (!b.Confirmation_Sent__c) {
+        toEmail.add(b.Id);
+      }
     }
     if (!toConfirm.isEmpty()) {
       update toConfirm;
+      PMS_GuestNotifications.bookingConfirmed(toEmail);
     }
   }
 

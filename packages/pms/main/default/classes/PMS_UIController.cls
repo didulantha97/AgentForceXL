@@ -899,8 +899,8 @@ public with sharing class PMS_UIController {
   }
 
   /**
-   * Free start times for a practitioner on a day, in 15-minute steps inside working hours.
-   * Working Hours like "09:00-17:00" are used when present; otherwise 09:00-17:00 on weekdays.
+   * Free start times for a practitioner on a day, in 15-minute steps inside that day's working hours.
+   * Working Hours follow PMS_WorkingHours, the same rules as the public booking site.
    */
   @AuraEnabled
   public static List<Datetime> getFreeSlots(
@@ -910,7 +910,7 @@ public with sharing class PMS_UIController {
   ) {
     try {
       PMS_Practitioner__c p = [
-        SELECT Id, Working_Hours__c
+        SELECT Id, Working_Hours__c, Site__r.Time_Zone__c
         FROM PMS_Practitioner__c
         WHERE Id = :practitionerId
         WITH USER_MODE
@@ -927,16 +927,14 @@ public with sharing class PMS_UIController {
           ? 60
           : svc.Duration_Minutes__c.intValue();
       }
-      Time[] hours = workingHours(p.Working_Hours__c);
       List<Datetime> slots = new List<Datetime>();
-      if (
-        hours == null ||
-        (String.isBlank(p.Working_Hours__c) && PMS_DateUtil.isWeekend(day))
-      ) {
+      Time[] hours = PMS_WorkingHours.forDay(p.Working_Hours__c, day);
+      if (hours == null) {
         return slots;
       }
-      Datetime dayStart = Datetime.newInstance(day, hours[0]);
-      Datetime dayEnd = Datetime.newInstance(day, hours[1]);
+      String zone = p.Site__r == null ? null : p.Site__r.Time_Zone__c;
+      Datetime dayStart = PMS_DateUtil.toDatetime(day, hours[0], zone);
+      Datetime dayEnd = PMS_DateUtil.toDatetime(day, hours[1], zone);
       List<PMS_Booking__c> busy = [
         SELECT Start__c, End__c
         FROM PMS_Booking__c
