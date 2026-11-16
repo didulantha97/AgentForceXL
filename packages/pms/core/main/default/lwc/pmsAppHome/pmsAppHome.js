@@ -3,6 +3,7 @@ import { NavigationMixin } from "lightning/navigation";
 import { encodeDefaultFieldValues } from "lightning/pageReferenceUtils";
 import { refreshApex } from "@salesforce/apex";
 import getHome from "@salesforce/apex/PMS_HomeController.getHome";
+import createInvoiceLink from "@salesforce/apex/PMS_StripeCheckout.createInvoiceLink";
 
 /*
  * PMS app home page. One component serves every app; the "module" property (set per page in
@@ -96,6 +97,20 @@ const QUICK_ACTIONS = {
       label: "Reports",
       icon: "utility:metrics",
       type: "reports"
+    },
+    {
+      key: "payLink",
+      label: "Send pay link",
+      icon: "utility:link",
+      type: "paylink"
+    },
+    {
+      key: "access",
+      label: "Access setup",
+      icon: "utility:lock",
+      type: "tab",
+      target: "PMS_Access_Setup",
+      needs: "access"
     }
   ],
   Hotel: [
@@ -161,6 +176,12 @@ const QUICK_ACTIONS = {
       type: "new",
       target: "PMS_Payment__c",
       today: "Received_Date__c"
+    },
+    {
+      key: "payLink",
+      label: "Send pay link",
+      icon: "utility:link",
+      type: "paylink"
     }
   ],
   Property: [
@@ -227,6 +248,19 @@ const QUICK_ACTIONS = {
       type: "list",
       target: "PMS_Owner_Statement__c",
       listView: "All"
+    },
+    {
+      key: "quotes",
+      label: "Vendor quotes",
+      icon: "utility:quote",
+      type: "list",
+      target: "PMS_Vendor_Quote__c"
+    },
+    {
+      key: "payLink",
+      label: "Send pay link",
+      icon: "utility:link",
+      type: "paylink"
     }
   ],
   Projects: [
@@ -289,6 +323,12 @@ const QUICK_ACTIONS = {
       icon: "utility:people",
       type: "list",
       target: "PMS_Resource__c"
+    },
+    {
+      key: "payLink",
+      label: "Send pay link",
+      icon: "utility:link",
+      type: "paylink"
     }
   ],
   Practice: [
@@ -353,9 +393,17 @@ const QUICK_ACTIONS = {
       type: "list",
       target: "PMS_Booking__c",
       listView: "Upcoming_Appointments"
+    },
+    {
+      key: "payLink",
+      label: "Send pay link",
+      icon: "utility:link",
+      type: "paylink"
     }
   ]
 };
+
+const OPEN_INVOICE_STATUSES = ["Issued", "Partially Paid", "Overdue"];
 
 const TONE_CLASS = {
   success: "tone-success",
@@ -387,6 +435,14 @@ export default class PmsAppHome extends NavigationMixin(LightningElement) {
   activeSection;
   wired;
   timer;
+
+  // pay link panel
+  payOpen = false;
+  payInvoiceId;
+  payResult;
+  payError;
+  payLoading = false;
+  payCopied = false;
 
   connectedCallback() {
     try {
@@ -542,7 +598,9 @@ export default class PmsAppHome extends NavigationMixin(LightningElement) {
 
   get quickActions() {
     return (QUICK_ACTIONS[this.module] || []).filter(
-      (a) => a.type !== "dashboard" || this.data?.dashboardId
+      (a) =>
+        (a.type !== "dashboard" || this.data?.dashboardId) &&
+        (a.needs !== "access" || this.data?.canManageAccess)
     );
   }
 
@@ -571,6 +629,9 @@ export default class PmsAppHome extends NavigationMixin(LightningElement) {
             actionName: "view"
           }
         });
+        break;
+      case "paylink":
+        this.openPayLink();
         break;
       case "reports":
         this[NavigationMixin.Navigate]({
@@ -602,6 +663,104 @@ export default class PmsAppHome extends NavigationMixin(LightningElement) {
       attributes: { objectApiName, actionName: "list" },
       state: { filterName: listView || "Recent" }
     });
+  }
+
+  // ---------------------------------------------------------------- access notice
+
+  get hasAccessNotice() {
+    return !!this.data?.accessNotice;
+  }
+
+  get accessNoticeClass() {
+    return `access-note access-${this.data?.accessTone || "neutral"}`;
+  }
+
+  openAccessSetup() {
+    this[NavigationMixin.Navigate]({
+      type: "standard__navItemPage",
+      attributes: { apiName: "PMS_Access_Setup" }
+    });
+  }
+
+  // ---------------------------------------------------------------- pay link
+
+  get invoiceFilter() {
+    return {
+      criteria: [
+        { fieldPath: "Status__c", operator: "in", value: OPEN_INVOICE_STATUSES }
+      ]
+    };
+  }
+
+  get invoiceDisplayInfo() {
+    return { additionalFields: ["Status__c"] };
+  }
+
+  get payCreateDisabled() {
+    return !this.payInvoiceId || this.payLoading;
+  }
+
+  get payCreateLabel() {
+    return this.payResult ? "Create new link" : "Create link";
+  }
+
+  get payExpires() {
+    if (!this.payResult?.expiresAt) return "";
+    return new Intl.DateTimeFormat(undefined, {
+      dateStyle: "medium",
+      timeStyle: "short"
+    }).format(new Date(this.payResult.expiresAt));
+  }
+
+  openPayLink() {
+    this.payOpen = true;
+    this.payInvoiceId = undefined;
+    this.payResult = undefined;
+    this.payError = undefined;
+    this.payCopied = false;
+  }
+
+  closePayLink() {
+    this.payOpen = false;
+  }
+
+  handlePayKey(evt) {
+    if (evt.key === "Escape") {
+      this.closePayLink();
+    }
+  }
+
+  handlePayInvoice(evt) {
+    this.payInvoiceId = evt.detail.recordId;
+    this.payResult = undefined;
+    this.payError = undefined;
+    this.payCopied = false;
+  }
+
+  async handlePayCreate() {
+    this.payLoading = true;
+    this.payError = undefined;
+    this.payCopied = false;
+    try {
+      this.payResult = await createInvoiceLink({
+        invoiceId: this.payInvoiceId
+      });
+    } catch (e) {
+      this.payResult = undefined;
+      this.payError = e?.body?.message || "Could not create the payment link.";
+    } finally {
+      this.payLoading = false;
+    }
+  }
+
+  async handlePayCopy() {
+    try {
+      await navigator.clipboard.writeText(this.payResult.url);
+      this.payCopied = true;
+    } catch {
+      this.payError =
+        "Copy the link from the box (your browser blocked automatic copying).";
+    }
   }
 
   // ---------------------------------------------------------------- KPIs

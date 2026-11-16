@@ -502,3 +502,53 @@
     transition: none;
   }
 }
+
+/* Access notice (Admin home, Access Managers only) */
+.access-note {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  font-size: 0.8125rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--home-line);
+  background: var(--home-surface);
+  color: var(--home-ink);
+}
+.access-warning {
+  background: #fef4dc;
+  border-color: #f9d58a;
+  color: var(--warn-ink);
+}
+.access-success {
+  background: #e7f6e7;
+  border-color: #a8dca8;
+  color: var(--good-ink);
+}
+.access-text {
+  flex: 1 1 20rem;
+}
+.access-link {
+  background: none;
+  border: 0;
+  padding: 0.125rem 0.25rem;
+  color: var(--home-brand);
+  font-weight: 600;
+  cursor: pointer;
+}
+.access-link:hover {
+  text-decoration: underline;
+}
+.access-link:focus-visible {
+  outline: 2px solid var(--home-brand);
+  outline-offset: 2px;
+}
+
+/* Pay link panel */
+.pay-result {
+  margin-top: 0.75rem;
+}
+.pay-copied {
+  color: var(--good-ink);
+}

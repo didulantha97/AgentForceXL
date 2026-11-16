@@ -92,6 +92,20 @@
         </nav>
       </template>
 
+      <template lwc:if={hasAccessNotice}>
+        <div class={accessNoticeClass} role="status">
+          <lightning-icon
+            icon-name="utility:lock"
+            size="x-small"
+            alternative-text="Access"
+          ></lightning-icon>
+          <span class="access-text">{data.accessNotice}</span>
+          <button class="access-link" onclick={openAccessSetup}>
+            Open Access Setup
+          </button>
+        </div>
+      </template>
+
       <template lwc:if={hasWarnings}>
         <div class="warning-note" role="status">
           <lightning-icon
@@ -297,4 +311,98 @@
       </section>
     </template>
   </div>
+
+  <!-- Pay link panel -->
+  <template lwc:if={payOpen}>
+    <section
+      role="dialog"
+      tabindex="-1"
+      aria-modal="true"
+      aria-labelledby="pay-title"
+      class="slds-modal slds-fade-in-open"
+      onkeydown={handlePayKey}
+    >
+      <div class="slds-modal__container">
+        <button
+          class="slds-button slds-button_icon slds-modal__close"
+          title="Close"
+          onclick={closePayLink}
+        >
+          <lightning-icon
+            icon-name="utility:close"
+            size="small"
+            variant="inverse"
+            alternative-text="Close"
+          ></lightning-icon>
+        </button>
+        <div class="slds-modal__header">
+          <h1 id="pay-title" class="slds-modal__title slds-hyphenate">
+            Send a pay link
+          </h1>
+        </div>
+        <div class="slds-modal__content slds-p-around_medium">
+          <p class="slds-m-bottom_small">
+            Pick an open invoice. The customer pays it by card through Stripe,
+            and the payment is recorded on the invoice.
+          </p>
+          <lightning-record-picker
+            label="Invoice"
+            object-api-name="PMS_Invoice__c"
+            placeholder="Search open invoices"
+            filter={invoiceFilter}
+            display-info={invoiceDisplayInfo}
+            onchange={handlePayInvoice}
+          ></lightning-record-picker>
+          <template lwc:if={payResult}>
+            <div class="pay-result">
+              <lightning-input
+                label="Payment link"
+                value={payResult.url}
+                readonly
+              ></lightning-input>
+              <template lwc:if={payExpires}>
+                <p class="slds-text-color_weak slds-m-top_xx-small">
+                  Expires {payExpires}
+                </p>
+              </template>
+              <template lwc:if={payCopied}>
+                <p class="pay-copied slds-m-top_xx-small">
+                  Copied. Paste it into an email or text to the customer.
+                </p>
+              </template>
+            </div>
+          </template>
+          <template lwc:if={payError}>
+            <p class="slds-text-color_error slds-m-top_small" role="alert">
+              {payError}
+            </p>
+          </template>
+        </div>
+        <div class="slds-modal__footer">
+          <button
+            class="slds-button slds-button_neutral"
+            onclick={closePayLink}
+          >
+            Close
+          </button>
+          <template lwc:if={payResult}>
+            <button
+              class="slds-button slds-button_neutral"
+              onclick={handlePayCopy}
+            >
+              Copy link
+            </button>
+          </template>
+          <button
+            class="slds-button slds-button_brand"
+            onclick={handlePayCreate}
+            disabled={payCreateDisabled}
+          >
+            {payCreateLabel}
+          </button>
+        </div>
+      </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+  </template>
 </template>

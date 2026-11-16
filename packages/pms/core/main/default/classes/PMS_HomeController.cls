@@ -59,6 +59,17 @@ public with sharing class PMS_HomeController {
     public List<Item> agenda = new List<Item>();
     @AuraEnabled
     public List<String> warnings = new List<String>();
+    /** True when the user's Access Team hides amounts: money tiles, charts and amounts are left out. */
+    @AuraEnabled
+    public Boolean hideAmounts = false;
+    /** True for PMS Access Managers: shows the Access Setup action. */
+    @AuraEnabled
+    public Boolean canManageAccess = false;
+    /** Admin home only, for Access Managers: how far the access rules are applied. */
+    @AuraEnabled
+    public String accessNotice;
+    @AuraEnabled
+    public String accessTone;
   }
 
   public class Option {
@@ -163,14 +174,91 @@ public with sharing class PMS_HomeController {
       throw e;
     }
     Ctx c = new Ctx(module, siteId);
+    c.data.hideAmounts = FeatureManagement.checkPermission('PMS_Hide_Amounts');
+    c.data.canManageAccess = FeatureManagement.checkPermission(
+      'PMS_Manage_Access'
+    );
     for (String part : partsFor(c.scopeModule, c.isAdminView)) {
+      if (c.data.hideAmounts && part == 'revenueTrend') {
+        continue;
+      }
       try {
         run(part, c);
       } catch (Exception e) {
         c.data.warnings.add(part + ': ' + e.getMessage());
       }
     }
+    if (c.data.hideAmounts) {
+      stripAmounts(c.data);
+    }
+    if (module == 'Admin' && c.data.canManageAccess) {
+      try {
+        accessNotice(c.data);
+      } catch (Exception e) {
+        c.data.warnings.add('access: ' + e.getMessage());
+      }
+    }
     return c.data;
+  }
+
+  /** Leaves out money tiles and charts, and blanks amounts in the lists, for users whose team hides amounts. */
+  @TestVisible
+  private static void stripAmounts(HomeData d) {
+    List<Kpi> kpis = new List<Kpi>();
+    for (Kpi k : d.kpis) {
+      if (k.format != 'money') {
+        kpis.add(k);
+      }
+    }
+    d.kpis = kpis;
+    List<Chart> charts = new List<Chart>();
+    for (Chart ch : d.charts) {
+      if (ch.format != 'money') {
+        charts.add(ch);
+      }
+    }
+    d.charts = charts;
+    for (Section s : d.sections) {
+      for (Item i : s.items) {
+        i.amount = null;
+      }
+    }
+    for (Item i : d.agenda) {
+      i.amount = null;
+    }
+  }
+
+  /** One line on the Admin home: how many kinds of records the access rules apply to. */
+  private static void accessNotice(HomeData d) {
+    Integer total = 0;
+    Integer applied = 0;
+    for (PMS_Access_Object__mdt o : PMS_AccessService.objectConfigs()) {
+      total++;
+      if (
+        PMS_AccessService.isRestricted(o.Object_API_Name__c) &&
+        PMS_AccessService.rowCauseFor(o.Object_API_Name__c) != null
+      ) {
+        applied++;
+      }
+    }
+    if (total == 0) {
+      return;
+    }
+    if (applied == 0) {
+      d.accessNotice = 'Access rules are saved but not applied yet: all staff can see and edit every PMS record. Switch objects to Private when you are ready.';
+      d.accessTone = 'warning';
+    } else if (applied < total) {
+      d.accessNotice =
+        'Access rules apply to ' +
+        applied +
+        ' of ' +
+        total +
+        ' kinds of records. The rest are still open to all staff.';
+      d.accessTone = 'neutral';
+    } else {
+      d.accessNotice = 'Access rules apply to every kind of PMS record.';
+      d.accessTone = 'success';
+    }
   }
 
   @TestVisible
@@ -242,6 +330,7 @@ public with sharing class PMS_HomeController {
           'practicePractitioners',
           'practiceModes',
           'practiceQueues',
+          'awaitingSignature',
           'overdueInvoices',
           'practiceAgenda'
         };
@@ -2240,6 +2329,57 @@ public with sharing class PMS_HomeController {
       vb.items.add(it);
     }
     c.data.sections.add(vb);
+
+    vendorQuotes(c);
+    onlineCheckIns(c, 'Tenant check-ins received');
+  }
+
+  /** Quotes vendors sent from the Partner Portal that nobody has accepted or rejected yet. */
+  private static void vendorQuotes(Ctx c) {
+    List<PMS_Vendor_Quote__c> quotes = (List<PMS_Vendor_Quote__c>) c.query(
+      'SELECT Id, Name, Status__c, Valid_Until__c, Total__c, CreatedDate, Vendor_Account__r.Name, Work_Order__r.Name, Work_Order__r.Subject__c' +
+        c.cur() +
+        ' FROM PMS_Vendor_Quote__c' +
+        whereOf(
+          new List<String>{
+            c.siteFilter('Work_Order__r.Site__c'),
+            'Status__c = \'Submitted\''
+          }
+        ) +
+        ' ORDER BY Valid_Until__c ASC NULLS LAST LIMIT ' +
+        FETCH
+    );
+    Section vq = section(
+      'quotes',
+      'Vendor quotes to decide',
+      'standard:quotes',
+      'PMS_Vendor_Quote__c',
+      null,
+      'No vendor quotes waiting.'
+    );
+    vq.total = quotes.size();
+    for (PMS_Vendor_Quote__c q : quotes) {
+      if (vq.items.size() == SHOW) {
+        break;
+      }
+      Boolean expired = q.Valid_Until__c != null && q.Valid_Until__c < c.today;
+      Item it = item(
+        q.Id,
+        join(
+          q.Name,
+          q.Vendor_Account__r == null ? null : q.Vendor_Account__r.Name
+        ),
+        q.Work_Order__r == null
+          ? null
+          : join(q.Work_Order__r.Name, q.Work_Order__r.Subject__c),
+        expired ? 'Expired' : 'To decide',
+        expired ? 'error' : 'warning'
+      );
+      it.amount = c.money(q.Total__c, q);
+      it.whenDate = q.Valid_Until__c;
+      vq.items.add(it);
+    }
+    c.data.sections.add(vq);
   }
 
   private static void propertyAgenda(Ctx c) {
