@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Pricing Strategy</label>
+    <pluralLabel>Pricing Strategies</pluralLabel>
+    <description
+  >Dynamic pricing for one rate plan: daily rates per room type from occupancy, lead time, weekday and events, kept between a floor and a ceiling.</description>
+    <nameField>
+        <label>Strategy Name</label>
+        <type>Text</type>
+    </nameField>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <sharingModel>ReadWrite</sharingModel>
+    <externalSharingModel>Private</externalSharingModel>
+    <enableActivities>false</enableActivities>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableBulkApi>true</enableBulkApi>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <enableFeeds>false</enableFeeds>
+</CustomObject>

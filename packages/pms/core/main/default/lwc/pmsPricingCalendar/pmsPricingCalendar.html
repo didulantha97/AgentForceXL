@@ -1,0 +1,135 @@
+<template>
+  <lightning-card title="Pricing calendar" icon-name="standard:pricebook">
+    <div slot="actions" class="slds-grid slds-grid_vertical-align-center">
+      <lightning-combobox
+        class="slds-m-right_x-small"
+        label="Days"
+        variant="label-hidden"
+        value={days}
+        options={dayOptions}
+        onchange={onDays}
+      ></lightning-combobox>
+      <lightning-button
+        label="Recalculate now"
+        onclick={recalc}
+        disabled={busy}
+      ></lightning-button>
+    </div>
+    <div class="slds-p-horizontal_medium">
+      <template lwc:if={busy}>
+        <lightning-spinner
+          alternative-text="Working"
+          size="small"
+        ></lightning-spinner>
+      </template>
+      <template lwc:if={error}>
+        <div
+          class="slds-notify slds-notify_alert slds-alert_error slds-m-bottom_small"
+          role="alert"
+        >
+          <h2>{error}</h2>
+        </div>
+      </template>
+      <template lwc:if={cal}>
+        <p
+          class="slds-text-body_small slds-text-color_weak slds-m-bottom_x-small"
+        >
+          {cal.ratePlanName} · last run
+          <lightning-formatted-date-time
+            value={cal.lastRunAt}
+            month="short"
+            day="numeric"
+            hour="2-digit"
+            minute="2-digit"
+          ></lightning-formatted-date-time>
+          · {cal.lastRunResult}
+        </p>
+
+        <template lwc:if={editing}>
+          <div
+            class="slds-box slds-box_x-small slds-m-bottom_small slds-grid slds-grid_vertical-align-end slds-wrap"
+          >
+            <div
+              class="slds-col slds-size_1-of-1 slds-text-body_small slds-m-bottom_x-small"
+            >
+              <strong>{editing.label}</strong> · base {editing.base} · occupancy
+              {editing.occ} · {editing.notes}
+            </div>
+            <lightning-input
+              class="slds-col"
+              type="number"
+              step="1"
+              label="Rate per night"
+              value={editAmount}
+              onchange={onEditAmount}
+            ></lightning-input>
+            <lightning-button
+              class="slds-m-left_x-small"
+              variant="brand"
+              label="Set and lock"
+              onclick={savePrice}
+            ></lightning-button>
+            <template lwc:if={editing.locked}>
+              <lightning-button
+                class="slds-m-left_x-small"
+                label="Unlock"
+                onclick={unlockPrice}
+              ></lightning-button>
+            </template>
+            <lightning-button
+              class="slds-m-left_x-small"
+              label="Close"
+              onclick={closeEdit}
+            ></lightning-button>
+          </div>
+        </template>
+
+        <div class="slds-scrollable_x">
+          <table
+            class="slds-table slds-table_bordered slds-table_cell-buffer slds-table_fixed-layout slds-text-body_small"
+          >
+            <thead>
+              <tr class="slds-line-height_reset">
+                <th scope="col" style="width: 7rem">Night</th>
+                <template for:each={cal.roomTypes} for:item="t">
+                  <th key={t.id} scope="col">{t.name}</th>
+                </template>
+              </tr>
+            </thead>
+            <tbody>
+              <template for:each={rows} for:item="r">
+                <tr key={r.key} class={r.rowClass}>
+                  <td>{r.dayName} {r.label}</td>
+                  <template for:each={r.cells} for:item="c">
+                    <td
+                      key={c.key}
+                      class={c.cls}
+                      title={c.title}
+                      data-key={c.key}
+                      onclick={openEdit}
+                    >
+                      <span class="slds-text-title_bold">{c.amountText}</span>
+                      <template lwc:if={c.locked}>
+                        <lightning-icon
+                          class="slds-m-left_xx-small"
+                          icon-name="utility:lock"
+                          size="xx-small"
+                          alternative-text="Locked"
+                        ></lightning-icon>
+                      </template>
+                      <div class="slds-text-color_weak">{c.sub}</div>
+                    </td>
+                  </template>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+        <p class="slds-text-body_small slds-text-color_weak slds-m-top_x-small">
+          Green = above base, orange = below base. Click a cell to set a rate by
+          hand; hand-set rates are locked until you unlock them.
+        </p>
+      </template>
+    </div>
+  </lightning-card>
+</template>
