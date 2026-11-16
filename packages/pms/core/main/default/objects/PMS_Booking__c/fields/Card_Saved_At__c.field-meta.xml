@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Card_Saved_At__c</fullName>
+    <label>Card Saved At</label>
+    <description>When the guest saved the card.</description>
+    <type>DateTime</type>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+</CustomField>

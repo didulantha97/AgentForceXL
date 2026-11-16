@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Guest_Terms__c</fullName>
+    <label>Guest Terms</label>
+    <description
+  >Shown on the card page and in the email, so the guest agrees to the policy before saving a card (needed for later off-session charges).</description>
+    <type>LongTextArea</type>
+    <length>4000</length>
+    <visibleLines>5</visibleLines>
+    <trackHistory>false</trackHistory>
+</CustomField>

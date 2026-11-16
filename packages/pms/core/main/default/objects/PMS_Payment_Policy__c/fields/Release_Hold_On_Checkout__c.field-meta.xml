@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Release_Hold_On_Checkout__c</fullName>
+    <label>Settle Hold at Check-out</label>
+    <description
+  >At check-out, capture what is still owed (up to the hold) and release the rest.</description>
+    <type>Checkbox</type>
+    <defaultValue>true</defaultValue>
+    <trackHistory>false</trackHistory>
+</CustomField>

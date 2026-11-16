@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Payment Policy</label>
+    <pluralLabel>Payment Policies</pluralLabel>
+    <description
+  >How a booking is guaranteed (card on file, pre-authorisation, deposit or prepaid) and what a late cancellation or no-show costs. Linked from a rate plan, a service or a site; the booking can override it.</description>
+    <nameField>
+        <label>Policy Name</label>
+        <type>Text</type>
+    </nameField>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <sharingModel>ReadWrite</sharingModel>
+    <externalSharingModel>Private</externalSharingModel>
+    <enableActivities>false</enableActivities>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableBulkApi>true</enableBulkApi>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <enableFeeds>false</enableFeeds>
+</CustomObject>

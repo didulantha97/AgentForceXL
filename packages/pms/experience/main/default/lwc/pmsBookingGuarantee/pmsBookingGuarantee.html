@@ -1,0 +1,286 @@
+<template>
+  <lightning-card
+    title="Card and deposit"
+    icon-name="standard:partner_fund_allocation"
+  >
+    <lightning-button-icon
+      slot="actions"
+      icon-name="utility:refresh"
+      alternative-text="Refresh"
+      title="Refresh"
+      onclick={load}
+      disabled={busy}
+    ></lightning-button-icon>
+
+    <div class="slds-p-horizontal_medium">
+      <template lwc:if={busy}>
+        <lightning-spinner
+          alternative-text="Working"
+          size="small"
+        ></lightning-spinner>
+      </template>
+
+      <template lwc:if={error}>
+        <div
+          class="slds-notify slds-notify_alert slds-alert_error slds-m-bottom_small"
+          role="alert"
+        >
+          <span class="slds-assistive-text">Error</span>
+          <h2>{error}</h2>
+        </div>
+      </template>
+
+      <template lwc:if={s}>
+        <template lwc:if={s.hasPolicy}>
+          <div class="slds-grid slds-wrap slds-gutters_x-small">
+            <div class="slds-col slds-size_1-of-1 slds-m-bottom_x-small">
+              <span class="slds-badge">{s.method}</span>
+              <template lwc:if={s.guaranteeStatus}>
+                <span class={statusClass}>{s.guaranteeStatus}</span>
+              </template>
+              <span class="slds-text-color_weak slds-m-left_x-small"
+                >{s.policyName}</span
+              >
+            </div>
+
+            <div class="slds-col slds-size_1-of-2 slds-m-bottom_x-small">
+              <div class="slds-text-title">Card</div>
+              <template lwc:if={s.hasCard}>
+                <div>{cardLabel}</div>
+                <div class="slds-text-color_weak slds-text-body_small">
+                  Saved
+                  <lightning-formatted-date-time
+                    value={s.cardSavedAt}
+                    year="numeric"
+                    month="short"
+                    day="numeric"
+                    hour="2-digit"
+                    minute="2-digit"
+                  ></lightning-formatted-date-time>
+                </div>
+              </template>
+              <template lwc:else>
+                <div>No card yet</div>
+                <template lwc:if={s.linkSentAt}>
+                  <div class="slds-text-color_weak slds-text-body_small">
+                    Link sent
+                    <lightning-formatted-date-time
+                      value={s.linkSentAt}
+                      month="short"
+                      day="numeric"
+                      hour="2-digit"
+                      minute="2-digit"
+                    ></lightning-formatted-date-time>
+                  </div>
+                </template>
+              </template>
+            </div>
+
+            <div class="slds-col slds-size_1-of-2 slds-m-bottom_x-small">
+              <div class="slds-text-title">{amountLabel}</div>
+              <div>
+                <lightning-formatted-number
+                  value={s.guaranteeAmount}
+                  format-style="currency"
+                  currency-code={s.currencyCode}
+                ></lightning-formatted-number>
+              </div>
+              <template lwc:if={hasDepositPaid}>
+                <div class="slds-text-color_success slds-text-body_small">
+                  Paid
+                  <lightning-formatted-number
+                    value={s.depositPaid}
+                    format-style="currency"
+                    currency-code={s.currencyCode}
+                  ></lightning-formatted-number>
+                </div>
+              </template>
+            </div>
+
+            <template lwc:if={s.holdStatus}>
+              <div class="slds-col slds-size_1-of-1 slds-m-bottom_x-small">
+                <div class="slds-text-title">Card hold</div>
+                <div>
+                  {s.holdStatus}
+                  <template lwc:if={s.holdAmount}>
+                    <lightning-formatted-number
+                      value={s.holdAmount}
+                      format-style="currency"
+                      currency-code={s.currencyCode}
+                    ></lightning-formatted-number>
+                  </template>
+                  <template lwc:if={s.canCaptureHold}>
+                    <span class="slds-text-color_weak slds-text-body_small">
+                      · expires
+                      <lightning-formatted-date-time
+                        value={s.holdExpires}
+                        month="short"
+                        day="numeric"
+                        hour="2-digit"
+                        minute="2-digit"
+                      ></lightning-formatted-date-time
+                    ></span>
+                  </template>
+                </div>
+              </div>
+            </template>
+
+            <div
+              class="slds-col slds-size_1-of-1 slds-m-bottom_x-small slds-text-body_small"
+            >
+              <div class="slds-text-title">Cancellation</div>
+              <div>{freeLabel}</div>
+              <div>
+                Late cancellation
+                <lightning-formatted-number
+                  value={s.lateFee}
+                  format-style="currency"
+                  currency-code={s.currencyCode}
+                ></lightning-formatted-number>
+                · No-show
+                <lightning-formatted-number
+                  value={s.noShowFee}
+                  format-style="currency"
+                  currency-code={s.currencyCode}
+                ></lightning-formatted-number>
+                (before VAT{autoLabel})
+              </div>
+            </div>
+
+            <template lwc:if={s.policyApplied}>
+              <div class="slds-col slds-size_1-of-1 slds-m-bottom_x-small">
+                <div class="slds-text-title">Policy applied</div>
+                <div>
+                  Fee
+                  <lightning-formatted-number
+                    value={s.policyFee}
+                    format-style="currency"
+                    currency-code={s.currencyCode}
+                  ></lightning-formatted-number>
+                  <template lwc:if={s.refundDue}>
+                    ·
+                    <span class="slds-text-color_error"
+                      >refund due
+                      <lightning-formatted-number
+                        value={s.refundDue}
+                        format-style="currency"
+                        currency-code={s.currencyCode}
+                      ></lightning-formatted-number
+                    ></span>
+                  </template>
+                </div>
+              </div>
+            </template>
+
+            <template lwc:if={s.message}>
+              <div class="slds-col slds-size_1-of-1 slds-m-bottom_x-small">
+                <div
+                  class="slds-box slds-box_x-small slds-theme_shade slds-text-body_small"
+                >
+                  {s.message}
+                </div>
+              </div>
+            </template>
+          </div>
+
+          <template lwc:if={linkUrl}>
+            <div class="slds-m-bottom_small">
+              <lightning-input
+                type="url"
+                label="Card link (valid 23 hours)"
+                value={linkUrl}
+                readonly
+              ></lightning-input>
+              <lightning-button
+                variant="base"
+                label="Copy link"
+                icon-name="utility:copy"
+                onclick={copyLink}
+              ></lightning-button>
+            </div>
+          </template>
+
+          <template lwc:if={showCapture}>
+            <div
+              class="slds-grid slds-grid_vertical-align-end slds-m-bottom_small"
+            >
+              <lightning-input
+                class="slds-col"
+                type="number"
+                step="0.01"
+                label="Amount to capture (0 = release all)"
+                value={captureAmount}
+                onchange={onCaptureAmount}
+              ></lightning-input>
+              <lightning-button
+                class="slds-m-left_x-small"
+                variant="brand"
+                label="Confirm"
+                onclick={doCapture}
+              ></lightning-button>
+              <lightning-button
+                class="slds-m-left_x-small"
+                label="Cancel"
+                onclick={toggleCapture}
+              ></lightning-button>
+            </div>
+          </template>
+        </template>
+        <template lwc:else>
+          <p class="slds-text-color_weak slds-m-bottom_small">
+            No payment policy applies to this booking. Pick one on the booking
+            (Payment Policy) or on its rate plan, service or site.
+          </p>
+        </template>
+      </template>
+    </div>
+
+    <div slot="footer">
+      <template lwc:if={s}>
+        <lightning-button-group>
+          <template lwc:if={s.canSendLink}>
+            <lightning-button
+              label={sendLabel}
+              onclick={sendLink}
+              disabled={busy}
+            ></lightning-button>
+            <lightning-button
+              label="Copy link"
+              onclick={getLink}
+              disabled={busy}
+            ></lightning-button>
+          </template>
+          <template lwc:if={s.canChargeDeposit}>
+            <lightning-button
+              label="Charge deposit"
+              onclick={chargeDeposit}
+              disabled={busy}
+            ></lightning-button>
+          </template>
+          <template lwc:if={s.canPlaceHold}>
+            <lightning-button
+              label="Place hold"
+              onclick={placeHold}
+              disabled={busy}
+            ></lightning-button>
+          </template>
+          <template lwc:if={s.canCaptureHold}>
+            <lightning-button
+              label="Capture / release"
+              onclick={toggleCapture}
+              disabled={busy}
+            ></lightning-button>
+          </template>
+          <template lwc:if={s.canApplyPolicy}>
+            <lightning-button
+              variant="destructive-text"
+              label="Apply cancellation policy"
+              onclick={applyPolicy}
+              disabled={busy}
+            ></lightning-button>
+          </template>
+        </lightning-button-group>
+      </template>
+    </div>
+  </lightning-card>
+</template>

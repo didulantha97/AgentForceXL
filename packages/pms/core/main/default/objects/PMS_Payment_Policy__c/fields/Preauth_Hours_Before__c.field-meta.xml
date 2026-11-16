@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Preauth_Hours_Before__c</fullName>
+    <label>Hold Placed (hours before arrival)</label>
+    <description
+  >For Pre-authorisation: when the hold is placed. Holds placed this way expire after 4 to 7 days (Visa under 5), so keep this short; 24 is a good default. Longer stays are renewed automatically.</description>
+    <type>Number</type>
+    <precision>4</precision>
+    <scale>0</scale>
+    <required>false</required>
+    <unique>false</unique>
+    <externalId>false</externalId>
+    <trackHistory>false</trackHistory>
+</CustomField>

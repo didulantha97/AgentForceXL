@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Refund_Due__c</fullName>
+    <label>Refund Due</label>
+    <description
+  >Deposit paid beyond what the guest owes after a free or partly charged cancellation. Refund it in Stripe.</description>
+    <type>Currency</type>
+    <precision>16</precision>
+    <scale>2</scale>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+</CustomField>

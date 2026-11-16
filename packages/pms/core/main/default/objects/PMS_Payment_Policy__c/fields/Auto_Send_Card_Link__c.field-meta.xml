@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Auto_Send_Card_Link__c</fullName>
+    <label>Send Card Link Automatically</label>
+    <description
+  >Email the guest a secure Stripe link to save a card or pay the deposit as soon as the booking is created (staff, agent and channel bookings).</description>
+    <type>Checkbox</type>
+    <defaultValue>true</defaultValue>
+    <trackHistory>false</trackHistory>
+</CustomField>

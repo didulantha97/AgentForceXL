@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Guarantee_Method__c</fullName>
+    <label>Guarantee Method</label>
+    <description>How the booking is secured.</description>
+    <inlineHelpText
+  >Card on File: card saved, nothing charged until a fee is due. Pre-authorisation: card saved, then a hold is placed shortly before arrival. Deposit: part of the stay is charged. Prepaid: the whole stay is charged.</inlineHelpText>
+    <type>Picklist</type>
+    <required>false</required>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>None</fullName>
+                <default>false</default>
+                <label>None</label>
+            </value>
+            <value>
+                <fullName>Card on File</fullName>
+                <default>true</default>
+                <label>Card on File</label>
+            </value>
+            <value>
+                <fullName>Pre-authorisation</fullName>
+                <default>false</default>
+                <label>Pre-authorisation</label>
+            </value>
+            <value>
+                <fullName>Deposit</fullName>
+                <default>false</default>
+                <label>Deposit</label>
+            </value>
+            <value>
+                <fullName>Prepaid</fullName>
+                <default>false</default>
+                <label>Prepaid</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <trackHistory>false</trackHistory>
+</CustomField>

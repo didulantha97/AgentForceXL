@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Guarantee_Action_Needed</fullName>
+    <columns>NAME</columns>
+    <columns>Site__c</columns>
+    <columns>Account__c</columns>
+    <columns>Start__c</columns>
+    <columns>Status__c</columns>
+    <columns>Guarantee_Status__c</columns>
+    <columns>Refund_Due__c</columns>
+    <columns>Guarantee_Message__c</columns>
+    <filterScope>Everything</filterScope>
+    <booleanFilter>1 OR 2 OR 3</booleanFilter>
+    <filters>
+        <field>Guarantee_Status__c</field>
+        <operation>equals</operation>
+        <value>Action Needed,Awaiting Card</value>
+    </filters>
+    <filters>
+        <field>Refund_Due__c</field>
+        <operation>greaterThan</operation>
+        <value>0</value>
+    </filters>
+    <filters>
+        <field>Policy_Pending__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <label>Guarantees: Needs Attention</label>
+</ListView>

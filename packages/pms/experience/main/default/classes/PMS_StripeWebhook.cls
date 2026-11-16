@@ -7,10 +7,13 @@
  * and a Succeeded payment is never downgraded by a late event.
  *
  * Handled events (anything else is acknowledged with 200 and ignored):
- *   checkout.session.completed               -> Payment (Succeeded, or Pending for delayed methods)
+ *   checkout.session.completed               -> Payment (Succeeded, or Pending for delayed methods);
+ *                                               setup-mode sessions (card guarantees) are skipped here
  *   checkout.session.async_payment_succeeded -> Payment Succeeded
  *   checkout.session.async_payment_failed    -> Payment Failed
  *   charge.refunded                          -> one Refund per charge holding the total refunded so far
+ *   setup_intent.succeeded, payment_intent.* -> card guarantees, deposits, holds and policy fees
+ *                                               (PMS_GuaranteeEvents; only intents PMS created)
  *
  * The invoice or booking comes from the Checkout metadata (invoiceNumber / bookingNumber), which
  * PMS_StripeCheckout sets. Runs without sharing because Stripe calls in as the site guest user.
@@ -130,6 +133,9 @@ global without sharing class PMS_StripeWebhook {
       when 'checkout.session.completed',
         'checkout.session.async_payment_succeeded',
         'checkout.session.async_payment_failed' {
+        if (str(obj, 'mode') == 'setup') {
+          return null; // card saved without a payment: setup_intent.succeeded carries the card
+        }
         String status;
         if (eventType == 'checkout.session.async_payment_failed') {
           status = 'Failed';
@@ -146,6 +152,15 @@ global without sharing class PMS_StripeWebhook {
       }
       when 'charge.refunded' {
         return recordRefund(obj, received);
+      }
+      when 'setup_intent.succeeded' {
+        return PMS_GuaranteeEvents.setupSucceeded(obj);
+      }
+      when 'payment_intent.succeeded',
+        'payment_intent.payment_failed',
+        'payment_intent.amount_capturable_updated',
+        'payment_intent.canceled' {
+        return PMS_GuaranteeEvents.paymentIntent(eventType, obj, received);
       }
       when else {
         return null;
