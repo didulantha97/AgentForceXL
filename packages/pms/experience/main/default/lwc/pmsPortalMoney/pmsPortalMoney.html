@@ -1,0 +1,107 @@
+<template>
+  <section class="money">
+    <h2>{heading}</h2>
+    <template lwc:if={loading}>
+      <p class="muted">Loading…</p>
+    </template>
+    <template lwc:if={error}>
+      <p class="error">{error}</p>
+    </template>
+    <template lwc:if={noAccount}>
+      <p class="muted">
+        Sign in with your customer account to see your payments.
+      </p>
+    </template>
+    <template lwc:if={nothing}>
+      <p class="muted">You have nothing to pay right now. Thank you!</p>
+    </template>
+
+    <template lwc:if={hasInvoices}>
+      <h3>To pay</h3>
+      <ul class="list">
+        <template for:each={invoices} for:item="i">
+          <li key={i.id} class={i.rowClass}>
+            <div class="main">
+              <span class="title">Invoice {i.name}</span>
+              <span class="muted">Due {i.dueText}</span>
+              <template lwc:if={i.stageText}>
+                <span class="badge">{i.stageText}</span>
+              </template>
+            </div>
+            <div class="side">
+              <span class="amount">{i.balanceText}</span>
+              <template lwc:if={i.payUrl}>
+                <button class="pay" data-url={i.payUrl} onclick={pay}>
+                  Pay now
+                </button>
+              </template>
+            </div>
+          </li>
+        </template>
+      </ul>
+    </template>
+
+    <template lwc:if={hasInstalments}>
+      <h3>Payment plan</h3>
+      <ul class="list">
+        <template for:each={instalments} for:item="p">
+          <li key={p.key} class={p.rowClass}>
+            <div class="main">
+              <span class="title">Instalment {p.instalmentNumber}</span>
+              <span class="muted"
+                >Invoice {p.invoiceName} · due {p.dueText}</span
+              >
+            </div>
+            <div class="side">
+              <span class="amount">{p.amountText}</span>
+              <span class="muted">{p.status}</span>
+            </div>
+          </li>
+        </template>
+      </ul>
+      <p class="muted small">
+        Use the Pay now button on the invoice above: it takes the next
+        instalment.
+      </p>
+    </template>
+
+    <template lwc:if={hasCards}>
+      <h3>Card or deposit needed</h3>
+      <ul class="list">
+        <template for:each={cards} for:item="c">
+          <li key={c.bookingName} class="row">
+            <div class="main">
+              <span class="title">Booking {c.bookingName}</span>
+              <span class="muted">{c.siteName} · {c.startText}</span>
+            </div>
+            <div class="side">
+              <span class="badge">{c.status}</span>
+            </div>
+          </li>
+        </template>
+      </ul>
+      <p class="muted small">
+        We have emailed you a secure link to add your card. Ask us to send it
+        again if you can't find it.
+      </p>
+    </template>
+
+    <template lwc:if={hasRent}>
+      <h3>Rent changes</h3>
+      <ul class="list">
+        <template for:each={rent} for:item="r">
+          <li key={r.key} class="row">
+            <div class="main">
+              <span class="title">{r.leaseName}</span>
+              <span class="muted">From {r.fromText} · {r.kind}</span>
+            </div>
+            <div class="side">
+              <span class="amount">{r.oldText} → {r.newText}</span>
+              <span class="muted">{r.changeText}</span>
+            </div>
+          </li>
+        </template>
+      </ul>
+    </template>
+  </section>
+</template>

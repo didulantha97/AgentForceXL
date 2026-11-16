@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>62.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>PMS My Payments</masterLabel>
+    <description
+  >Customer portal: invoices to pay with reminder stage and Pay button, payment-plan instalments, bookings that need a card or deposit, and notified rent changes.</description>
+    <targets>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightningCommunity__Default">
+            <property
+        name="heading"
+        type="String"
+        label="Heading"
+        default="My payments"
+      />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

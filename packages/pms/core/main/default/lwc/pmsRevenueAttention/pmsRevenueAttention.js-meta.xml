@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>62.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>PMS Revenue: Needs Attention</masterLabel>
+    <description
+  >Revenue work queue for the PMS home pages: cards and deposits, card holds, fees, refunds, reminders, plan instalments, rent adjustments and channel manager problems.</description>
+    <targets>
+        <target>lightning__HomePage</target>
+        <target>lightning__AppPage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__HomePage,lightning__AppPage">
+            <property
+        name="module"
+        type="String"
+        label="Module"
+        datasource="Admin,Hotel,Property,Projects,Practice"
+        default="Admin"
+      />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

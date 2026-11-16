@@ -1,0 +1,82 @@
+<template>
+  <article class="slds-card">
+    <div class="slds-card__header slds-grid">
+      <header class="slds-media slds-media_center slds-has-flexi-truncate">
+        <div class="slds-media__figure">
+          <lightning-icon
+            icon-name="standard:currency"
+            size="small"
+          ></lightning-icon>
+        </div>
+        <div class="slds-media__body">
+          <h2 class="slds-card__header-title">Revenue: needs attention</h2>
+        </div>
+        <div class="slds-no-flex">
+          <lightning-button-icon
+            icon-name="utility:refresh"
+            alternative-text="Refresh"
+            title="Refresh"
+            onclick={refresh}
+          ></lightning-button-icon>
+        </div>
+      </header>
+    </div>
+    <div class="slds-card__body slds-card__body_inner">
+      <template lwc:if={loading}>
+        <lightning-spinner
+          size="small"
+          alternative-text="Loading"
+        ></lightning-spinner>
+      </template>
+      <template lwc:if={error}>
+        <p class="slds-text-color_error">{error}</p>
+      </template>
+      <template lwc:if={allClear}>
+        <p class="slds-text-color_weak">
+          Nothing needs attention: cards, deposits, reminders, rent reviews and
+          the channel manager are up to date.
+        </p>
+      </template>
+      <div class="tiles">
+        <template for:each={items} for:item="it">
+          <button
+            key={it.key}
+            class={it.tileClass}
+            data-key={it.key}
+            onclick={toggle}
+            aria-expanded={it.open}
+          >
+            <span class="count">{it.countText}</span>
+            <span class="label">{it.label}</span>
+          </button>
+        </template>
+      </div>
+      <template for:each={items} for:item="it">
+        <template lwc:if={it.open}>
+          <div key={it.key} class="detail">
+            <p class="hint">{it.hintText}</p>
+            <ul class="rows">
+              <template for:each={it.rows} for:item="r">
+                <li key={r.id}>
+                  <a href={r.url}>{r.name}</a>
+                  <span class="slds-text-color_weak"> · {r.detail}</span>
+                </li>
+              </template>
+            </ul>
+            <template lwc:if={it.extra}>
+              <p class="slds-text-color_weak">and {it.extra} more</p>
+            </template>
+            <template lwc:if={it.reportUrl}>
+              <a href={it.reportUrl}>Open report</a>
+            </template>
+          </div>
+        </template>
+      </template>
+      <template lwc:if={warnings}>
+        <p class="slds-text-color_weak slds-m-top_small">
+          Some items could not be loaded: {warnings}
+        </p>
+      </template>
+    </div>
+  </article>
+</template>
