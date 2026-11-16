@@ -70,8 +70,8 @@
           </div>
         </template>
 
-        <lightning-tabset variant="scoped">
-          <lightning-tab label="Overview">
+        <lightning-tabset variant="scoped" active-tab-value={activeTab}>
+          <lightning-tab label="Overview" value="overview" onactive={handleTab}>
             <template lwc:if={hasTeams}>
               <div class="matrix-wrap">
                 <table
@@ -121,7 +121,7 @@
             </p>
           </lightning-tab>
 
-          <lightning-tab label="Rules">
+          <lightning-tab label="Rules" value="rules" onactive={handleTab}>
             <lightning-datatable
               key-field="Id"
               data={rules}
@@ -131,7 +131,7 @@
             ></lightning-datatable>
           </lightning-tab>
 
-          <lightning-tab label="Teams">
+          <lightning-tab label="Teams" value="teams" onactive={handleTab}>
             <lightning-datatable
               key-field="Id"
               data={teams}
@@ -141,7 +141,11 @@
             ></lightning-datatable>
           </lightning-tab>
 
-          <lightning-tab label="Check access">
+          <lightning-tab
+            label="Check access"
+            value="check"
+            onactive={handleTab}
+          >
             <div class="slds-grid slds-wrap slds-gutters slds-p-vertical_small">
               <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
                 <lightning-record-picker
@@ -224,16 +228,82 @@
             </template>
           </lightning-tab>
 
-          <lightning-tab label="Objects">
+          <lightning-tab label="Objects" value="objects" onactive={handleTab}>
+            <template lwc:if={canManage}>
+              <div
+                class="bulk-bar slds-grid slds-wrap slds-grid_vertical-align-end slds-gutters_x-small slds-m-bottom_small"
+              >
+                <div class="slds-col slds-grow-none">
+                  <lightning-button
+                    variant="brand"
+                    label={applyLabel}
+                    icon-name="utility:lock"
+                    onclick={handleApplyRules}
+                    disabled={bulkDisabled}
+                  ></lightning-button>
+                </div>
+                <div class="slds-col slds-grow-none bulk-target">
+                  <lightning-combobox
+                    label="Or set sharing default to"
+                    value={bulkTarget}
+                    options={targetOptions}
+                    onchange={handleTarget}
+                    disabled={busy}
+                  ></lightning-combobox>
+                </div>
+                <div class="slds-col slds-grow-none">
+                  <lightning-button
+                    label="Update selected"
+                    onclick={handleSetDefault}
+                    disabled={setDisabled}
+                  ></lightning-button>
+                </div>
+                <div class="slds-col slds-grow-none slds-m-left_medium">
+                  <lightning-button
+                    label="Select not applied"
+                    variant="base"
+                    onclick={selectNotApplied}
+                  ></lightning-button>
+                  <lightning-button
+                    label="Clear"
+                    variant="base"
+                    class="slds-m-left_small"
+                    onclick={clearSelection}
+                  ></lightning-button>
+                </div>
+                <template lwc:if={rolloutActive}>
+                  <div class="slds-col slds-grow-none slds-col_bump-left">
+                    <lightning-button
+                      label="Stop changes"
+                      icon-name="utility:stop"
+                      variant="destructive-text"
+                      onclick={handleStop}
+                      disabled={busy}
+                    ></lightning-button>
+                  </div>
+                </template>
+              </div>
+              <template lwc:if={rolloutActive}>
+                <div
+                  class="slds-notify slds-notify_alert slds-alert_info slds-m-bottom_small"
+                  role="status"
+                >
+                  Changes are running. Each step takes about a minute, and this
+                  page updates by itself. You can leave the page; it carries on.
+                </div>
+              </template>
+            </template>
             <lightning-datatable
               key-field="objectApi"
               data={objects}
               columns={objectColumns}
-              hide-checkbox-column
+              hide-checkbox-column={cannotManage}
+              selected-rows={selectedObjects}
+              onrowselection={handleObjectSelection}
             ></lightning-datatable>
           </lightning-tab>
 
-          <lightning-tab label="Jobs">
+          <lightning-tab label="Jobs" value="jobs" onactive={handleTab}>
             <div class="slds-m-bottom_small">
               <lightning-button
                 label={nightlyLabel}

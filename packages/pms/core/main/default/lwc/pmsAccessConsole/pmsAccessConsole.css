@@ -33,3 +33,6 @@
 .verdict-none {
   color: #ba0517;
 }
+.bulk-target {
+  min-width: 17rem;
+}

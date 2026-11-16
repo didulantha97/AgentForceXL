@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Requested__c</fullName>
+    <description
+  >The last change sent to the Metadata API (Read, Private, ReadWrite or Reason), so it isn't sent twice while Salesforce applies it.</description>
+    <label>Requested</label>
+    <length>20</length>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

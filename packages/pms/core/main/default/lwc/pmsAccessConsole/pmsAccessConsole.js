@@ -1,12 +1,16 @@
 import { LightningElement } from "lwc";
 import { NavigationMixin } from "lightning/navigation";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
+import LightningConfirm from "lightning/confirm";
 import getOverview from "@salesforce/apex/PMS_AccessConsoleController.getOverview";
 import recalculateNow from "@salesforce/apex/PMS_AccessConsoleController.recalculateNow";
 import scheduleNightly from "@salesforce/apex/PMS_AccessConsoleController.scheduleNightly";
 import checkAccess from "@salesforce/apex/PMS_AccessConsoleController.checkAccess";
+import startRollout from "@salesforce/apex/PMS_AccessConsoleController.startRollout";
+import cancelRollout from "@salesforce/apex/PMS_AccessConsoleController.cancelRollout";
 
 const MODULES = ["All", "Property", "Hotel", "Project", "Practice"];
+const POLL_MS = 15000;
 
 const RULE_COLUMNS = [
   {
@@ -78,13 +82,20 @@ const TEAM_COLUMNS = [
 
 const OBJECT_COLUMNS = [
   { label: "Records", fieldName: "label" },
-  { label: "Rule value", fieldName: "ruleKey", initialWidth: 170 },
-  { label: "Sharing default", fieldName: "defaultLabel", initialWidth: 190 },
+  { label: "Rule value", fieldName: "ruleKey", initialWidth: 160 },
+  { label: "Sharing default", fieldName: "defaultLabel", initialWidth: 170 },
   {
     label: "Rules applied",
     fieldName: "applied",
     type: "boolean",
-    initialWidth: 130
+    initialWidth: 120
+  },
+  {
+    label: "Progress",
+    fieldName: "progress",
+    wrapText: true,
+    initialWidth: 230,
+    cellAttributes: { class: { fieldName: "progressCls" } }
   },
   { label: "Note", fieldName: "note", wrapText: true }
 ];
@@ -125,6 +136,21 @@ const DEFAULT_LABELS = {
   ControlledByParent: "Controlled by parent"
 };
 
+const TARGET_OPTIONS = [
+  {
+    label: "Public Read Only (everyone views, rules give edit)",
+    value: "Read"
+  },
+  { label: "Private (only where rules are already applied)", value: "Private" },
+  { label: "Public Read/Write (turn rules off)", value: "ReadWrite" }
+];
+
+const TARGET_LABELS = {
+  Private: "Private",
+  Read: "Public Read Only",
+  ReadWrite: "Public Read/Write"
+};
+
 export default class PmsAccessConsole extends NavigationMixin(
   LightningElement
 ) {
@@ -132,28 +158,61 @@ export default class PmsAccessConsole extends NavigationMixin(
   teamColumns = TEAM_COLUMNS;
   objectColumns = OBJECT_COLUMNS;
   jobColumns = JOB_COLUMNS;
+  targetOptions = TARGET_OPTIONS;
 
   loading = true;
   error;
   data;
+  activeTab = "overview";
   checkUserId;
   checkRecord = "";
   checkResult;
   checking = false;
 
+  selectedObjects = [];
+  bulkTarget;
+  busy = false;
+  pollTimer;
+
   connectedCallback() {
     this.load();
   }
 
-  async load() {
-    this.loading = true;
+  disconnectedCallback() {
+    this.stopPolling();
+  }
+
+  async load(silent) {
+    if (!silent) {
+      this.loading = true;
+    }
     try {
       this.data = await getOverview();
       this.error = undefined;
     } catch (e) {
-      this.error = this.message(e);
+      if (!silent) {
+        this.error = this.message(e);
+      }
     } finally {
       this.loading = false;
+      this.syncPolling();
+    }
+  }
+
+  /** Refresh every 15 seconds while a change is running, so progress shows without reloading. */
+  syncPolling() {
+    if (this.rolloutActive && !this.pollTimer) {
+      // eslint-disable-next-line @lwc/lwc/no-async-operation
+      this.pollTimer = setInterval(() => this.load(true), POLL_MS);
+    } else if (!this.rolloutActive) {
+      this.stopPolling();
+    }
+  }
+
+  stopPolling() {
+    if (this.pollTimer) {
+      clearInterval(this.pollTimer);
+      this.pollTimer = undefined;
     }
   }
 
@@ -163,6 +222,10 @@ export default class PmsAccessConsole extends NavigationMixin(
       (e && e.message) ||
       "Something went wrong."
     );
+  }
+
+  handleTab(event) {
+    this.activeTab = event.target.value;
   }
 
   get canManage() {
@@ -200,19 +263,45 @@ export default class PmsAccessConsole extends NavigationMixin(
   get objects() {
     if (!this.data) return [];
     return this.data.objects.map((o) => {
+      const applied = o.restricted && o.reasonReady;
       let note = "";
       if (!o.restricted) {
         note =
-          "Everyone can edit these while the default is Public Read/Write. Set it to Private in Sharing Settings to let the rules decide.";
+          "Everyone can edit these while the default is Public Read/Write. Select it and use Apply rules to let the rules decide.";
       } else if (!o.reasonReady) {
         note =
-          "Deploy the PMS Access Rule sharing reason (post-owd folder) before rules can be applied.";
+          "The PMS Access Rule sharing reason is missing. Apply rules adds it.";
+      } else if (o.sharingDefault === "Read") {
+        note =
+          "Everyone can view these; rules decide who can edit. Apply rules makes it Private.";
+      }
+      let progress = "";
+      let progressCls = "";
+      if (o.rolloutStep) {
+        const target = TARGET_LABELS[o.rolloutTarget] || o.rolloutTarget;
+        if (o.rolloutActive) {
+          progress =
+            `${o.rolloutStep} → ${target}` +
+            (o.rolloutMessage ? ` (${o.rolloutMessage})` : "");
+          progressCls = "slds-text-color_default";
+        } else if (o.rolloutStep === "Failed") {
+          progress = `Failed: ${o.rolloutMessage || "see Setup > Sharing Settings"}`;
+          progressCls = "slds-text-color_error";
+        } else if (o.rolloutStep === "Cancelled") {
+          progress = o.rolloutMessage || "Stopped.";
+          progressCls = "slds-text-color_weak";
+        } else {
+          progress = o.rolloutMessage || "Done.";
+          progressCls = "slds-text-color_success";
+        }
       }
       return {
         ...o,
         defaultLabel: DEFAULT_LABELS[o.sharingDefault] || o.sharingDefault,
-        applied: o.restricted && o.reasonReady,
-        note
+        applied,
+        note,
+        progress,
+        progressCls
       };
     });
   }
@@ -290,6 +379,140 @@ export default class PmsAccessConsole extends NavigationMixin(
 
   get hasTeams() {
     return this.data && this.data.teams.length > 0;
+  }
+
+  // ------------------------------------------------------------- bulk sharing defaults
+
+  get rolloutActive() {
+    return !!(this.data && this.data.rolloutActive);
+  }
+
+  get selectedCount() {
+    return this.selectedObjects.length;
+  }
+
+  get applyLabel() {
+    return this.selectedCount
+      ? `Apply rules (${this.selectedCount})`
+      : "Apply rules";
+  }
+
+  get bulkDisabled() {
+    return this.busy || this.selectedCount === 0;
+  }
+
+  get setDisabled() {
+    return this.bulkDisabled || !this.bulkTarget;
+  }
+
+  handleObjectSelection(event) {
+    this.selectedObjects = event.detail.selectedRows.map((r) => r.objectApi);
+  }
+
+  handleTarget(event) {
+    this.bulkTarget = event.detail.value;
+  }
+
+  selectNotApplied() {
+    this.selectedObjects = this.objects
+      .filter(
+        (o) =>
+          !(o.applied && o.sharingDefault === "Private") && !o.rolloutActive
+      )
+      .map((o) => o.objectApi);
+  }
+
+  clearSelection() {
+    this.selectedObjects = [];
+  }
+
+  selectedLabels() {
+    const set = new Set(this.selectedObjects);
+    const names = this.objects
+      .filter((o) => set.has(o.objectApi))
+      .map((o) => o.label);
+    return names.length > 6
+      ? names.slice(0, 6).join(", ") + ` and ${names.length - 6} more`
+      : names.join(", ");
+  }
+
+  async handleApplyRules() {
+    const ok = await LightningConfirm.open({
+      label: `Apply rules to ${this.selectedCount} kind(s) of records?`,
+      theme: "warning",
+      message:
+        `${this.selectedLabels()}.\n\n` +
+        "Each one goes Public Read Only, gets the PMS Access Rule sharing reason, is recalculated, goes Private and is recalculated again. " +
+        "That takes a few minutes per step. Until the first recalculation finishes, staff who don't own a record can view it but may not be able to edit it. " +
+        "Afterwards, people only see the records their teams' rules give them, so check the rules first."
+    });
+    if (ok) {
+      await this.runRollout("apply", null);
+    }
+  }
+
+  async handleSetDefault() {
+    const target = TARGET_LABELS[this.bulkTarget];
+    const warn =
+      this.bulkTarget === "ReadWrite"
+        ? "Rules stop applying to these records and every staff member can view and edit them again."
+        : this.bulkTarget === "Read"
+          ? "Everyone can still view these records. Only owners and teams with an Edit rule can change them, once the recalculation has run."
+          : "Only records already under rules (Public Read Only with the sharing reason) can go Private here. Use Apply rules for the others.";
+    const ok = await LightningConfirm.open({
+      label: `Set ${this.selectedCount} kind(s) of records to ${target}?`,
+      theme: this.bulkTarget === "ReadWrite" ? "info" : "warning",
+      message: `${this.selectedLabels()}.\n\n${warn}`
+    });
+    if (ok) {
+      await this.runRollout("set", this.bulkTarget);
+    }
+  }
+
+  async runRollout(mode, target) {
+    this.busy = true;
+    try {
+      const n = await startRollout({
+        objectApis: this.selectedObjects,
+        mode,
+        target
+      });
+      this.toast(
+        "Started",
+        `Changing ${n} kind(s) of records. Progress shows in the Progress column.`,
+        "success"
+      );
+      this.selectedObjects = [];
+      this.bulkTarget = undefined;
+      await this.load(true);
+    } catch (e) {
+      this.toast("Could not start", this.message(e), "error");
+    } finally {
+      this.busy = false;
+    }
+  }
+
+  async handleStop() {
+    const only = this.selectedObjects.length ? this.selectedObjects : null;
+    const ok = await LightningConfirm.open({
+      label: only
+        ? "Stop changes for the selected records?"
+        : "Stop all running changes?",
+      theme: "warning",
+      message:
+        "A step already sent to Salesforce still finishes, so an object may stay at Public Read Only. You can start again later."
+    });
+    if (!ok) return;
+    this.busy = true;
+    try {
+      const n = await cancelRollout({ objectApis: only });
+      this.toast("Stopped", `${n} change(s) stopped.`, "success");
+      await this.load(true);
+    } catch (e) {
+      this.toast("Could not stop", this.message(e), "error");
+    } finally {
+      this.busy = false;
+    }
   }
 
   // ------------------------------------------------------------- actions
