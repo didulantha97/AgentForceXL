@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Public_Pay_URL__c</fullName>
+    <label>Public Pay URL</label>
+    <description
+  >Base URL of the PMS Payments site, for example https://codeterriers4.my.salesforce-sites.com/pay. Reminder letters link to its /services/apexrest/pms/pay endpoint, which opens a fresh Stripe payment page.</description>
+    <type>Url</type>
+    <required>false</required>
+</CustomField>

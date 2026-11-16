@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Fee_In_Terms__c</fullName>
+    <label>Reminder Fee Is in Our Terms</label>
+    <description
+  >Tick when your booking terms let you charge consumers a reminder fee. For leases you can also tick Reminder Fee Agreed on the lease.</description>
+    <type>Checkbox</type>
+    <defaultValue>false</defaultValue>
+    <trackHistory>false</trackHistory>
+</CustomField>

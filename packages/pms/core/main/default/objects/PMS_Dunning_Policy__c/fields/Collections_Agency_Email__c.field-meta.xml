@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Collections_Agency_Email__c</fullName>
+    <label>Collections Agency Email</label>
+    <description
+  >Optional. The claim details are emailed here at hand-off. Leave blank to hand over by hand.</description>
+    <type>Email</type>
+    <required>false</required>
+    <unique>false</unique>
+    <externalId>false</externalId>
+    <trackHistory>false</trackHistory>
+</CustomField>

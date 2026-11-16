@@ -1,0 +1,234 @@
+<template>
+  <lightning-card title="Dunning" icon-name="standard:collection_variable">
+    <lightning-button-icon
+      slot="actions"
+      icon-name="utility:refresh"
+      alternative-text="Refresh"
+      title="Refresh"
+      onclick={load}
+      disabled={busy}
+    ></lightning-button-icon>
+
+    <div class="slds-p-horizontal_medium">
+      <template lwc:if={busy}>
+        <lightning-spinner
+          alternative-text="Working"
+          size="small"
+        ></lightning-spinner>
+      </template>
+      <template lwc:if={error}>
+        <div
+          class="slds-notify slds-notify_alert slds-alert_error slds-m-bottom_small"
+          role="alert"
+        >
+          <h2>{error}</h2>
+        </div>
+      </template>
+
+      <template lwc:if={s}>
+        <div class="slds-grid slds-wrap slds-m-bottom_small">
+          <div class="slds-col slds-size_1-of-2">
+            <div class="slds-text-title">Stage</div>
+            <div>
+              <span class={stageClass}>{stageLabel}</span>
+              <template lwc:if={s.paused}>
+                <span class="slds-badge slds-theme_warning slds-m-left_x-small"
+                  >Paused</span
+                >
+              </template>
+            </div>
+            <template lwc:if={s.pauseReason}>
+              <div class="slds-text-body_small slds-text-color_weak">
+                {s.pauseReason}
+              </div>
+            </template>
+          </div>
+          <div class="slds-col slds-size_1-of-2">
+            <div class="slds-text-title">Owed</div>
+            <div>
+              <lightning-formatted-number
+                value={s.balance}
+                format-style="currency"
+                currency-code={s.currencyCode}
+              ></lightning-formatted-number>
+            </div>
+            <template lwc:if={s.daysOverdue}>
+              <div class="slds-text-body_small slds-text-color_error">
+                {s.daysOverdue} days overdue
+              </div>
+            </template>
+          </div>
+          <template lwc:if={s.nextStep}>
+            <div
+              class="slds-col slds-size_1-of-1 slds-m-top_x-small slds-text-body_small"
+            >
+              Next: <strong>{s.nextStep}</strong>
+              <template lwc:if={s.nextStepDate}>
+                on
+                <lightning-formatted-date-time
+                  value={s.nextStepDate}
+                ></lightning-formatted-date-time>
+              </template>
+            </div>
+          </template>
+          <template lwc:if={noPolicy}>
+            <div
+              class="slds-col slds-size_1-of-1 slds-m-top_x-small slds-text-color_weak slds-text-body_small"
+            >
+              No dunning policy applies. Create a default Dunning Policy, or set
+              one on the site.
+            </div>
+          </template>
+        </div>
+
+        <template lwc:if={s.planName}>
+          <div class="slds-m-bottom_small">
+            <div class="slds-text-title">
+              Payment plan {s.planName} · {s.planStatus}
+            </div>
+            <ul class="slds-list_dotted slds-text-body_small">
+              <template for:each={s.instalments} for:item="i">
+                <li key={i.id}>
+                  <lightning-formatted-number
+                    value={i.amount}
+                    format-style="currency"
+                    currency-code={s.currencyCode}
+                  ></lightning-formatted-number>
+                  by
+                  <lightning-formatted-date-time
+                    value={i.dueDate}
+                  ></lightning-formatted-date-time>
+                  · {i.status}
+                </li>
+              </template>
+            </ul>
+          </div>
+        </template>
+
+        <template lwc:if={showPause}>
+          <div
+            class="slds-grid slds-grid_vertical-align-end slds-m-bottom_small"
+          >
+            <lightning-input
+              class="slds-col"
+              label="Reason (dispute, agreed delay...)"
+              value={pauseReason}
+              onchange={onPauseReason}
+            ></lightning-input>
+            <lightning-button
+              class="slds-m-left_x-small"
+              variant="brand"
+              label="Pause"
+              onclick={doPause}
+            ></lightning-button>
+            <lightning-button
+              class="slds-m-left_x-small"
+              label="Cancel"
+              onclick={togglePause}
+            ></lightning-button>
+          </div>
+        </template>
+
+        <template lwc:if={showPlan}>
+          <div
+            class="slds-grid slds-grid_vertical-align-end slds-m-bottom_small"
+          >
+            <lightning-input
+              class="slds-col"
+              type="number"
+              min="2"
+              max="24"
+              step="1"
+              label="Monthly instalments"
+              value={instalments}
+              onchange={onInstalments}
+            ></lightning-input>
+            <lightning-button
+              class="slds-m-left_x-small"
+              variant="brand"
+              label="Send offer"
+              onclick={doPlan}
+            ></lightning-button>
+            <lightning-button
+              class="slds-m-left_x-small"
+              label="Cancel"
+              onclick={togglePlan}
+            ></lightning-button>
+          </div>
+        </template>
+
+        <template lwc:if={hasEvents}>
+          <div class="slds-text-title slds-m-bottom_xx-small">History</div>
+          <ul class="slds-has-dividers_bottom-space slds-text-body_small">
+            <template for:each={s.events} for:item="e">
+              <li key={e.id} class="slds-item">
+                <strong>{e.step}</strong> ·
+                <lightning-formatted-date-time
+                  value={e.sentAt}
+                  year="numeric"
+                  month="short"
+                  day="numeric"
+                ></lightning-formatted-date-time>
+                <template lwc:if={e.sentTo}> · {e.sentTo}</template>
+                <template lwc:if={e.fee}>
+                  · fee
+                  <lightning-formatted-number
+                    value={e.fee}
+                    format-style="currency"
+                    currency-code={s.currencyCode}
+                  ></lightning-formatted-number
+                ></template>
+                <template lwc:if={e.interest}>
+                  · interest
+                  <lightning-formatted-number
+                    value={e.interest}
+                    format-style="currency"
+                    currency-code={s.currencyCode}
+                  ></lightning-formatted-number
+                ></template>
+                <template lwc:if={e.note}
+                  ><div class="slds-text-color_weak">{e.note}</div></template
+                >
+              </li>
+            </template>
+          </ul>
+        </template>
+      </template>
+    </div>
+
+    <div slot="footer">
+      <template lwc:if={s}>
+        <lightning-button-group>
+          <template lwc:if={s.canSendNow}>
+            <lightning-button
+              label={sendLabel}
+              onclick={sendNext}
+              disabled={busy}
+            ></lightning-button>
+          </template>
+          <template lwc:if={s.canOfferPlan}>
+            <lightning-button
+              label="Offer payment plan"
+              onclick={togglePlan}
+              disabled={busy}
+            ></lightning-button>
+          </template>
+          <template lwc:if={s.paused}>
+            <lightning-button
+              label="Resume"
+              onclick={doResume}
+              disabled={busy}
+            ></lightning-button>
+          </template>
+          <template lwc:elseif={canPause}>
+            <lightning-button
+              label="Pause"
+              onclick={togglePause}
+              disabled={busy}
+            ></lightning-button>
+          </template>
+        </lightning-button-group>
+      </template>
+    </div>
+  </lightning-card>
+</template>

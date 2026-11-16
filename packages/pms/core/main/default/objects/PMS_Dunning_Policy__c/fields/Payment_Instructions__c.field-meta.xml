@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Payment_Instructions__c</fullName>
+    <label>Other Ways to Pay</label>
+    <description
+  >Shown in every letter under the card link, for example: Bankgiro 123-4567, use the invoice number as reference.</description>
+    <type>LongTextArea</type>
+    <length>2000</length>
+    <visibleLines>3</visibleLines>
+    <trackHistory>false</trackHistory>
+</CustomField>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>PMS Payment Link</label>
+    <description
+  >For the PMS Payments site guest user: runs the pay link in reminder letters (/services/apexrest/pms/pay).</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <classAccesses>
+        <apexClass>PMS_PayLinkRest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+</PermissionSet>

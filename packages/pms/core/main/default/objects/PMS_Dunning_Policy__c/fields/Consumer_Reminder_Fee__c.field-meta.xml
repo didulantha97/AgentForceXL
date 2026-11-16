@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Consumer_Reminder_Fee__c</fullName>
+    <label>Consumer Reminder Fee</label>
+    <description
+  >Swedish law: at most 60 SEK, once per invoice, and only if agreed in advance (lease or terms).</description>
+    <type>Currency</type>
+    <precision>16</precision>
+    <scale>2</scale>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+</CustomField>

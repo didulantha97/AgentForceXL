@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Plan__c</fullName>
+    <label>Plan</label>
+    <description>The payment plan.</description>
+    <type>MasterDetail</type>
+    <referenceTo>PMS_Payment_Plan__c</referenceTo>
+    <relationshipName>Instalments</relationshipName>
+    <relationshipLabel>Instalments</relationshipLabel>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    <trackHistory>false</trackHistory>
+</CustomField>

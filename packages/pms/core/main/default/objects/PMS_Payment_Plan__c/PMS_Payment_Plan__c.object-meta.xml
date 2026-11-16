@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Payment Plan</label>
+    <pluralLabel>Payment Plans</pluralLabel>
+    <description
+  >Agreement to pay an overdue invoice in instalments. Proposed plans become Active when the first instalment is paid; a missed instalment breaks the plan.</description>
+    <nameField>
+        <label>Plan</label>
+        <type>AutoNumber</type>
+        <displayFormat>PP-{00000}</displayFormat>
+        <startingNumber>1</startingNumber>
+    </nameField>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <sharingModel>ReadWrite</sharingModel>
+    <externalSharingModel>Private</externalSharingModel>
+    <enableActivities>false</enableActivities>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableBulkApi>true</enableBulkApi>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <enableFeeds>false</enableFeeds>
+</CustomObject>
