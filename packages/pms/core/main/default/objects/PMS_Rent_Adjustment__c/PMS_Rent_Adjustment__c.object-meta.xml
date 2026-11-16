@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Rent Adjustment</label>
+    <pluralLabel>Rent Adjustments</pluralLabel>
+    <description
+  >A change of rent on a lease: index adjustment under an index clause, a negotiated increase, or a manual change. Drafted, approved, notified to the tenant, then applied on the effective date.</description>
+    <nameField>
+        <label>Adjustment</label>
+        <type>AutoNumber</type>
+        <displayFormat>RA-{00000}</displayFormat>
+        <startingNumber>1</startingNumber>
+    </nameField>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <sharingModel>ReadWrite</sharingModel>
+    <externalSharingModel>Private</externalSharingModel>
+    <enableActivities>false</enableActivities>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableBulkApi>true</enableBulkApi>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <enableFeeds>false</enableFeeds>
+</CustomObject>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Rent Review</label>
+    <lwcComponent>pmsRentReview</lwcComponent>
+    <motif>Custom24: Money</motif>
+    <description
+  >Annual rent review: index values, index and negotiated adjustments, notices.</description>
+</CustomTab>

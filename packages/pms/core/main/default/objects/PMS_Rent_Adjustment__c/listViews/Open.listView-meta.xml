@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Open</fullName>
+    <columns>NAME</columns>
+    <columns>Lease__c</columns>
+    <columns>Kind__c</columns>
+    <columns>Status__c</columns>
+    <columns>Effective_Date__c</columns>
+    <columns>Old_Rent__c</columns>
+    <columns>New_Rent__c</columns>
+    <columns>Warning__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Status__c</field>
+        <operation>equals</operation>
+        <value>Draft,Approved,Notice Sent</value>
+    </filters>
+    <label>Open (not applied)</label>
+</ListView>

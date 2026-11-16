@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Index_Base_Rent__c</fullName>
+    <label>Base Rent (per month)</label>
+    <description
+  >The rent the base index refers to (bashyra). Blank = the rent when indexation is first prepared.</description>
+    <type>Currency</type>
+    <precision>16</precision>
+    <scale>2</scale>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+</CustomField>

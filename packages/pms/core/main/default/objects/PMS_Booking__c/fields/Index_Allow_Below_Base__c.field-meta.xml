@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Index_Allow_Below_Base__c</fullName>
+    <label>Rent May Fall Below Base</label>
+    <description
+  >Tick only if the clause lets the rent fall below the base rent when the index falls. Standard clauses do not.</description>
+    <type>Checkbox</type>
+    <defaultValue>false</defaultValue>
+    <trackHistory>false</trackHistory>
+</CustomField>

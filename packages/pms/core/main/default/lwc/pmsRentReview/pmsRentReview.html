@@ -1,0 +1,236 @@
+<template>
+  <div class="slds-grid slds-wrap slds-gutters_small">
+    <div class="slds-col slds-size_1-of-1">
+      <lightning-card
+        title="Rent review"
+        icon-name="standard:contract_line_item"
+      >
+        <div slot="actions" class="slds-grid slds-grid_vertical-align-end">
+          <lightning-input
+            type="number"
+            label="Year the new rents apply"
+            variant="label-inline"
+            value={year}
+            min="2020"
+            max="2100"
+            step="1"
+            onchange={onYear}
+            class="slds-m-right_small"
+          ></lightning-input>
+          <lightning-button-icon
+            icon-name="utility:refresh"
+            alternative-text="Refresh"
+            onclick={load}
+            disabled={busy}
+          ></lightning-button-icon>
+        </div>
+        <div class="slds-p-horizontal_medium">
+          <template lwc:if={busy}>
+            <lightning-spinner
+              alternative-text="Working"
+              size="small"
+            ></lightning-spinner>
+          </template>
+          <template lwc:if={error}>
+            <div
+              class="slds-notify slds-notify_alert slds-alert_error slds-m-bottom_small"
+              role="alert"
+            >
+              <h2>{error}</h2>
+            </div>
+          </template>
+          <template lwc:if={messages.length}>
+            <div
+              class="slds-box slds-box_x-small slds-theme_shade slds-m-bottom_small slds-text-body_small"
+            >
+              <template for:each={messages} for:item="m">
+                <div key={m.key}>{m.text}</div>
+              </template>
+            </div>
+          </template>
+
+          <div
+            class="slds-grid slds-wrap slds-gutters_small slds-m-bottom_medium"
+          >
+            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2">
+              <div class="slds-box">
+                <h3 class="slds-text-heading_small slds-m-bottom_x-small">
+                  Index adjustment (commercial leases)
+                </h3>
+                <p
+                  class="slds-text-body_small slds-text-color_weak slds-m-bottom_x-small"
+                >
+                  Proposes the rent from 1 January {year} for leases with an
+                  index clause, using the October {prevYear} index.
+                </p>
+                <lightning-combobox
+                  label="Site"
+                  options={sites}
+                  value={indexSite}
+                  onchange={onIndexSite}
+                ></lightning-combobox>
+                <lightning-button
+                  class="slds-m-top_small"
+                  variant="brand"
+                  label="Prepare index adjustments"
+                  onclick={prepareIndex}
+                  disabled={busy}
+                ></lightning-button>
+              </div>
+            </div>
+            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2">
+              <div class="slds-box">
+                <h3 class="slds-text-heading_small slds-m-bottom_x-small">
+                  Negotiated increase (residential leases)
+                </h3>
+                <div class="slds-grid slds-gutters_x-small">
+                  <lightning-combobox
+                    class="slds-col"
+                    label="Site"
+                    options={sites}
+                    value={negSite}
+                    onchange={onNegSite}
+                  ></lightning-combobox>
+                  <lightning-input
+                    class="slds-col"
+                    type="number"
+                    step="0.01"
+                    label="Agreed %"
+                    value={negPercent}
+                    onchange={onNegPercent}
+                  ></lightning-input>
+                  <lightning-input
+                    class="slds-col"
+                    type="date"
+                    label="From"
+                    value={negDate}
+                    onchange={onNegDate}
+                  ></lightning-input>
+                </div>
+                <lightning-textarea
+                  label="Note in the notice (optional)"
+                  value={negNote}
+                  onchange={onNegNote}
+                  placeholder="For example: as agreed with Hyresgästföreningen on 10 March"
+                ></lightning-textarea>
+                <lightning-button
+                  class="slds-m-top_small"
+                  variant="brand"
+                  label="Prepare negotiated increase"
+                  onclick={prepareNegotiated}
+                  disabled={busy}
+                ></lightning-button>
+              </div>
+            </div>
+          </div>
+
+          <div class="slds-m-bottom_x-small">
+            <lightning-button-group>
+              <lightning-button
+                label="Approve"
+                onclick={approve}
+                disabled={noSelection}
+              ></lightning-button>
+              <lightning-button
+                label="Send notices"
+                onclick={sendNotices}
+                disabled={noSelection}
+              ></lightning-button>
+              <lightning-button
+                label="Cancel"
+                variant="destructive-text"
+                onclick={cancel}
+                disabled={noSelection}
+              ></lightning-button>
+            </lightning-button-group>
+            <span
+              class="slds-m-left_small slds-text-body_small slds-text-color_weak"
+              >New rent can be edited on drafts.</span
+            >
+          </div>
+          <lightning-datatable
+            key-field="id"
+            data={rows}
+            columns={columns}
+            onrowselection={onSelect}
+            onsave={onSave}
+            draft-values={draftValues}
+            show-row-number-column
+          ></lightning-datatable>
+          <template lwc:if={noRows}>
+            <p class="slds-p-around_small slds-text-color_weak">
+              No adjustments for {year} yet.
+            </p>
+          </template>
+        </div>
+      </lightning-card>
+    </div>
+
+    <div class="slds-col slds-size_1-of-1">
+      <lightning-card title="Index values" icon-name="standard:metrics">
+        <div class="slds-p-horizontal_medium">
+          <p
+            class="slds-text-body_small slds-text-color_weak slds-m-bottom_x-small"
+          >
+            Enter the official (fastställt) KPI number from SCB. Most index
+            clauses use the 1980=100 series and the October value.
+          </p>
+          <div
+            class="slds-grid slds-wrap slds-gutters_x-small slds-grid_vertical-align-end slds-m-bottom_small"
+          >
+            <lightning-combobox
+              class="slds-col"
+              label="Series"
+              options={seriesOptions}
+              value={ivSeries}
+              onchange={onIvSeries}
+            ></lightning-combobox>
+            <lightning-input
+              class="slds-col"
+              type="number"
+              label="Year"
+              value={ivYear}
+              onchange={onIvYear}
+            ></lightning-input>
+            <lightning-input
+              class="slds-col"
+              type="number"
+              label="Month"
+              min="1"
+              max="12"
+              value={ivMonth}
+              onchange={onIvMonth}
+            ></lightning-input>
+            <lightning-input
+              class="slds-col"
+              type="number"
+              step="0.01"
+              label="Value"
+              value={ivValue}
+              onchange={onIvValue}
+            ></lightning-input>
+            <lightning-input
+              class="slds-col"
+              label="Source"
+              value={ivSource}
+              onchange={onIvSource}
+            ></lightning-input>
+            <div class="slds-col slds-grow-none">
+              <lightning-button
+                label="Save"
+                onclick={saveIndex}
+                disabled={busy}
+              ></lightning-button>
+            </div>
+          </div>
+          <lightning-datatable
+            key-field="id"
+            data={indexValues}
+            columns={indexColumns}
+            hide-checkbox-column
+          ></lightning-datatable>
+        </div>
+      </lightning-card>
+    </div>
+  </div>
+</template>

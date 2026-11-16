@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Index_Clause__c</fullName>
+    <label>Index Clause</label>
+    <description
+  >The lease has an index clause (commercial leases only; valid only for a fixed term of at least 3 years).</description>
+    <type>Checkbox</type>
+    <defaultValue>false</defaultValue>
+    <trackHistory>false</trackHistory>
+</CustomField>
