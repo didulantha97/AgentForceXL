@@ -9,10 +9,37 @@
  * One cacheable call per page. Every query runs in user mode, so the PMS access rules and field
  * security apply. A block that fails is skipped and reported as a warning; the rest still loads.
  * Amounts are left out for users with PMS_Hide_Amounts, names for PMS_Hide_Customer_Details.
+ *
+ * reportIds() resolves the "Open report" links at runtime, so no org-specific report ids are
+ * hard-coded in the LWC (needed for the 2GP package).
  */
 public with sharing class PMS_RevenueHomeController {
   static final Integer MAX_ROWS = 5;
   static final Integer MAX_QUERY = 200;
+
+  /**
+   * Item key => report developer name (clean names used in the packaged report metadata) and
+   * report name (fallback for orgs where the reports were created in the UI with a random suffix).
+   */
+  @TestVisible
+  static final Map<String, List<String>> REPORTS = new Map<String, List<String>>{
+    'reminders' => new List<String>{
+      'PMS_Invoices_by_Reminder_Stage',
+      'PMS Invoices by Reminder Stage'
+    },
+    'cards' => new List<String>{
+      'PMS_Bookings_by_Card_and_Deposit_Status',
+      'PMS Bookings by Card and Deposit Status'
+    },
+    'rent' => new List<String>{
+      'PMS_Rent_Adjustments',
+      'PMS Rent Adjustments'
+    },
+    'channelErrors' => new List<String>{
+      'PMS_Channel_Errors_24_h',
+      'PMS Channel Errors (24 h)'
+    }
+  };
 
   public class Row {
     @AuraEnabled
@@ -56,6 +83,50 @@ public with sharing class PMS_RevenueHomeController {
   static Boolean hideAmounts = false;
   @TestVisible
   static Boolean hideCustomers = false;
+
+  /**
+   * Item key => report id for the reports the running user can see. Matches the clean developer
+   * name first, then the report name. Keys without a visible report are left out (no link shown).
+   */
+  @AuraEnabled(cacheable=true)
+  public static Map<String, Id> reportIds() {
+    Map<String, Id> out = new Map<String, Id>();
+    try {
+      Set<String> devNames = new Set<String>();
+      Set<String> names = new Set<String>();
+      for (List<String> r : REPORTS.values()) {
+        devNames.add(r[0]);
+        names.add(r[1]);
+      }
+      Map<String, Id> byDev = new Map<String, Id>();
+      Map<String, Id> byName = new Map<String, Id>();
+      for (Report r : [
+        SELECT Id, DeveloperName, Name
+        FROM Report
+        WHERE DeveloperName IN :devNames OR Name IN :names
+        WITH USER_MODE
+        ORDER BY CreatedDate
+      ]) {
+        if (devNames.contains(r.DeveloperName)) {
+          byDev.put(r.DeveloperName, r.Id);
+        }
+        if (names.contains(r.Name) && !byName.containsKey(r.Name)) {
+          byName.put(r.Name, r.Id);
+        }
+      }
+      for (String key : REPORTS.keySet()) {
+        List<String> r = REPORTS.get(key);
+        Id id = byDev.containsKey(r[0]) ? byDev.get(r[0]) : byName.get(r[1]);
+        if (id != null) {
+          out.put(key, id);
+        }
+      }
+    } catch (Exception e) {
+      // No links rather than a broken card.
+      System.debug(LoggingLevel.WARN, 'reportIds: ' + e.getMessage());
+    }
+    return out;
+  }
 
   /** module: Admin, Hotel, Property, Projects or Practice (blank = Admin). */
   @AuraEnabled(cacheable=true)

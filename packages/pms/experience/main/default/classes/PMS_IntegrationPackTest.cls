@@ -121,11 +121,13 @@ private class PMS_IntegrationPackTest {
         Effective_Date__c = today.addDays(60)
       )
     );
-    tryInsert(
+    // Kind__c is a restricted picklist: 'Availability' is a valid value, so the insert (and the
+    // access trigger) really runs.
+    PMS_Channel_Log__c log = (PMS_Channel_Log__c) tryInsert(
       new PMS_Channel_Log__c(
         Site__c = h.site.Id,
         Status__c = 'Error',
-        Kind__c = 'Push',
+        Kind__c = 'Availability',
         Message__c = 'test'
       )
     );
@@ -170,6 +172,19 @@ private class PMS_IntegrationPackTest {
     PMS_PortalMoneyController.Result mine = PMS_PortalMoneyController.getMyPayments();
     Test.stopTest();
 
+    if (log != null) {
+      PMS_RevenueHomeController.Result hotel = PMS_RevenueHomeController.getAttention(
+        'Hotel'
+      );
+      Integer errors = 0;
+      for (PMS_RevenueHomeController.Item it : hotel.items) {
+        if (it.key == 'channelErrors') {
+          errors = it.count;
+        }
+      }
+      System.assert(errors >= 1, 'The channel error log is counted');
+    }
+
     System.assert(mine.hasAccount);
     if (reservation != null) {
       // The guarantee trigger may have set its own status on insert; check against what was stored.
@@ -188,6 +203,22 @@ private class PMS_IntegrationPackTest {
         'Bookings needing a card should be listed'
       );
     }
+  }
+
+  @IsTest
+  static void reportIdsNeverFails() {
+    // Reports are not visible to tests without SeeAllData, so this checks the call is safe and
+    // that every configured key has a developer name and a report name.
+    Map<String, Id> ids = PMS_RevenueHomeController.reportIds();
+    System.assertNotEquals(null, ids);
+    for (String key : PMS_RevenueHomeController.REPORTS.keySet()) {
+      List<String> r = PMS_RevenueHomeController.REPORTS.get(key);
+      System.assertEquals(2, r.size(), 'Developer name and name for ' + key);
+    }
+    System.assert(
+      PMS_RevenueHomeController.REPORTS.containsKey('channelErrors'),
+      'The channel errors tile has a report'
+    );
   }
 
   @IsTest

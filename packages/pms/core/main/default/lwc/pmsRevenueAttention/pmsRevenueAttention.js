@@ -1,14 +1,10 @@
 import { LightningElement, api, wire } from "lwc";
 import { refreshApex } from "@salesforce/apex";
 import getAttention from "@salesforce/apex/PMS_RevenueHomeController.getAttention";
+import reportIds from "@salesforce/apex/PMS_RevenueHomeController.reportIds";
 
-// Reports in the PMS Reports folder (codeterriers4). Report ids differ per org: update these when the
-// package is installed elsewhere, or set them to null to hide the "Open report" links.
-const REPORTS = {
-  reminders: "00OkO000000LJFlUAO", // PMS Invoices by Reminder Stage
-  cards: "00OkO000000LHNjUAO", // PMS Bookings by Card and Deposit Status
-  rent: "00OkO000000LJHNUA4" // PMS Rent Adjustments
-};
+// Report ids are resolved at runtime by PMS_RevenueHomeController.reportIds() (item key => report id),
+// so nothing org-specific is hard-coded here. A tile without a visible report gets no "Open report" link.
 
 export default class PmsRevenueAttention extends LightningElement {
   @api module = "Admin";
@@ -16,6 +12,7 @@ export default class PmsRevenueAttention extends LightningElement {
   error;
   openKey;
   wired;
+  reports = {};
 
   @wire(getAttention, { module: "$module" })
   load(result) {
@@ -27,6 +24,13 @@ export default class PmsRevenueAttention extends LightningElement {
       this.error = result.error.body
         ? result.error.body.message
         : "Could not load revenue items.";
+    }
+  }
+
+  @wire(reportIds)
+  loadReports({ data }) {
+    if (data) {
+      this.reports = data;
     }
   }
 
@@ -47,8 +51,8 @@ export default class PmsRevenueAttention extends LightningElement {
         tileClass:
           `tile tile-${i.severity}` +
           (i.key === this.openKey ? " tile-open" : ""),
-        reportUrl: REPORTS[i.key]
-          ? `/lightning/r/Report/${REPORTS[i.key]}/view`
+        reportUrl: this.reports[i.key]
+          ? `/lightning/r/Report/${this.reports[i.key]}/view`
           : null,
         extra: i.count > i.rows.length ? i.count - i.rows.length : 0
       }));
