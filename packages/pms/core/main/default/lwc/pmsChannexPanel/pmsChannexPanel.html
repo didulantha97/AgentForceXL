@@ -1,0 +1,128 @@
+<template>
+  <lightning-card
+    title="Channel manager (Channex)"
+    icon-name="standard:channel_program_history"
+  >
+    <lightning-button-icon
+      slot="actions"
+      icon-name="utility:refresh"
+      alternative-text="Refresh"
+      onclick={load}
+      disabled={busy}
+    ></lightning-button-icon>
+    <div class="slds-p-horizontal_medium">
+      <template lwc:if={busy}>
+        <lightning-spinner
+          alternative-text="Working"
+          size="small"
+        ></lightning-spinner>
+      </template>
+      <template lwc:if={error}>
+        <div
+          class="slds-notify slds-notify_alert slds-alert_error slds-m-bottom_small"
+          role="alert"
+        >
+          <h2>{error}</h2>
+        </div>
+      </template>
+      <template lwc:if={result}>
+        <div
+          class="slds-box slds-box_x-small slds-theme_shade slds-m-bottom_small slds-text-body_small"
+        >
+          {result}
+        </div>
+      </template>
+      <template lwc:if={s}>
+        <div
+          class="slds-grid slds-wrap slds-m-bottom_small slds-text-body_small"
+        >
+          <div class="slds-col slds-size_1-of-2">
+            <div class="slds-text-title">Status</div>
+            <span class={statusClass}>{statusLabel}</span>
+          </div>
+          <div class="slds-col slds-size_1-of-2">
+            <div class="slds-text-title">Mapping</div>
+            {s.mappedRoomTypes}/{s.roomTypes} room types · {s.activeMappings}
+            rate mappings
+          </div>
+          <div class="slds-col slds-size_1-of-2 slds-m-top_x-small">
+            <div class="slds-text-title">Last sent</div>
+            <lightning-formatted-date-time
+              value={s.lastPush}
+              month="short"
+              day="numeric"
+              hour="2-digit"
+              minute="2-digit"
+            ></lightning-formatted-date-time>
+          </div>
+          <div class="slds-col slds-size_1-of-2 slds-m-top_x-small">
+            <div class="slds-text-title">Last fetched</div>
+            <lightning-formatted-date-time
+              value={s.lastPull}
+              month="short"
+              day="numeric"
+              hour="2-digit"
+              minute="2-digit"
+            ></lightning-formatted-date-time>
+          </div>
+          <div class="slds-col slds-size_1-of-1 slds-m-top_x-small">
+            Next send: {s.availabilityValues} availability and {s.rateValues}
+            rate ranges
+          </div>
+        </div>
+        <template lwc:if={hasProblems}>
+          <div
+            class="slds-notify slds-notify_alert slds-alert_warning slds-m-bottom_small"
+            role="alert"
+          >
+            <ul class="slds-list_dotted slds-text-align_left">
+              <template for:each={problemRows} for:item="p">
+                <li key={p.key}>{p.text}</li>
+              </template>
+            </ul>
+          </div>
+        </template>
+        <template lwc:if={hasLogs}>
+          <div class="slds-text-title slds-m-bottom_xx-small">Recent sync</div>
+          <ul class="slds-has-dividers_bottom-space slds-text-body_small">
+            <template for:each={logRows} for:item="l">
+              <li key={l.id} class="slds-item">
+                <span class={l.cls}>{l.status}</span>
+                <span class="slds-m-left_x-small">{l.kind}</span>
+                <span class="slds-text-color_weak slds-m-left_x-small">
+                  <lightning-formatted-date-time
+                    value={l.at}
+                    month="short"
+                    day="numeric"
+                    hour="2-digit"
+                    minute="2-digit"
+                  ></lightning-formatted-date-time>
+                </span>
+                <template lwc:if={l.bookingId}>
+                  <a class="slds-m-left_x-small" href={l.bookingUrl}
+                    >{l.bookingName}</a
+                  >
+                </template>
+                <div class="slds-text-color_weak">{l.message}</div>
+              </li>
+            </template>
+          </ul>
+        </template>
+      </template>
+    </div>
+    <div slot="footer">
+      <lightning-button-group>
+        <lightning-button
+          label="Send availability and rates now"
+          onclick={pushNow}
+          disabled={busy}
+        ></lightning-button>
+        <lightning-button
+          label="Fetch bookings now"
+          onclick={syncNow}
+          disabled={busy}
+        ></lightning-button>
+      </lightning-button-group>
+    </div>
+  </lightning-card>
+</template>

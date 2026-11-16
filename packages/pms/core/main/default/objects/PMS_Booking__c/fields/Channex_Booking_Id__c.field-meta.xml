@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Channex_Booking_Id__c</fullName>
+    <label>Channex Booking ID</label>
+    <description
+  >Channex booking UUID (shared by every room of a multi-room booking).</description>
+    <type>Text</type>
+    <length>36</length>
+    <required>false</required>
+    <unique>false</unique>
+    <externalId>true</externalId>
+    <trackHistory>false</trackHistory>
+</CustomField>

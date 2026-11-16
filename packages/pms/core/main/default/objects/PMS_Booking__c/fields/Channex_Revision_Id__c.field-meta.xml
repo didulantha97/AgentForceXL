@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Channex_Revision_Id__c</fullName>
+    <label>Channex Revision ID</label>
+    <description>Last Channex revision applied.</description>
+    <type>Text</type>
+    <length>36</length>
+    <required>false</required>
+    <unique>false</unique>
+    <externalId>false</externalId>
+    <trackHistory>false</trackHistory>
+</CustomField>

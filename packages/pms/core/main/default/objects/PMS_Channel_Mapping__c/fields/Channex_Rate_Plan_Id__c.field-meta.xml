@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Channex_Rate_Plan_Id__c</fullName>
+    <label>Channex Rate Plan ID</label>
+    <description>UUID of the Channex rate plan for this room type.</description>
+    <type>Text</type>
+    <length>36</length>
+    <required>false</required>
+    <unique>false</unique>
+    <externalId>false</externalId>
+    <trackHistory>false</trackHistory>
+</CustomField>

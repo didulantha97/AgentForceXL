@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Channex_Room_Key__c</fullName>
+    <label>Channex Room Key</label>
+    <description
+  >Channex booking ID + room number, so each OTA room becomes exactly one PMS booking.</description>
+    <type>Text</type>
+    <length>60</length>
+    <required>false</required>
+    <unique>true</unique>
+    <caseSensitive>false</caseSensitive>
+    <externalId>true</externalId>
+    <trackHistory>false</trackHistory>
+</CustomField>

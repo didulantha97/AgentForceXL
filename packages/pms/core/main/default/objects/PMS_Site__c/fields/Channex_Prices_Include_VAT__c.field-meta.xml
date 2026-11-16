@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Channex_Prices_Include_VAT__c</fullName>
+    <label>Channel Prices Include VAT</label>
+    <description
+  >Rates sent to Channex include VAT, and OTA booking amounts are read as VAT-inclusive (normal in Sweden).</description>
+    <type>Checkbox</type>
+    <defaultValue>true</defaultValue>
+    <trackHistory>false</trackHistory>
+</CustomField>

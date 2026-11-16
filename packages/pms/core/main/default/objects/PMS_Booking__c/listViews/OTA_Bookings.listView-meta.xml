@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>OTA_Bookings</fullName>
+    <columns>NAME</columns>
+    <columns>Site__c</columns>
+    <columns>Account__c</columns>
+    <columns>Start__c</columns>
+    <columns>End__c</columns>
+    <columns>Status__c</columns>
+    <columns>OTA_Name__c</columns>
+    <columns>OTA_Reservation_Code__c</columns>
+    <columns>Space__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Channel__c</field>
+        <operation>equals</operation>
+        <value>OTA</value>
+    </filters>
+    <label>OTA Bookings</label>
+</ListView>

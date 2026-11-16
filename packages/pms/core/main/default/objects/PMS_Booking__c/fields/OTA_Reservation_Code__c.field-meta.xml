@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>OTA_Reservation_Code__c</fullName>
+    <label>OTA Reservation Code</label>
+    <description>The OTA confirmation number.</description>
+    <type>Text</type>
+    <length>80</length>
+    <required>false</required>
+    <unique>false</unique>
+    <externalId>true</externalId>
+    <trackHistory>false</trackHistory>
+</CustomField>

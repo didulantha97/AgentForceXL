@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Channex_Enabled__c</fullName>
+    <label>Channex Enabled</label>
+    <description
+  >Master switch for the Channex sync (push and pull). Untick to pause everything.</description>
+    <type>Checkbox</type>
+    <defaultValue>false</defaultValue>
+</CustomField>
