@@ -161,7 +161,26 @@
         <members>PMS_ChargeTrigger</members>
         <members>PMS_DocumentRequestTrigger</members>
         <members>PMS_InvoiceTrigger</members>
+        <members>PMS_Lock_Booking_Party</members>
+        <members>PMS_Lock_Budget_Line</members>
+        <members>PMS_Lock_Dunning_Policy</members>
+        <members>PMS_Lock_Index_Value</members>
+        <members>PMS_Lock_Inspection_Item</members>
+        <members>PMS_Lock_Inventory_Day</members>
+        <members>PMS_Lock_Lease_Charge_Schedule</members>
+        <members>PMS_Lock_Meter_Reading</members>
+        <members>PMS_Lock_Milestone</members>
+        <members>PMS_Lock_Payment_Plan_Instalment</members>
+        <members>PMS_Lock_Payment_Policy</members>
+        <members>PMS_Lock_Pricing_Factor</members>
+        <members>PMS_Lock_Project_Task</members>
+        <members>PMS_Lock_RAID_Item</members>
+        <members>PMS_Lock_Rate</members>
+        <members>PMS_Lock_Resource</members>
+        <members>PMS_Lock_Room_Night</members>
+        <members>PMS_Lock_Service</members>
         <members>PMS_PaymentTrigger</members>
+        <members>PMS_SpaceTrigger</members>
         <members>PMS_UserTrigger</members>
         <members>PMS_VendorBillTrigger</members>
         <members>PMS_VendorQuoteTrigger</members>

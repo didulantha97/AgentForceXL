@@ -5,6 +5,12 @@
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
+                <componentName>c:pmsLicenceBanner</componentName>
+                <identifier>pms_licence_banner</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
                 <componentInstanceProperties>
                     <name>hideAgenda</name>
                     <value>false</value>

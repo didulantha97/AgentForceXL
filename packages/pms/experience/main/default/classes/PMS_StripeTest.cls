@@ -549,4 +549,140 @@ private class PMS_StripeTest {
       Test.stopTest();
     }
   }
+
+  // ---------------------------------------------------------------- licence suspended
+
+  @isTest
+  static void suspendedLicenceStillRecordsConfirmedPaymentAndRefund() {
+    PMS_Invoice__c inv = invoice();
+    PMS_Entitlements.forceStateForTest(PMS_Entitlements.SUSPENDED);
+    Test.startTest();
+    RestResponse bad = post(
+      checkoutEvent(
+        'checkout.session.completed',
+        'pi_s0',
+        100000,
+        'paid',
+        inv.Name
+      ),
+      'bad'
+    );
+    Assert.areEqual(401, bad.statusCode, 'unsigned calls stay rejected');
+    Assert.areEqual(
+      0,
+      [SELECT COUNT() FROM PMS_Payment__c WHERE Gateway_Reference__c = 'pi_s0']
+    );
+    RestResponse res = postSigned(
+      checkoutEvent(
+        'checkout.session.completed',
+        'pi_s1',
+        100000,
+        'paid',
+        inv.Name
+      )
+    );
+    Assert.areEqual(200, res.statusCode, res.responseBody.toString());
+    PMS_Payment__c p = [
+      SELECT Status__c, Invoice__c
+      FROM PMS_Payment__c
+      WHERE Gateway_Reference__c = 'pi_s1'
+    ];
+    Assert.areEqual('Succeeded', p.Status__c);
+    Assert.areEqual(inv.Id, p.Invoice__c);
+    Assert.areEqual('Paid', invoice().Status__c, 'invoice is settled');
+    postSigned(refundEvent('pi_s1', 30000));
+    Test.stopTest();
+    Assert.areEqual(
+      1,
+      [
+        SELECT COUNT()
+        FROM PMS_Payment__c
+        WHERE Gateway_Reference__c = 'refund:ch_test_1'
+      ],
+      'refund recorded'
+    );
+    // the exemption is scoped: other writes in the same transaction are locked again
+    Database.SaveResult blocked = Database.insert(
+      new PMS_Payment__c(
+        Gateway_Reference__c = 'manual-1',
+        Amount__c = 1,
+        Account__c = [SELECT Account__c FROM PMS_Invoice__c LIMIT 1]
+        .Account__c
+      ),
+      false
+    );
+    Assert.isFalse(blocked.isSuccess());
+    Assert.isTrue(
+      blocked.getErrors()[0].getMessage().contains('licence'),
+      blocked.getErrors()[0].getMessage()
+    );
+  }
+
+  @isTest
+  static void suspendedLicenceResetsTheExemptionEvenWhenTheEventFails() {
+    PMS_Entitlements.forceStateForTest(PMS_Entitlements.SUSPENDED);
+    Test.startTest();
+    RestResponse res = postSigned(
+      checkoutEvent(
+        'checkout.session.completed',
+        'pi_s2',
+        100000,
+        'paid',
+        'INV-DOES-NOT-EXIST'
+      )
+    );
+    Test.stopTest();
+    Assert.areEqual(400, res.statusCode);
+    Database.SaveResult blocked = Database.insert(
+      new PMS_Payment__c(
+        Gateway_Reference__c = 'manual-2',
+        Amount__c = 1,
+        Account__c = [SELECT Account__c FROM PMS_Invoice__c LIMIT 1]
+        .Account__c
+      ),
+      false
+    );
+    Assert.isFalse(blocked.isSuccess(), 'exemption was reset in finally');
+  }
+
+  @isTest
+  static void suspendedLicenceRefusesNewCheckoutSessions() {
+    System.runAs(new User(Id = UserInfo.getUserId())) {
+      PMS_Invoice__c inv = invoice();
+      StripeMock mock = new StripeMock(200, '{"url":"https://x"}');
+      Test.setMock(HttpCalloutMock.class, mock);
+      PMS_Entitlements.forceStateForTest(PMS_Entitlements.SUSPENDED);
+      Test.startTest();
+      try {
+        PMS_StripeCheckout.createInvoiceLink(inv.Id);
+        Assert.fail('staff link must be refused');
+      } catch (AuraHandledException e) {
+        Assert.areEqual(
+          'Online payments are temporarily unavailable.',
+          e.getMessage()
+        );
+      }
+      try {
+        PMS_StripeCheckout.createForVerifiedInvoice(inv.Id); // portal and public booking
+        Assert.fail('portal link must be refused');
+      } catch (PMS_Exception e) {
+        Assert.areEqual(
+          'Online payments are temporarily unavailable.',
+          e.getMessage()
+        );
+      }
+      try {
+        new PMS_StripePayLinkProvider()
+          .call(
+            'createInvoiceLink',
+            new Map<String, Object>{ 'invoiceId' => inv.Id }
+          );
+        Assert.fail('Core pay link service must be refused');
+      } catch (PMS_Exception e) {
+        Assert.isTrue(e.getMessage().contains('temporarily unavailable'));
+      }
+      Test.stopTest();
+      Assert.isNull(mock.last, 'no callout reached Stripe');
+    }
+  }
 }

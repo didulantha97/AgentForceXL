@@ -21,6 +21,9 @@ public without sharing class PMS_GuaranteeJob implements Schedulable {
   };
 
   public void execute(SchedulableContext ctx) {
+    if (PMS_Entitlements.jobsBlocked('PMS_GuaranteeJob')) {
+      return; // licence suspended: PMS is read-only
+    }
     System.enqueueJob(new Runner());
   }
 

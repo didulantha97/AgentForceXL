@@ -1,0 +1,16 @@
+{
+  "records": [
+    {
+      "attributes": {
+        "type": "PMS_Access_Team__c",
+        "referenceId": "PMS_Access_Team__cRef1"
+      },
+      "Name": "All PMS Staff",
+      "Active__c": true,
+      "All_Internal_Users__c": false,
+      "Description__c": "Keeps today behaviour: every internal user can edit every PMS record. Narrow or deactivate when the module teams are ready.",
+      "Hide_Amounts__c": false,
+      "Hide_Customer_Details__c": false
+    }
+  ]
+}

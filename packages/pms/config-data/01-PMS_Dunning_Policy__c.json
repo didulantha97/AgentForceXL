@@ -1,0 +1,27 @@
+{
+  "records": [
+    {
+      "attributes": {
+        "type": "PMS_Dunning_Policy__c",
+        "referenceId": "PMS_Dunning_Policy__cRef1"
+      },
+      "Name": "Default (Swedish rules)",
+      "Active__c": true,
+      "Business_Late_Fee__c": 450,
+      "Charge_Interest__c": true,
+      "Collections_Days__c": 40,
+      "Consumer_Reminder_Fee__c": 60,
+      "Fee_In_Terms__c": false,
+      "Interest_Margin__c": 8,
+      "Is_Default__c": true,
+      "Min_Days_Between__c": 7,
+      "Minimum_Balance__c": 50,
+      "Plan_Grace_Days__c": 10,
+      "Plan_Instalments__c": 3,
+      "Plan_Offer_Days__c": 25,
+      "Reference_Rate__c": 2,
+      "Reminder_1_Days__c": 5,
+      "Reminder_2_Days__c": 15
+    }
+  ]
+}

@@ -6,6 +6,9 @@ public without sharing class PMS_WebBookingCleanup implements Schedulable {
   public static final String JOB_PREFIX = 'PMS Web Booking Cleanup';
 
   public void execute(SchedulableContext sc) {
+    if (PMS_Entitlements.jobsBlocked('PMS_WebBookingCleanup')) {
+      return; // licence suspended: PMS is read-only
+    }
     PMS_WebBookingHold.releaseExpired();
   }
 

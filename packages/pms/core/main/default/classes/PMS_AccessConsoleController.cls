@@ -180,12 +180,14 @@ public with sharing class PMS_AccessConsoleController {
   @AuraEnabled
   public static Id recalculateNow() {
     requireManage();
+    requireUnlocked();
     return System.enqueueJob(new PMS_AccessGroupSync(null, true));
   }
 
   @AuraEnabled
   public static String scheduleNightly() {
     requireManage();
+    requireUnlocked();
     if (
       ![
           SELECT Id
@@ -221,6 +223,7 @@ public with sharing class PMS_AccessConsoleController {
     String target
   ) {
     requireManage();
+    requireUnlocked(); // sharing defaults are metadata changes: locked with everything else
     try {
       if (objectApis == null || objectApis.isEmpty()) {
         throw new AuraHandledException('Select at least one kind of record.');
@@ -415,6 +418,17 @@ public with sharing class PMS_AccessConsoleController {
       );
     }
     return Id.valueOf(candidate);
+  }
+
+  /** Suspended licence: recalculation, scheduling and sharing default changes are refused. Stopping a rollout stays possible. */
+  static void requireUnlocked() {
+    if (PMS_Entitlements.isLocked()) {
+      AuraHandledException ex = new AuraHandledException(
+        PMS_Entitlements.lockedMessage()
+      );
+      ex.setMessage(PMS_Entitlements.lockedMessage()); // getMessage() is otherwise 'Script-thrown exception'
+      throw ex;
+    }
   }
 
   static void requireManage() {

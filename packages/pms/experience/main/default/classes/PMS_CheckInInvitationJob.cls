@@ -7,6 +7,9 @@ public without sharing class PMS_CheckInInvitationJob implements Schedulable {
   public static final String JOB_NAME = 'PMS Check-In Invitations (daily)';
 
   public void execute(SchedulableContext sc) {
+    if (PMS_Entitlements.jobsBlocked('PMS_CheckInInvitationJob')) {
+      return; // licence suspended: PMS is read-only
+    }
     PMS_CustomerNotifications.sendCheckInInvitations();
   }
 

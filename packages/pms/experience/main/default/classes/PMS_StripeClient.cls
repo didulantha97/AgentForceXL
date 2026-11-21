@@ -50,6 +50,14 @@ public without sharing class PMS_StripeClient {
   }
 
   private static Map<String, Object> send(HttpRequest req) {
+    if (PMS_Entitlements.isLocked()) {
+      // Suspended licence: outbound callouts are skipped (PMS is read-only).
+      System.debug(
+        LoggingLevel.WARN,
+        'Stripe call skipped: PMS licence suspended.'
+      );
+      throw new StripeException('Online payments are temporarily unavailable.');
+    }
     HttpResponse res = new Http().send(req);
     Map<String, Object> body;
     try {

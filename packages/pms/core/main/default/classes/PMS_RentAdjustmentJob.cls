@@ -7,6 +7,9 @@
  */
 public without sharing class PMS_RentAdjustmentJob implements Schedulable {
   public void execute(SchedulableContext ctx) {
+    if (PMS_Entitlements.jobsBlocked('PMS_RentAdjustmentJob')) {
+      return; // licence suspended: PMS is read-only
+    }
     PMS_RentIndexService.applyDue(Date.today());
   }
 }

@@ -1,0 +1,62 @@
+[
+  {
+    "sobject": "PMS_Dunning_Policy__c",
+    "saveRefs": true,
+    "resolveRefs": true,
+    "files": ["01-PMS_Dunning_Policy__c.json"]
+  },
+  {
+    "sobject": "PMS_Site__c",
+    "saveRefs": true,
+    "resolveRefs": true,
+    "files": ["03-PMS_Site__c.json"]
+  },
+  {
+    "sobject": "PMS_Space_Type__c",
+    "saveRefs": true,
+    "resolveRefs": true,
+    "files": ["04-PMS_Space_Type__c.json"]
+  },
+  {
+    "sobject": "PMS_Rate_Plan__c",
+    "saveRefs": true,
+    "resolveRefs": true,
+    "files": ["05-PMS_Rate_Plan__c.json"]
+  },
+  {
+    "sobject": "PMS_Pricing_Strategy__c",
+    "saveRefs": true,
+    "resolveRefs": true,
+    "files": ["06-PMS_Pricing_Strategy__c.json"]
+  },
+  {
+    "sobject": "PMS_Pricing_Factor__c",
+    "saveRefs": true,
+    "resolveRefs": true,
+    "files": ["07-PMS_Pricing_Factor__c.json"]
+  },
+  {
+    "sobject": "PMS_Index_Value__c",
+    "saveRefs": true,
+    "resolveRefs": true,
+    "files": ["09-PMS_Index_Value__c.json"]
+  },
+  {
+    "sobject": "PMS_Access_Team__c",
+    "saveRefs": true,
+    "resolveRefs": true,
+    "files": ["10-PMS_Access_Team__c.json"]
+  },
+  {
+    "sobject": "PMS_Access_Rule__c",
+    "saveRefs": true,
+    "resolveRefs": true,
+    "files": ["11-PMS_Access_Rule__c.json"]
+  },
+  {
+    "sobject": "PMS_Settings__c",
+    "saveRefs": true,
+    "resolveRefs": true,
+    "files": ["12-PMS_Settings__c.json"]
+  }
+]

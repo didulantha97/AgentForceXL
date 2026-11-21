@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomMetadata
+  xmlns="http://soap.sforce.com/2006/04/metadata"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+>
+    <label>Default</label>
+    <protected>true</protected>
+    <values>
+        <field>Allow_Inbound_When_Suspended__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Allow_Key_Entry_When_Suspended__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Default_Grace_Days__c</field>
+        <value xsi:type="xsd:double">30.0</value>
+    </values>
+    <values>
+        <field>Enforcement_Enabled__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Key_Id__c</field>
+        <value xsi:type="xsd:string">REPLACE_KEY_ID</value>
+    </values>
+    <values>
+        <field>Licence_Endpoint__c</field>
+        <value xsi:nil="true" />
+    </values>
+    <values>
+        <field>Pilot_Days__c</field>
+        <value xsi:type="xsd:double">90.0</value>
+    </values>
+    <!-- OWNER: replace this placeholder with the production public key (base64, no PEM header) and Key_Id__c BEFORE promoting a package version. See packages/pms/docs/Licensing.md -->
+    <values>
+        <field>Public_Key__c</field>
+        <value
+      xsi:type="xsd:string"
+    >REPLACE_WITH_BASE64_X509_RSA_PUBLIC_KEY</value>
+    </values>
+</CustomMetadata>

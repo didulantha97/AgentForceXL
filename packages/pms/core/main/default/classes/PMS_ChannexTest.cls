@@ -336,6 +336,203 @@ private class PMS_ChannexTest {
   }
 
   @isTest
+  static void inboundBookingIsAcceptedAndAckedWhenLicenceSuspended() {
+    PMS_Entitlements.forceManaged = true;
+    PMS_Entitlements.enforcementOverride = true;
+    PMS_Entitlements.sandboxOverride = false;
+    PMS_Entitlements.pilotDaysOverride = 90;
+    PMS_Entitlements.installDateOverride = Date.today().addDays(-400);
+    PMS_Entitlements.tokenOverride = '';
+    PMS_Entitlements.reset();
+    Assert.areEqual(PMS_Entitlements.SUSPENDED, PMS_Entitlements.state());
+    PMS_ChannexBookings.Outcome o = PMS_ChannexBookings.process(
+      parse(revision('r1', 'new', 1, Date.today().addDays(10), 2))
+    );
+    Assert.areEqual(1, o.ackIds.size(), JSON.serialize(o.logs));
+    Assert.areEqual(
+      1,
+      [SELECT COUNT() FROM PMS_Booking__c WHERE Channex_Booking_Id__c != NULL]
+    );
+    Assert.isFalse(
+      PMS_Entitlements.allowInbound,
+      'Flag is restored after the create path'
+    );
+  }
+
+  private static void suspend() {
+    PMS_Entitlements.forceManaged = true;
+    PMS_Entitlements.enforcementOverride = true;
+    PMS_Entitlements.sandboxOverride = false;
+    PMS_Entitlements.pilotDaysOverride = 90;
+    PMS_Entitlements.installDateOverride = Date.today().addDays(-400);
+    PMS_Entitlements.tokenOverride = '';
+    PMS_Entitlements.reset();
+    Assert.areEqual(PMS_Entitlements.SUSPENDED, PMS_Entitlements.state());
+  }
+
+  // ---------------------------------------------------------------- licence suspended
+
+  @isTest
+  static void suspendedPullSavesBookingMarksPulledAndQueuesTheAck() {
+    ChannexMock mock = new ChannexMock();
+    mock.feed = revision('r1', 'new', 1, Date.today().addDays(7), 1);
+    Test.setMock(HttpCalloutMock.class, mock);
+    suspend();
+    Test.startTest();
+    new PMS_ChannexSync.Runner(PMS_ChannexSync.PULL).execute(null);
+    Test.stopTest();
+    Assert.areEqual(
+      1,
+      [
+        SELECT COUNT()
+        FROM PMS_Booking__c
+        WHERE OTA_Reservation_Code__c = '4711'
+      ],
+      'the OTA booking is saved even though PMS is locked'
+    );
+    Assert.isNotNull(
+      [SELECT Channex_Last_Pull__c FROM PMS_Site__c LIMIT 1]
+      .Channex_Last_Pull__c,
+      'markPulled is not blocked by the lock'
+    );
+    Assert.areEqual(
+      1,
+      [SELECT COUNT() FROM PMS_Channel_Log__c WHERE Kind__c = 'Booking New']
+    );
+    PMS_ChannexSync.Runner next = PMS_ChannexSync.lastChained;
+    Assert.areEqual(PMS_ChannexSync.ACK, next.stage);
+    Assert.areEqual(new List<String>{ 'r1' }, next.ackIds);
+    Assert.isFalse(PMS_Entitlements.allowInbound, 'flag restored');
+  }
+
+  @isTest
+  static void suspendedAckStageStillAcknowledgesAndRestoresTheFlag() {
+    ChannexMock mock = new ChannexMock();
+    Test.setMock(HttpCalloutMock.class, mock);
+    suspend();
+    PMS_ChannexSync.Runner ack = new PMS_ChannexSync.Runner(
+      PMS_ChannexSync.ACK
+    );
+    ack.ackIds = new List<String>{ 'r1', 'r2' };
+    Test.startTest();
+    ack.execute(null);
+    Test.stopTest();
+    Assert.areEqual(2, mock.calls.size());
+    Assert.isTrue(
+      mock.calls[1].getEndpoint().endsWith('/booking_revisions/r2/ack')
+    );
+    Assert.areEqual(
+      0,
+      [SELECT COUNT() FROM PMS_Channel_Log__c WHERE Status__c = 'Error']
+    );
+    Assert.areEqual(PMS_ChannexSync.PUSH, PMS_ChannexSync.lastChained.stage);
+    Assert.isFalse(PMS_Entitlements.allowInbound);
+  }
+
+  @isTest
+  static void suspendedPullIsSkippedWhenTheOwnerRefusesInbound() {
+    ChannexMock mock = new ChannexMock();
+    mock.feed = revision('r1', 'new', 1, Date.today().addDays(7), 1);
+    Test.setMock(HttpCalloutMock.class, mock);
+    suspend();
+    PMS_Entitlements.allowInboundConfigOverride = false;
+    PMS_Entitlements.reset();
+    Test.startTest();
+    new PMS_ChannexSync.Runner(PMS_ChannexSync.PULL).execute(null);
+    Test.stopTest();
+    Assert.areEqual(0, mock.calls.size(), 'nothing is fetched or saved');
+    Assert.areEqual(
+      0,
+      [SELECT COUNT() FROM PMS_Booking__c WHERE Channex_Booking_Id__c != NULL]
+    );
+    Assert.areEqual(
+      PMS_ChannexSync.PUSH,
+      PMS_ChannexSync.lastChained.stage,
+      'goes on to the stop-sell'
+    );
+  }
+
+  @isTest
+  static void suspendedPushSendsOneStopSellThenPauses() {
+    ChannexMock mock = new ChannexMock();
+    Test.setMock(HttpCalloutMock.class, mock);
+    suspend();
+    Test.startTest();
+    List<PMS_Channel_Log__c> first = PMS_ChannexSync.runPush(null);
+    Assert.areEqual(1, first.size(), JSON.serialize(first));
+    Assert.areEqual('Stop Sell', first[0].Kind__c);
+    Assert.areEqual('Success', first[0].Status__c, first[0].Details__c);
+    Assert.areEqual(2, mock.calls.size(), 'availability and restrictions');
+    String avail = mock.bodyOf('/availability');
+    Assert.isTrue(avail.contains('"availability":0'), avail);
+    Assert.isTrue(avail.contains(ROOM_TYPE), avail);
+    String rates = mock.bodyOf('/restrictions');
+    Assert.isTrue(rates.contains('"stop_sell":true'), rates);
+    Assert.isTrue(rates.contains(RATE_PLAN), rates);
+    Assert.isFalse(rates.contains('"rate"'), 'no prices are pushed: ' + rates);
+    List<PMS_Channel_Log__c> second = PMS_ChannexSync.runPush(null);
+    Test.stopTest();
+    Assert.isTrue(second.isEmpty(), 'not repeated on the next run');
+    Assert.areEqual(2, mock.calls.size(), 'no further callouts');
+    Assert.areEqual(
+      1,
+      [SELECT COUNT() FROM PMS_Channel_Log__c WHERE Kind__c = 'Stop Sell']
+    );
+    Assert.isNull(
+      [SELECT Channex_Last_Push__c FROM PMS_Site__c LIMIT 1]
+      .Channex_Last_Push__c,
+      'the locked site is not stamped'
+    );
+  }
+
+  @isTest
+  static void failedStopSellIsNotMarkedAsSentSoItIsRetried() {
+    Test.setMock(
+      HttpCalloutMock.class,
+      new RawMock(500, '{"errors":{"title":"boom"}}')
+    );
+    suspend();
+    Test.startTest();
+    List<PMS_Channel_Log__c> logs = PMS_ChannexSync.runPush(null);
+    Test.stopTest();
+    Assert.areEqual(1, logs.size());
+    Assert.areEqual('Error', logs[0].Status__c);
+    Assert.isTrue(
+      PMS_ChannexAri.stopSellSent(new Set<Id>{ site().Id }).isEmpty(),
+      'an error is not a sent marker'
+    );
+  }
+
+  @isTest
+  static void stopSellMarkerEndsWhenANormalPushIsLoggedAfterIt() {
+    Id siteId = site().Id;
+    insert PMS_ChannexAri.log(siteId, 'Stop Sell', 'Success', 'closed', null);
+    Assert.isTrue(
+      PMS_ChannexAri.stopSellSent(new Set<Id>{ siteId }).contains(siteId)
+    );
+    // licence active again: the normal push logs Availability and Rates, so a later suspension stop-sells again
+    insert PMS_ChannexAri.log(siteId, 'Availability', 'Success', 'ok', null);
+    Assert.isFalse(
+      PMS_ChannexAri.stopSellSent(new Set<Id>{ siteId }).contains(siteId)
+    );
+  }
+
+  @isTest
+  static void unlockedPushStillSendsLiveAvailabilityAndRates() {
+    ChannexMock mock = new ChannexMock();
+    Test.setMock(HttpCalloutMock.class, mock);
+    Test.startTest();
+    List<PMS_Channel_Log__c> logs = PMS_ChannexSync.runPush(null);
+    Test.stopTest();
+    Assert.areEqual(2, logs.size());
+    Assert.isTrue(mock.bodyOf('/availability').contains('"availability":2'));
+    Assert.areEqual(
+      0,
+      [SELECT COUNT() FROM PMS_Channel_Log__c WHERE Kind__c = 'Stop Sell']
+    );
+  }
+
+  @isTest
   static void overbookingIsSavedWithoutRoom() {
     Date arrive = Date.today().addDays(20);
     PMS_ChannexBookings.Outcome o = PMS_ChannexBookings.process(

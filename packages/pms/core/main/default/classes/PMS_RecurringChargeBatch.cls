@@ -2,6 +2,7 @@
 public with sharing class PMS_RecurringChargeBatch implements Database.Batchable<SObject> {
   private final Date runDate;
   private final Boolean chainInvoicing;
+  private Boolean blocked = false;
 
   public PMS_RecurringChargeBatch() {
     this(Date.today(), true);
@@ -13,6 +14,12 @@ public with sharing class PMS_RecurringChargeBatch implements Database.Batchable
   }
 
   public Database.QueryLocator start(Database.BatchableContext bc) {
+    if (PMS_Entitlements.jobsBlocked('PMS_RecurringChargeBatch')) {
+      blocked = true;
+      return Database.getQueryLocator(
+        [SELECT Id FROM PMS_Lease_Charge_Schedule__c WHERE Id = NULL]
+      );
+    }
     Date d = runDate;
     return Database.getQueryLocator(
       [
@@ -44,7 +51,7 @@ public with sharing class PMS_RecurringChargeBatch implements Database.Batchable
   }
 
   public void finish(Database.BatchableContext bc) {
-    if (chainInvoicing && !Test.isRunningTest()) {
+    if (chainInvoicing && !blocked && !Test.isRunningTest()) {
       Database.executeBatch(new PMS_InvoiceBatch(runDate), 100);
     }
   }

@@ -1,0 +1,34 @@
+{
+  "records": [
+    {
+      "attributes": {
+        "type": "PMS_Space_Type__c",
+        "referenceId": "PMS_Space_Type__cRef1"
+      },
+      "Name": "DEMO Double Room",
+      "Default_Occupancy__c": 2,
+      "Default_Rate__c": 1450,
+      "Site__c": "@PMS_Site__cRef1"
+    },
+    {
+      "attributes": {
+        "type": "PMS_Space_Type__c",
+        "referenceId": "PMS_Space_Type__cRef2"
+      },
+      "Name": "DEMO Single Room",
+      "Default_Occupancy__c": 1,
+      "Default_Rate__c": 1150,
+      "Site__c": "@PMS_Site__cRef1"
+    },
+    {
+      "attributes": {
+        "type": "PMS_Space_Type__c",
+        "referenceId": "PMS_Space_Type__cRef3"
+      },
+      "Name": "DEMO Harbour Suite",
+      "Default_Occupancy__c": 2,
+      "Default_Rate__c": 2900,
+      "Site__c": "@PMS_Site__cRef1"
+    }
+  ]
+}

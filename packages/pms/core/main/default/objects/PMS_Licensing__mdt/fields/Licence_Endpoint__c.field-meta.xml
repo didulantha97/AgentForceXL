@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Licence_Endpoint__c</fullName>
+    <description
+  >URL of the licence service (reserved, not used by the pilot).</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <label>Licence Endpoint</label>
+    <length>255</length>
+    <unique>false</unique>
+    <required>false</required>
+    <type>Text</type>
+</CustomField>

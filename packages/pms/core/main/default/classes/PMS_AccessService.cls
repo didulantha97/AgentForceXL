@@ -421,6 +421,9 @@ public without sharing class PMS_AccessService {
     List<SObject> news,
     Map<Id, SObject> olds
   ) {
+    if (!isAfter && PMS_Entitlements.guardWrites()) {
+      return; // suspended: PMS is read-only
+    }
     if (!isAfter || news == null) {
       return;
     }

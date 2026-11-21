@@ -22,6 +22,14 @@
     </applicationVisibilities>
     <description
   >Full access to every Unified PMS object, field, tab, app and record type. For PMS administrators and the build team.</description>
+    <classAccesses>
+        <apexClass>PMS_LicenceController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>PMS_Manage_License</name>
+    </customPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.PMS_Customer_Type__c</field>

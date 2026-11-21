@@ -7,6 +7,7 @@ public without sharing class PMS_AccessRecalcBatch implements Database.Batchable
   final Integer index;
   @TestVisible
   Integer errors = 0;
+  Boolean blocked = false;
 
   public PMS_AccessRecalcBatch() {
     this(restrictedObjects(), 0);
@@ -28,6 +29,12 @@ public without sharing class PMS_AccessRecalcBatch implements Database.Batchable
   }
 
   public Database.QueryLocator start(Database.BatchableContext bc) {
+    if (PMS_Entitlements.jobsBlocked('PMS_AccessRecalcBatch')) {
+      blocked = true; // suspended: no recalculation and no chaining
+      return Database.getQueryLocator(
+        [SELECT Id FROM PMS_Access_Team__c WHERE Id = NULL]
+      );
+    }
     if (objects.isEmpty() || index >= objects.size()) {
       return Database.getQueryLocator(
         [SELECT Id FROM PMS_Access_Team__c WHERE Id = NULL]
@@ -50,7 +57,7 @@ public without sharing class PMS_AccessRecalcBatch implements Database.Batchable
   }
 
   public void finish(Database.BatchableContext bc) {
-    if (index + 1 < objects.size() && !Test.isRunningTest()) {
+    if (!blocked && index + 1 < objects.size() && !Test.isRunningTest()) {
       Database.executeBatch(new PMS_AccessRecalcBatch(objects, index + 1), 200);
     }
   }

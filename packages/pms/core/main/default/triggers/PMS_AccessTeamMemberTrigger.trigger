@@ -2,12 +2,19 @@
 trigger PMS_AccessTeamMemberTrigger on PMS_Access_Team_Member__c(
   before insert,
   before update,
+  before delete,
   after insert,
   after update,
   after delete,
   after undelete
 ) {
+  if (Trigger.isUndelete && PMS_Entitlements.guardWrites()) {
+    return; // suspended: a restore is a write too
+  }
   if (Trigger.isBefore) {
+    if (PMS_Entitlements.guardWrites() || Trigger.isDelete) {
+      return; // suspended: read-only (or nothing to validate on delete)
+    }
     for (PMS_Access_Team_Member__c m : Trigger.new) {
       if (m.User__c == null) {
         m.User__c.addError('Choose a user.');

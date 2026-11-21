@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Enforcement_Enabled__c</fullName>
+    <description
+  >Master switch. When off, every licence check passes (development only).</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <label>Enforcement Enabled</label>
+    <defaultValue>true</defaultValue>
+    <type>Checkbox</type>
+</CustomField>

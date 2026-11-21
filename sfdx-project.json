@@ -35,6 +35,7 @@
       "versionName": "Spring 27",
       "versionNumber": "1.0.0.NEXT",
       "versionDescription": "PMS core data model, services, apps and internal UI",
+      "postInstallScript": "PMS_InstallHandler",
       "definitionFile": "packages/pms/config/pms-scratch-def.json"
     },
     {

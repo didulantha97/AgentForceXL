@@ -10,6 +10,16 @@ public without sharing class PMS_BookingTriggerHandler {
     List<PMS_Booking__c> records,
     Map<Id, PMS_Booking__c> oldMap
   ) {
+    // Licence gate runs before the bypass flag so internal bypasses cannot skip it. The full suspended
+    // lock (update/delete) is applied by PMS_Entitlements.guardWrites() in the trigger; this adds the
+    // cap check on inserts. Inbound OTA bookings are accepted while the owner switch allows it.
+    if (
+      oldMap == null &&
+      !PMS_Entitlements.inboundAccepted() &&
+      !licenceAllowsInsert(records)
+    ) {
+      return;
+    }
     if (bypass) {
       return;
     }
@@ -21,6 +31,16 @@ public without sharing class PMS_BookingTriggerHandler {
     List<PMS_Booking__c> records,
     Map<Id, PMS_Booking__c> oldMap
   ) {
+    if (oldMap == null) {
+      try {
+        PMS_Entitlements.ensureInstallDate(); // records the pilot start; no-op once set
+      } catch (Exception e) {
+        System.debug(
+          LoggingLevel.WARN,
+          'PMS install date not recorded: ' + e.getMessage()
+        );
+      }
+    }
     if (bypass) {
       return;
     }
@@ -106,6 +126,18 @@ public without sharing class PMS_BookingTriggerHandler {
         : maxDate;
     }
     PMS_BookingService.refreshInventory(typeIds, minDate, maxDate);
+  }
+
+  private static Boolean licenceAllowsInsert(List<PMS_Booking__c> records) {
+    try {
+      PMS_Entitlements.assertCanCreate('Booking', records.size());
+      return true;
+    } catch (PMS_Entitlements.LicenceException e) {
+      for (PMS_Booking__c b : records) {
+        b.addError(e.getMessage());
+      }
+      return false;
+    }
   }
 
   private static void defaultSiteFromSpace(List<PMS_Booking__c> records) {

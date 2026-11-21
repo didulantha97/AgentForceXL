@@ -1,0 +1,15 @@
+{
+  "records": [
+    {
+      "attributes": {
+        "type": "PMS_Access_Rule__c",
+        "referenceId": "PMS_Access_Rule__cRef1"
+      },
+      "Access_Level__c": "Edit",
+      "Active__c": true,
+      "Description__c": "Start open",
+      "Module__c": "All",
+      "Team__c": "@PMS_Access_Team__cRef1"
+    }
+  ]
+}

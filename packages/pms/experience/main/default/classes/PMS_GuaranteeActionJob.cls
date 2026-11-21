@@ -17,6 +17,9 @@ public without sharing class PMS_GuaranteeActionJob implements Queueable, Databa
   }
 
   public void execute(QueueableContext ctx) {
+    if (PMS_Entitlements.jobsBlocked('PMS_GuaranteeActionJob')) {
+      return; // suspended: no guarantee links or policy fees are started
+    }
     Set<Id> now = new Set<Id>();
     Set<Id> later = new Set<Id>();
     for (Id i : bookingIds) {

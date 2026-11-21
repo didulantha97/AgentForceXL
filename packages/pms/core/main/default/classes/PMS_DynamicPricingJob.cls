@@ -6,6 +6,9 @@
  */
 public without sharing class PMS_DynamicPricingJob implements Schedulable {
   public void execute(SchedulableContext ctx) {
+    if (PMS_Entitlements.jobsBlocked('PMS_DynamicPricingJob')) {
+      return; // licence suspended: PMS is read-only
+    }
     List<Id> ids = new List<Id>(
       new Map<Id, PMS_Pricing_Strategy__c>(
           [SELECT Id FROM PMS_Pricing_Strategy__c WHERE Active__c = TRUE]

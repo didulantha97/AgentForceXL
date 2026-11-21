@@ -1,6 +1,8 @@
 /** PMS access engine: keeps PMS Access Rule shares current when a record is created or moves site. */
 trigger PMS_AccessShare_Owner_Statement on PMS_Owner_Statement__c(
   before insert,
+  before update,
+  before delete,
   after insert,
   after update
 ) {

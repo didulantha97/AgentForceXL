@@ -7,6 +7,9 @@
  */
 public without sharing class PMS_DunningBatch implements Database.Batchable<SObject>, Schedulable {
   public void execute(SchedulableContext ctx) {
+    if (PMS_Entitlements.jobsBlocked('PMS_DunningBatch')) {
+      return; // licence suspended: PMS is read-only
+    }
     Database.executeBatch(new PMS_DunningBatch(), 20);
   }
 

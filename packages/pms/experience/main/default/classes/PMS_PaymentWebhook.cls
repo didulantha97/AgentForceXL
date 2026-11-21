@@ -33,9 +33,14 @@ global with sharing class PMS_PaymentWebhook {
       return;
     }
     try {
-      PMS_Payment__c p = process(
-        (Payload) JSON.deserialize(body, Payload.class)
-      );
+      PMS_Payment__c p;
+      // Signature verified above. While the licence is suspended, confirmed money is still recorded.
+      PMS_Entitlements.beginInbound();
+      try {
+        p = process((Payload) JSON.deserialize(body, Payload.class));
+      } finally {
+        PMS_Entitlements.endInbound();
+      }
       res.statusCode = 200;
       res.responseBody = Blob.valueOf(
         JSON.serialize(

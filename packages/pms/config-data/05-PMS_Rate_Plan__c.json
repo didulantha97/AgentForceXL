@@ -1,0 +1,17 @@
+{
+  "records": [
+    {
+      "attributes": {
+        "type": "PMS_Rate_Plan__c",
+        "referenceId": "PMS_Rate_Plan__cRef1"
+      },
+      "Name": "BAR",
+      "Active__c": true,
+      "Cancellation_Policy__c": "Best available rate. See the payment policy for cancellation terms.",
+      "Currency_Code__c": "SEK",
+      "Module__c": "Hotel",
+      "Pricing_Basis__c": "Per Night",
+      "Site__c": "@PMS_Site__cRef1"
+    }
+  ]
+}

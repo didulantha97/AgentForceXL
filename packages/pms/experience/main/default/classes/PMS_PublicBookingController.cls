@@ -1189,10 +1189,16 @@ public without sharing class PMS_PublicBookingController {
   }
 
   private static AuraHandledException handled(Exception e) {
-    String msg = e instanceof PMS_Exception
-      ? e.getMessage()
-      : 'Something went wrong. Please try again or contact us.';
-    if (!(e instanceof PMS_Exception)) {
+    // Anonymous guests must never see licence details: show a neutral message instead.
+    Boolean licence =
+      e instanceof PMS_Entitlements.LicenceException ||
+      (e.getMessage() != null && e.getMessage().contains('PMS licence'));
+    String msg = licence
+      ? 'Online booking is temporarily unavailable. Please contact us to make your booking.'
+      : (e instanceof PMS_Exception
+          ? e.getMessage()
+          : 'Something went wrong. Please try again or contact us.');
+    if (!(e instanceof PMS_Exception) && !licence) {
       System.debug(
         LoggingLevel.ERROR,
         'PMS booking site: ' + e.getMessage() + '\n' + e.getStackTraceString()

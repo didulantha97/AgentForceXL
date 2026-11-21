@@ -510,4 +510,39 @@ private class PMS_PublicBookingControllerTest {
     Test.stopTest();
     Assert.areEqual(4, ids.size());
   }
+
+  @isTest
+  static void suspendedLicenceShowsGuestsNeutralMessage() {
+    PMS_ExperienceTestFactory.Hotel h = hotel();
+    Date arrive = PMS_ExperienceTestFactory.futureMonday();
+    PMS_Entitlements.forceStateForTest(PMS_Entitlements.SUSPENDED);
+    String message;
+    try {
+      PMS_PublicBookingController.bookStay(
+        h.site.Id,
+        h.doubleRoom.Id,
+        String.valueOf(arrive),
+        String.valueOf(arrive.addDays(1)),
+        1,
+        0,
+        guestJson('Suspended')
+      );
+      Assert.fail('Booking must be refused while suspended');
+    } catch (AuraHandledException e) {
+      message = e.getMessage();
+    }
+    Assert.isTrue(
+      message.contains('Online booking is temporarily unavailable'),
+      'Guests see the neutral message, got: ' + message
+    );
+    Assert.isFalse(
+      message.contains('licence') || message.contains('suspended'),
+      'No licence details leak to guests'
+    );
+    Assert.areEqual(
+      0,
+      [SELECT COUNT() FROM PMS_Booking__c],
+      'Nothing was booked'
+    );
+  }
 }

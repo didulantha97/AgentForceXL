@@ -1,0 +1,11 @@
+{
+  "records": [
+    {
+      "attributes": {
+        "type": "PMS_Settings__c",
+        "referenceId": "PMS_Settings__cRef1"
+      },
+      "Channex_Enabled__c": false
+    }
+  ]
+}

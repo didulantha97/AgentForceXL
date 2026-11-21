@@ -1,0 +1,18 @@
+{
+  "records": [
+    {
+      "attributes": {
+        "type": "PMS_Pricing_Strategy__c",
+        "referenceId": "PMS_Pricing_Strategy__cRef1"
+      },
+      "Name": "BAR dynamic",
+      "Active__c": true,
+      "Horizon_Days__c": 120,
+      "Max_Change_Percent__c": 15,
+      "Max_Percent__c": 180,
+      "Min_Percent__c": 80,
+      "Rate_Plan__c": "@PMS_Rate_Plan__cRef1",
+      "Round_To__c": 10
+    }
+  ]
+}

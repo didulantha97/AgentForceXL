@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Key_Id__c</fullName>
+    <description
+  >Identifier of the signing key. Tokens must carry the same keyId.</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <label>Key Id</label>
+    <length>40</length>
+    <unique>false</unique>
+    <required>false</required>
+    <type>Text</type>
+</CustomField>

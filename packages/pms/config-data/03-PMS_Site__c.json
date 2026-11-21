@@ -1,0 +1,80 @@
+{
+  "records": [
+    {
+      "attributes": {
+        "type": "PMS_Site__c",
+        "referenceId": "PMS_Site__cRef1"
+      },
+      "Name": "DEMO Harbour Hotel Stockholm",
+      "Channex_Prices_Include_VAT__c": false,
+      "Check_In_Time__c": "15:00:00.000Z",
+      "Check_Out_Time__c": "11:00:00.000Z",
+      "City__c": "Stockholm",
+      "Country__c": "Sweden",
+      "Currency_Code__c": "SEK",
+      "Module__c": "Hotel",
+      "Phone__c": "08 555 0100",
+      "Site_Type__c": "Hotel",
+      "Status__c": "Active",
+      "Street__c": "Skeppsbron 12",
+      "Time_Zone__c": "Europe/Stockholm"
+    },
+    {
+      "attributes": {
+        "type": "PMS_Site__c",
+        "referenceId": "PMS_Site__cRef2"
+      },
+      "Name": "DEMO Sodermalm Residences",
+      "Channex_Prices_Include_VAT__c": false,
+      "Check_In_Time__c": "12:00:00.000Z",
+      "Check_Out_Time__c": "12:00:00.000Z",
+      "City__c": "Stockholm",
+      "Country__c": "Sweden",
+      "Currency_Code__c": "SEK",
+      "Management_Fee_Percent__c": 8,
+      "Module__c": "Property",
+      "Postal_Code__c": "118 26",
+      "Site_Type__c": "Mixed Use",
+      "Status__c": "Active",
+      "Street__c": "Gotgatan 48",
+      "Time_Zone__c": "Europe/Stockholm"
+    },
+    {
+      "attributes": {
+        "type": "PMS_Site__c",
+        "referenceId": "PMS_Site__cRef3"
+      },
+      "Name": "DEMO Kungsholmen Office Site",
+      "Channex_Prices_Include_VAT__c": false,
+      "Check_In_Time__c": "12:00:00.000Z",
+      "Check_Out_Time__c": "12:00:00.000Z",
+      "City__c": "Stockholm",
+      "Country__c": "Sweden",
+      "Currency_Code__c": "SEK",
+      "Module__c": "Project",
+      "Site_Type__c": "Project Location",
+      "Status__c": "Active",
+      "Street__c": "Fleminggatan 20",
+      "Time_Zone__c": "Europe/Stockholm"
+    },
+    {
+      "attributes": {
+        "type": "PMS_Site__c",
+        "referenceId": "PMS_Site__cRef4"
+      },
+      "Name": "DEMO Vasastan Physio Clinic",
+      "Channex_Prices_Include_VAT__c": false,
+      "Check_In_Time__c": "08:00:00.000Z",
+      "Check_Out_Time__c": "17:00:00.000Z",
+      "City__c": "Stockholm",
+      "Country__c": "Sweden",
+      "Currency_Code__c": "SEK",
+      "Module__c": "Practice",
+      "Postal_Code__c": "113 22",
+      "Site_Type__c": "Clinic",
+      "Status__c": "Active",
+      "Street__c": "Odengatan 65",
+      "Time_Zone__c": "Europe/Stockholm"
+    }
+  ]
+}

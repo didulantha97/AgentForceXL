@@ -45,6 +45,25 @@ user its permission sets, and assigns `PMS_App_Access`, `PMS_Core_Admin` and
   checkout return URL).
 - Assign the `PMS_Standard_User` permission set group to staff.
 
+## Free orgs (trial Dev Hubs, Developer Edition, scratch)
+
+Dev Hubs and trial orgs expire, so the full PMS and its configuration can be rebuilt
+in any org with source deploy; package install is optional. Run from the repo root.
+
+| Situation                           | Command                                                                                                                   |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| A new trial org becomes the Dev Hub | `scripts/pms-package.sh devhub <alias>` (logs in, sets it as default, verifies, prints expiry)                            |
+| Need a working PMS in a new org     | `scripts/pms-package.sh bootstrap <alias>` for a trial/DE org (it logs you in), or `bootstrap <alias> --scratch --days 7` |
+| Same, from released packages        | `bootstrap <alias> --version-core 04t... --version-exp 04t...`                                                            |
+| Before an org expires               | `scripts/pms-package.sh config-export <alias>`, then commit `packages/pms/config-data/`                                   |
+
+`bootstrap` deploys Core then Experience, runs org-setup, assigns the three PMS permission
+sets, imports `config-data/`, loads sample data (`--no-sample` to skip), optionally runs the
+PMS Apex tests (`--tests`) and finishes with a smoke check. It is safe to re-run. Trial and
+Developer Edition orgs may lack Experience Cloud or community licences: org-setup then
+reports a warning and Core and Experience are still deployed. A new Dev Hub does not own the
+old packages; run `create` and `version` again if you need installable packages.
+
 ## Release a new version
 
 ```bash

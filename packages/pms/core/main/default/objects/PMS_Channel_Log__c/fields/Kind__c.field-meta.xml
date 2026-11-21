@@ -40,6 +40,11 @@
                 <label>Acknowledge</label>
             </value>
             <value>
+                <fullName>Stop Sell</fullName>
+                <default>false</default>
+                <label>Stop Sell</label>
+            </value>
+            <value>
                 <fullName>Error</fullName>
                 <default>false</default>
                 <label>Error</label>

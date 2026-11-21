@@ -3,6 +3,9 @@
  *
  * Every call is checked against the Stripe-Signature header using the endpoint's signing secret
  * (whsec_...), stored in PMS Settings > Webhook Secret. Calls older than 5 minutes are rejected.
+ * Licence suspended: confirmed payments and refunds are still recorded (the money has already moved), so the
+ * post-verification path runs inside PMS_Entitlements.beginInbound()/endInbound(). New online payments are
+ * refused earlier, in PMS_StripeCheckout.
  * Payments are upserted on Gateway Reference (the PaymentIntent id), so Stripe retries never double-count,
  * and a Succeeded payment is never downgraded by a late event.
  *
@@ -49,7 +52,13 @@ global without sharing class PMS_StripeWebhook {
       Map<String, Object> event = (Map<String, Object>) JSON.deserializeUntyped(
         body
       );
-      PMS_Payment__c p = handle(event);
+      PMS_Payment__c p;
+      PMS_Entitlements.beginInbound(); // signature verified above; money already moved must be recorded
+      try {
+        p = handle(event);
+      } finally {
+        PMS_Entitlements.endInbound();
+      }
       respond(
         res,
         200,

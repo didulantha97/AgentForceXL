@@ -1038,4 +1038,22 @@ private class PMS_GuaranteeTest {
     );
     Assert.areEqual('abc...', PMS_GuaranteeService.cut('abcdefghij', 6));
   }
+
+  @isTest
+  static void suspendedGuaranteeActionJobStartsNothing() {
+    PMS_Site__c site = [SELECT Id FROM PMS_Site__c LIMIT 1]; // hotel built by setup()
+    PMS_Entitlements.forceStateForTest(PMS_Entitlements.SUSPENDED);
+    Assert.isTrue(PMS_Entitlements.isLocked()); // warms the per-transaction cache
+    Integer queriesBefore = Limits.getQueries();
+    new PMS_GuaranteeActionJob(
+        PMS_GuaranteeActionJob.SEND_LINKS,
+        new Set<Id>{ site.Id }
+      )
+      .execute(null);
+    Assert.areEqual(
+      queriesBefore,
+      Limits.getQueries(),
+      'the job returned before loading bookings'
+    );
+  }
 }

@@ -25,6 +25,9 @@ public without sharing class PMS_OwnerStatementJob implements Schedulable, Datab
 
   @NamespaceAccessible
   public void execute(SchedulableContext sc) {
+    if (PMS_Entitlements.jobsBlocked('PMS_OwnerStatementJob')) {
+      return; // licence suspended: PMS is read-only
+    }
     Database.executeBatch(new PMS_OwnerStatementJob(), 10);
   }
 

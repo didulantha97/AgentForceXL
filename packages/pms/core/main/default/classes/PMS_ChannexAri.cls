@@ -9,6 +9,11 @@
  * rates first, then seasons, weekdays and the room type default), plus VAT when the site sends
  * VAT-inclusive prices. Stop Sell on an Inventory Day closes the night on every mapped rate plan.
  * Equal consecutive nights are merged into date ranges.
+ *
+ * Licence suspension: the normal push is replaced by ONE stop-sell per site (availability 0 and stop_sell on
+ * every mapped room type and rate plan over the push horizon). Success is recorded as a PMS Channel Log row of
+ * kind Stop Sell; while that is the newest availability/rates log of a site nothing more is pushed. Once the
+ * licence is active again the normal push runs, writes newer Availability/Rates logs and so resyncs everything.
  */
 public without sharing class PMS_ChannexAri {
   private static final Set<String> GONE_NIGHT = new Set<String>{
@@ -244,6 +249,20 @@ public without sharing class PMS_ChannexAri {
   /** Sends the payload; makes no DML so it can be followed by more callouts. Returns log rows to insert later. */
   public static List<PMS_Channel_Log__c> push(Id siteId, Payload p) {
     List<PMS_Channel_Log__c> logs = new List<PMS_Channel_Log__c>();
+    if (PMS_Entitlements.isLocked()) {
+      // Defensive: runPush uses the stop-sell path when suspended. Never send live availability or rates.
+      // Kind Stop Sell with status Warning is not a "stop-sell sent" marker, so this cannot hide a missing stop-sell.
+      logs.add(
+        log(
+          siteId,
+          'Stop Sell',
+          'Warning',
+          'Not sent: PMS licence is not active.',
+          'Outbound availability and rate pushes are paused while the licence is suspended. Existing OTA bookings are still received.'
+        )
+      );
+      return logs;
+    }
     if (!p.availability.isEmpty()) {
       logs.add(
         send(
@@ -272,6 +291,152 @@ public without sharing class PMS_ChannexAri {
       );
     }
     return logs;
+  }
+
+  /**
+   * Stop-sell payloads (availability 0 and stop_sell true from fromDate for days nights) for the given sites,
+   * built with two queries whatever the number of sites. Sites with nothing mapped are left out.
+   */
+  public static Map<Id, Payload> buildStopSell(
+    Set<Id> siteIds,
+    Date fromDate,
+    Integer days
+  ) {
+    Map<Id, Payload> out = new Map<Id, Payload>();
+    String dateFrom = String.valueOf(fromDate);
+    String dateTo = String.valueOf(fromDate.addDays(days - 1));
+    for (PMS_Space_Type__c t : [
+      SELECT
+        Id,
+        Site__c,
+        Site__r.Channex_Property_Id__c,
+        Channex_Room_Type_Id__c
+      FROM PMS_Space_Type__c
+      WHERE
+        Site__c IN :siteIds
+        AND Channex_Room_Type_Id__c != NULL
+        AND Site__r.Channex_Property_Id__c != NULL
+    ]) {
+      stopSellPayload(out, t.Site__c)
+        .availability.add(
+          new Map<String, Object>{
+            'property_id' => t.Site__r.Channex_Property_Id__c,
+            'room_type_id' => t.Channex_Room_Type_Id__c,
+            'date_from' => dateFrom,
+            'date_to' => dateTo,
+            'availability' => 0
+          }
+        );
+    }
+    for (PMS_Channel_Mapping__c m : [
+      SELECT Site__c, Site__r.Channex_Property_Id__c, Channex_Rate_Plan_Id__c
+      FROM PMS_Channel_Mapping__c
+      WHERE
+        Site__c IN :siteIds
+        AND Active__c = TRUE
+        AND Channex_Rate_Plan_Id__c != NULL
+        AND Site__r.Channex_Property_Id__c != NULL
+    ]) {
+      stopSellPayload(out, m.Site__c)
+        .restrictions.add(
+          new Map<String, Object>{
+            'property_id' => m.Site__r.Channex_Property_Id__c,
+            'rate_plan_id' => m.Channex_Rate_Plan_Id__c,
+            'date_from' => dateFrom,
+            'date_to' => dateTo,
+            'stop_sell' => true
+          }
+        );
+    }
+    return out;
+  }
+
+  private static Payload stopSellPayload(Map<Id, Payload> m, Id siteId) {
+    if (!m.containsKey(siteId)) {
+      m.put(siteId, new Payload());
+    }
+    return m.get(siteId);
+  }
+
+  /**
+   * Sites whose newest availability/rates/stop-sell log is a successful stop-sell: the channel is already closed
+   * and nothing more is sent until a normal push writes a newer log. One query. A site with no log in the
+   * newest 2000 rows counts as not sent (the stop-sell is simply sent again, which is harmless).
+   */
+  public static Set<Id> stopSellSent(Set<Id> siteIds) {
+    Set<Id> decided = new Set<Id>();
+    Set<Id> sent = new Set<Id>();
+    for (PMS_Channel_Log__c l : [
+      SELECT Site__c, Kind__c, Status__c
+      FROM PMS_Channel_Log__c
+      WHERE
+        Site__c IN :siteIds
+        AND Direction__c = 'Outbound'
+        AND Kind__c IN ('Stop Sell', 'Availability', 'Rates')
+      ORDER BY CreatedDate DESC, Id DESC
+      LIMIT 2000
+    ]) {
+      if (
+        decided.add(l.Site__c) &&
+        l.Kind__c == 'Stop Sell' &&
+        l.Status__c == 'Success'
+      ) {
+        sent.add(l.Site__c);
+      }
+    }
+    return sent;
+  }
+
+  /**
+   * Sends one stop-sell (availability, then restrictions); makes no DML. Returns exactly one log row: status
+   * Success only when Channex accepted everything, which is what marks the site as closed.
+   */
+  public static List<PMS_Channel_Log__c> pushStopSell(Id siteId, Payload p) {
+    String status = 'Success';
+    String message =
+      'Stop-sell sent: ' +
+      p.availability.size() +
+      ' room types and ' +
+      p.restrictions.size() +
+      ' rate plans closed (PMS licence not active).';
+    String details = 'Live availability and rates are paused until the licence is active again, then a full resync follows. Existing OTA bookings are still received.';
+    try {
+      List<Object> warnings = new List<Object>();
+      if (!p.availability.isEmpty()) {
+        warnings.addAll(stopSellCall('/availability', p.availability));
+      }
+      if (!p.restrictions.isEmpty()) {
+        warnings.addAll(stopSellCall('/restrictions', p.restrictions));
+      }
+      if (!warnings.isEmpty()) {
+        status = 'Warning';
+        message =
+          'Stop-sell sent with ' +
+          warnings.size() +
+          ' rejected values; it will be retried.';
+        details = JSON.serialize(warnings);
+      }
+    } catch (Exception e) {
+      status = 'Error';
+      message = 'Stop-sell failed, it will be retried: ' + e.getMessage();
+      details = null;
+    }
+    return new List<PMS_Channel_Log__c>{
+      log(siteId, 'Stop Sell', status, message, details)
+    };
+  }
+
+  private static List<Object> stopSellCall(
+    String path,
+    List<Map<String, Object>> values
+  ) {
+    Map<String, Object> res = PMS_ChannexClient.post(
+      path,
+      new Map<String, Object>{ 'values' => values }
+    );
+    return PMS_ChannexClient.asList(
+      PMS_ChannexClient.asMap(res.get('meta')).get('warnings')
+    );
   }
 
   private static PMS_Channel_Log__c send(

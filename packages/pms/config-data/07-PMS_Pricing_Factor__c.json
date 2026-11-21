@@ -1,0 +1,54 @@
+{
+  "records": [
+    {
+      "attributes": {
+        "type": "PMS_Pricing_Factor__c",
+        "referenceId": "PMS_Pricing_Factor__cRef1"
+      },
+      "Name": "Occupancy 70-90%",
+      "Active__c": true,
+      "Adjust_Percent__c": 10,
+      "Max_Value__c": 90,
+      "Min_Value__c": 70,
+      "Strategy__c": "@PMS_Pricing_Strategy__cRef1",
+      "Type__c": "Occupancy"
+    },
+    {
+      "attributes": {
+        "type": "PMS_Pricing_Factor__c",
+        "referenceId": "PMS_Pricing_Factor__cRef2"
+      },
+      "Name": "Occupancy 90% and up",
+      "Active__c": true,
+      "Adjust_Percent__c": 25,
+      "Min_Value__c": 90,
+      "Strategy__c": "@PMS_Pricing_Strategy__cRef1",
+      "Type__c": "Occupancy"
+    },
+    {
+      "attributes": {
+        "type": "PMS_Pricing_Factor__c",
+        "referenceId": "PMS_Pricing_Factor__cRef3"
+      },
+      "Name": "Last minute (0-2 days)",
+      "Active__c": true,
+      "Adjust_Percent__c": -10,
+      "Max_Value__c": 2,
+      "Min_Value__c": 0,
+      "Strategy__c": "@PMS_Pricing_Strategy__cRef1",
+      "Type__c": "Lead Time"
+    },
+    {
+      "attributes": {
+        "type": "PMS_Pricing_Factor__c",
+        "referenceId": "PMS_Pricing_Factor__cRef4"
+      },
+      "Name": "Weekend nights",
+      "Active__c": true,
+      "Adjust_Percent__c": 15,
+      "Days_Of_Week__c": "Friday;Saturday",
+      "Strategy__c": "@PMS_Pricing_Strategy__cRef1",
+      "Type__c": "Day of Week"
+    }
+  ]
+}

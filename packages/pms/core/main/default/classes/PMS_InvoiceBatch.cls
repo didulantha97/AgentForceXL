@@ -11,6 +11,11 @@ public with sharing class PMS_InvoiceBatch implements Database.Batchable<SObject
   }
 
   public Database.QueryLocator start(Database.BatchableContext bc) {
+    if (PMS_Entitlements.jobsBlocked('PMS_InvoiceBatch')) {
+      return Database.getQueryLocator(
+        [SELECT Id FROM PMS_Charge__c WHERE Id = NULL]
+      );
+    }
     return Database.getQueryLocator(
       PMS_BillingService.pendingChargeQuery() +
       ' ORDER BY Account__c, Booking__c'

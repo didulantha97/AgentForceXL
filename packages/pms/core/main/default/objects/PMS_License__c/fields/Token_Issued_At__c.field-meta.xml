@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Token_Issued_At__c</fullName>
+    <description
+  >issuedAt of the accepted licence key. Keys issued before this moment are rejected (replay protection).</description>
+    <externalId>false</externalId>
+    <label>Token Issued At</label>
+    <required>false</required>
+    <type>DateTime</type>
+</CustomField>

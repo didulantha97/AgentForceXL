@@ -94,7 +94,16 @@ public without sharing class PMS_ChannexBookings {
               '.'
           );
         }
-        PMS_Channel_Log__c log = apply(rev, site, roomTypes, plans);
+        // Inbound OTA changes (new, modified, cancelled) are accepted even while the licence is
+        // suspended, so every revision can be acknowledged and the channel never double sells.
+        Boolean previousInbound = PMS_Entitlements.allowInbound;
+        PMS_Entitlements.allowInbound = true;
+        PMS_Channel_Log__c log;
+        try {
+          log = apply(rev, site, roomTypes, plans);
+        } finally {
+          PMS_Entitlements.allowInbound = previousInbound;
+        }
         o.logs.add(log);
         o.ackIds.add(revId);
       } catch (Exception e) {

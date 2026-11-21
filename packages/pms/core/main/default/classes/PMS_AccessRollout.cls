@@ -32,6 +32,9 @@ public without sharing class PMS_AccessRollout implements Queueable, Database.Al
   static Boolean recalcRunningOverride;
 
   public void execute(QueueableContext ctx) {
+    if (PMS_Entitlements.jobsBlocked('PMS_AccessRollout')) {
+      return; // suspended: no Metadata API changes; the loop restarts through ensureRunning once the licence is active
+    }
     Boolean more = runTick();
     if (more && !Test.isRunningTest()) {
       System.enqueueJob(new PMS_AccessRollout(), 1);

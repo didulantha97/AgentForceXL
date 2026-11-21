@@ -1,0 +1,26 @@
+{
+  "records": [
+    {
+      "attributes": {
+        "type": "PMS_Index_Value__c",
+        "referenceId": "PMS_Index_Value__cRef1"
+      },
+      "Month__c": 10,
+      "Series__c": "KPI 1980=100",
+      "Source__c": "SCB statistical news 13 Nov 2025 (fastställt tal)",
+      "Value__c": 419.35,
+      "Year__c": 2025
+    },
+    {
+      "attributes": {
+        "type": "PMS_Index_Value__c",
+        "referenceId": "PMS_Index_Value__cRef2"
+      },
+      "Month__c": 10,
+      "Series__c": "KPI 2020=100",
+      "Source__c": "SCB KPI page, October 2026 (published 12 Nov 2026)",
+      "Value__c": 125.97,
+      "Year__c": 2026
+    }
+  ]
+}

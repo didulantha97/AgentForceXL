@@ -75,6 +75,64 @@ private class PMS_IntegrationTest {
   }
 
   @isTest
+  static void webhookRecordsConfirmedPaymentWhenLicenceSuspended() {
+    insert new PMS_Settings__c(
+      SetupOwnerId = UserInfo.getOrganizationId(),
+      Webhook_Secret__c = SECRET
+    );
+    PMS_ExperienceTestFactory.Hotel h = PMS_ExperienceTestFactory.hotel(1);
+    PMS_Booking__c b = PMS_BookingService.createBooking(
+      PMS_ExperienceTestFactory.hotelRequest(h, Date.today().addDays(10), 1)
+    );
+    String bookingNumber = [SELECT Name FROM PMS_Booking__c WHERE Id = :b.Id]
+    .Name;
+    String body = JSON.serialize(
+      new Map<String, Object>{
+        'reference' => 'pi_susp',
+        'amount' => 500,
+        'status' => 'succeeded',
+        'type' => 'Deposit',
+        'method' => 'Card',
+        'bookingNumber' => bookingNumber
+      }
+    );
+    PMS_Entitlements.forceStateForTest(PMS_Entitlements.SUSPENDED);
+    call(body, 'bad-signature');
+    Assert.areEqual(401, RestContext.response.statusCode);
+    Assert.areEqual(
+      0,
+      [
+        SELECT COUNT()
+        FROM PMS_Payment__c
+        WHERE Gateway_Reference__c = 'pi_susp'
+      ]
+    );
+    call(body, sign(body));
+    Assert.areEqual(
+      200,
+      RestContext.response.statusCode,
+      RestContext.response.responseBody.toString()
+    );
+    Assert.areEqual(
+      1,
+      [
+        SELECT COUNT()
+        FROM PMS_Payment__c
+        WHERE Gateway_Reference__c = 'pi_susp'
+      ]
+    );
+    Database.SaveResult blocked = Database.insert(
+      new PMS_Payment__c(
+        Gateway_Reference__c = 'manual-3',
+        Amount__c = 1,
+        Booking__c = b.Id
+      ),
+      false
+    );
+    Assert.isFalse(blocked.isSuccess(), 'exemption does not leak');
+  }
+
+  @isTest
   static void statusMapping() {
     Assert.areEqual('Succeeded', PMS_PaymentWebhook.mapStatus('captured'));
     Assert.areEqual('Failed', PMS_PaymentWebhook.mapStatus('refused'));

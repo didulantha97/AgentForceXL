@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Pilot_Days__c</fullName>
+    <description
+  >Days of full access from install before a licence key is required.</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <label>Pilot Days</label>
+    <precision>4</precision>
+    <scale>0</scale>
+    <required>false</required>
+    <type>Number</type>
+</CustomField>

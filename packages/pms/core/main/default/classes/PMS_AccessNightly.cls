@@ -7,6 +7,9 @@
  */
 public without sharing class PMS_AccessNightly implements Schedulable {
   public void execute(SchedulableContext ctx) {
+    if (PMS_Entitlements.jobsBlocked('PMS_AccessNightly')) {
+      return; // licence suspended: PMS is read-only
+    }
     System.enqueueJob(new PMS_AccessGroupSync(null, true));
   }
 }

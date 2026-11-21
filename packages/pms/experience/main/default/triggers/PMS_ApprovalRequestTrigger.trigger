@@ -2,8 +2,12 @@ trigger PMS_ApprovalRequestTrigger on PMS_Approval_Request__c(
   before insert,
   before update,
   after insert,
-  after update
+  after update,
+  after undelete
 ) {
+  if (PMS_Entitlements.guardWrites() || Trigger.isUndelete) {
+    return; // suspended: read-only
+  }
   if (Trigger.isBefore) {
     PMS_CustomerNotifications.beforeApprovals(Trigger.new);
   } else {

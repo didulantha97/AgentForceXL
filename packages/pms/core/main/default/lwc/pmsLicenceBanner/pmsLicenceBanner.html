@@ -1,0 +1,48 @@
+<template>
+  <template lwc:if={hasBanner}>
+    <div class={bannerClass} role="alert">
+      <lightning-icon
+        icon-name={bannerIcon}
+        size="x-small"
+        variant="inverse"
+        class="slds-m-right_x-small"
+        alternative-text="Licence notice"
+      ></lightning-icon>
+      <h2>{status.bannerText}</h2>
+    </div>
+  </template>
+  <template lwc:if={loadError}>
+    <p class="slds-text-color_error slds-p-around_small">{loadError}</p>
+  </template>
+  <template lwc:if={canManage}>
+    <lightning-card title={cardTitle} icon-name="standard:contract">
+      <lightning-button
+        slot="actions"
+        label={formToggleLabel}
+        onclick={toggleForm}
+      ></lightning-button>
+      <div class="slds-p-horizontal_medium">
+        <p>{summary}</p>
+        <template lwc:if={showForm}>
+          <lightning-textarea
+            label="Licence key"
+            placeholder="Paste the key you received from your PMS provider"
+            value={keyText}
+            onchange={handleKeyChange}
+            class="slds-m-top_small"
+          ></lightning-textarea>
+          <template lwc:if={saveError}>
+            <p class="slds-text-color_error slds-m-top_x-small">{saveError}</p>
+          </template>
+          <lightning-button
+            variant="brand"
+            label="Save key"
+            class="slds-m-top_small"
+            onclick={handleSave}
+            disabled={saveDisabled}
+          ></lightning-button>
+        </template>
+      </div>
+    </lightning-card>
+  </template>
+</template>

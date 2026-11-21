@@ -149,6 +149,11 @@ public with sharing class PMS_StripeCheckout {
     PMS_Invoice__c inv,
     Integer expiresInMinutes
   ) {
+    // Single funnel for every Checkout path (staff pay links, portal, public booking, dunning). New online
+    // payments stop while the licence is suspended; payments already made are still recorded by the webhook.
+    if (PMS_Entitlements.isLocked()) {
+      throw new PMS_Exception('Online payments are temporarily unavailable.');
+    }
     String cur = (String.isBlank(inv.Currency_Code__c)
         ? UserInfo.getDefaultCurrency()
         : inv.Currency_Code__c)
