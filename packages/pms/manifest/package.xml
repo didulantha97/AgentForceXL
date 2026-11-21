@@ -8,10 +8,20 @@
         <name>AiAgentScorerDefinition</name>
     </types>
     <types>
+        <members>PMS_Concierge</members>
         <members>PMS_Concierge_1</members>
         <name>AiAuthoringBundle</name>
     </types>
     <types>
+        <members>PMS_AccessConsoleController</members>
+        <members>PMS_AccessGroupSync</members>
+        <members>PMS_AccessMetadataClient</members>
+        <members>PMS_AccessNightly</members>
+        <members>PMS_AccessRecalcBatch</members>
+        <members>PMS_AccessRollout</members>
+        <members>PMS_AccessRolloutTest</members>
+        <members>PMS_AccessService</members>
+        <members>PMS_AccessTest</members>
         <members>PMS_AgentActions</members>
         <members>PMS_AvailabilityService</members>
         <members>PMS_BillingService</members>
@@ -21,6 +31,12 @@
         <members>PMS_BookingService</members>
         <members>PMS_BookingServiceTest</members>
         <members>PMS_BookingTriggerHandler</members>
+        <members>PMS_ChannexAri</members>
+        <members>PMS_ChannexBookings</members>
+        <members>PMS_ChannexClient</members>
+        <members>PMS_ChannexController</members>
+        <members>PMS_ChannexSync</members>
+        <members>PMS_ChannexTest</members>
         <members>PMS_CheckAvailabilityAction</members>
         <members>PMS_CheckInInvitationJob</members>
         <members>PMS_CheckInService</members>
@@ -29,12 +45,32 @@
         <members>PMS_CustomerNotifications</members>
         <members>PMS_DailyJob</members>
         <members>PMS_DateUtil</members>
+        <members>PMS_DunningBatch</members>
+        <members>PMS_DunningController</members>
+        <members>PMS_DunningLetters</members>
+        <members>PMS_DunningService</members>
+        <members>PMS_DunningTest</members>
+        <members>PMS_DynamicPricingJob</members>
+        <members>PMS_DynamicPricingService</members>
+        <members>PMS_DynamicPricingTest</members>
         <members>PMS_Exception</members>
+        <members>PMS_ExperienceTestFactory</members>
         <members>PMS_FinanceTriggerHandler</members>
         <members>PMS_GetQuoteAction</members>
+        <members>PMS_GuaranteeActionJob</members>
+        <members>PMS_GuaranteeController</members>
+        <members>PMS_GuaranteeEvents</members>
+        <members>PMS_GuaranteeJob</members>
+        <members>PMS_GuaranteeService</members>
+        <members>PMS_GuaranteeTest</members>
+        <members>PMS_GuaranteeTriggerHandler</members>
         <members>PMS_GuestCheckInController</members>
         <members>PMS_GuestNotifications</members>
         <members>PMS_GuestNotificationsTest</members>
+        <members>PMS_HomeController</members>
+        <members>PMS_HomeControllerAccessTest</members>
+        <members>PMS_HomeControllerTest</members>
+        <members>PMS_IntegrationPackTest</members>
         <members>PMS_IntegrationTest</members>
         <members>PMS_InvoiceBatch</members>
         <members>PMS_ModuleConfig</members>
@@ -43,21 +79,35 @@
         <members>PMS_OwnerStatementService</members>
         <members>PMS_PartnerPortalController</members>
         <members>PMS_PartnerPortalTest</members>
+        <members>PMS_PayLinkRest</members>
+        <members>PMS_PayLinkService</members>
         <members>PMS_PaymentWebhook</members>
+        <members>PMS_PolicyService</members>
         <members>PMS_PortalController</members>
         <members>PMS_PortalControllerTest</members>
+        <members>PMS_PortalMoneyController</members>
         <members>PMS_PortalUserSetup</members>
         <members>PMS_PortalUserSetupTest</members>
         <members>PMS_PortalV2Controller</members>
         <members>PMS_PortalV2Test</members>
+        <members>PMS_PricingCalendarController</members>
         <members>PMS_PricingService</members>
         <members>PMS_PublicBookingController</members>
         <members>PMS_PublicBookingControllerTest</members>
         <members>PMS_RecurringChargeBatch</members>
+        <members>PMS_RentAdjustmentJob</members>
+        <members>PMS_RentIndexService</members>
+        <members>PMS_RentIndexTest</members>
+        <members>PMS_RentNotices</members>
+        <members>PMS_RentReviewController</members>
+        <members>PMS_RevenueHomeController</members>
         <members>PMS_StripeCheckout</members>
+        <members>PMS_StripeClient</members>
+        <members>PMS_StripePayLinkProvider</members>
         <members>PMS_StripeTest</members>
         <members>PMS_StripeWebhook</members>
         <members>PMS_TestDataFactory</members>
+        <members>PMS_TriggerBypass</members>
         <members>PMS_UIController</members>
         <members>PMS_UIControllerTest</members>
         <members>PMS_WebBookingCleanup</members>
@@ -72,7 +122,40 @@
         <name>ApexPage</name>
     </types>
     <types>
+        <members>PMS_AccessRuleTrigger</members>
+        <members>PMS_AccessShare_Application</members>
+        <members>PMS_AccessShare_Approval_Request</members>
+        <members>PMS_AccessShare_Booking</members>
+        <members>PMS_AccessShare_Channel_Log</members>
+        <members>PMS_AccessShare_Channel_Mapping</members>
+        <members>PMS_AccessShare_Charge</members>
+        <members>PMS_AccessShare_Check_In</members>
+        <members>PMS_AccessShare_Document_Request</members>
+        <members>PMS_AccessShare_Dunning_Event</members>
+        <members>PMS_AccessShare_Group_Block</members>
+        <members>PMS_AccessShare_Inspection</members>
+        <members>PMS_AccessShare_Intake_Form</members>
+        <members>PMS_AccessShare_Invoice</members>
+        <members>PMS_AccessShare_Listing</members>
+        <members>PMS_AccessShare_Matter</members>
+        <members>PMS_AccessShare_Meter</members>
+        <members>PMS_AccessShare_Owner_Statement</members>
+        <members>PMS_AccessShare_Payment</members>
+        <members>PMS_AccessShare_Payment_Plan</members>
+        <members>PMS_AccessShare_Practitioner</members>
+        <members>PMS_AccessShare_Pricing_Strategy</members>
+        <members>PMS_AccessShare_Project</members>
+        <members>PMS_AccessShare_Rate_Plan</members>
+        <members>PMS_AccessShare_Rent_Adjustment</members>
+        <members>PMS_AccessShare_Site</members>
+        <members>PMS_AccessShare_Space_Type</members>
+        <members>PMS_AccessShare_Time_Entry</members>
+        <members>PMS_AccessShare_Vendor_Bill</members>
+        <members>PMS_AccessShare_Work_Order</members>
+        <members>PMS_AccessTeamMemberTrigger</members>
+        <members>PMS_AccessTeamTrigger</members>
         <members>PMS_ApprovalRequestTrigger</members>
+        <members>PMS_BookingGuaranteeTrigger</members>
         <members>PMS_BookingTrigger</members>
         <members>PMS_CaseTrigger</members>
         <members>PMS_ChargeTrigger</members>
@@ -102,7 +185,9 @@
         <name>CustomApplication</name>
     </types>
     <types>
+        <members>Account.PMS_Customer_Type__c</members>
         <members>Account.PMS_Party_Role__c</members>
+        <members>Account.Stripe_Customer_Id__c</members>
         <members>Case.Entry_Permission__c</members>
         <members>Case.PMS_Booking__c</members>
         <members>Case.PMS_Module__c</members>
@@ -110,9 +195,650 @@
         <members>Case.PMS_Space__c</members>
         <members>Case.SLA_Due__c</members>
         <members>Contact.PMS_ID_Verified__c</members>
+        <members>PMS_Access_Object__mdt.Active__c</members>
+        <members>PMS_Access_Object__mdt.Object_API_Name__c</members>
+        <members>PMS_Access_Object__mdt.Rule_Key__c</members>
+        <members>PMS_Access_Object__mdt.Site_Paths__c</members>
+        <members>PMS_Access_Object__mdt.Sort_Order__c</members>
+        <members>PMS_Access_Rollout__c.Attempts__c</members>
+        <members>PMS_Access_Rollout__c.Message__c</members>
+        <members>PMS_Access_Rollout__c.Recalc_Started__c</members>
+        <members>PMS_Access_Rollout__c.Requested_At__c</members>
+        <members>PMS_Access_Rollout__c.Requested__c</members>
+        <members>PMS_Access_Rollout__c.Step__c</members>
+        <members>PMS_Access_Rollout__c.Target__c</members>
+        <members>PMS_Access_Rollout__c.Ticks__c</members>
+        <members>PMS_Access_Rule__c.Access_Level__c</members>
+        <members>PMS_Access_Rule__c.Active__c</members>
+        <members>PMS_Access_Rule__c.Description__c</members>
+        <members>PMS_Access_Rule__c.Module__c</members>
+        <members>PMS_Access_Rule__c.Objects__c</members>
+        <members>PMS_Access_Rule__c.Site__c</members>
+        <members>PMS_Access_Rule__c.Team__c</members>
+        <members>PMS_Access_Team_Member__c.Active__c</members>
+        <members>PMS_Access_Team_Member__c.End_Date__c</members>
+        <members>PMS_Access_Team_Member__c.Start_Date__c</members>
+        <members>PMS_Access_Team_Member__c.Team__c</members>
+        <members>PMS_Access_Team_Member__c.Unique_Key__c</members>
+        <members>PMS_Access_Team_Member__c.User__c</members>
+        <members>PMS_Access_Team__c.Active__c</members>
+        <members>PMS_Access_Team__c.All_Internal_Users__c</members>
+        <members>PMS_Access_Team__c.Description__c</members>
+        <members>PMS_Access_Team__c.Hide_Amounts__c</members>
+        <members>PMS_Access_Team__c.Hide_Customer_Details__c</members>
+        <members>PMS_Access_Team__c.Member_Count__c</members>
+        <members>PMS_Application__c.Applicant__c</members>
+        <members>PMS_Application__c.Decision__c</members>
+        <members>PMS_Application__c.Desired_Move_In__c</members>
+        <members>PMS_Application__c.Employer__c</members>
+        <members>PMS_Application__c.Lease__c</members>
+        <members>PMS_Application__c.Listing__c</members>
+        <members>PMS_Application__c.Monthly_Income__c</members>
+        <members>PMS_Application__c.Score__c</members>
+        <members>PMS_Application__c.Screening_Status__c</members>
+        <members>PMS_Application__c.Space__c</members>
+        <members>PMS_Approval_Request__c.Account__c</members>
+        <members>PMS_Approval_Request__c.Amount__c</members>
+        <members>PMS_Approval_Request__c.Decided_At__c</members>
+        <members>PMS_Approval_Request__c.Decided_By__c</members>
+        <members>PMS_Approval_Request__c.Decision_Comment__c</members>
+        <members>PMS_Approval_Request__c.Details__c</members>
+        <members>PMS_Approval_Request__c.Due_Date__c</members>
+        <members>PMS_Approval_Request__c.Project__c</members>
+        <members>PMS_Approval_Request__c.Schedule_Impact_Days__c</members>
+        <members>PMS_Approval_Request__c.Status__c</members>
+        <members>PMS_Approval_Request__c.Title__c</members>
+        <members>PMS_Approval_Request__c.Type__c</members>
+        <members>PMS_Booking_Party__c.Booking__c</members>
+        <members>PMS_Booking_Party__c.Contact__c</members>
+        <members>PMS_Booking_Party__c.Is_Primary__c</members>
+        <members>PMS_Booking_Party__c.Role__c</members>
+        <members>PMS_Booking__c.Account__c</members>
+        <members>PMS_Booking__c.Adults__c</members>
+        <members>PMS_Booking__c.Amount_Paid__c</members>
+        <members>PMS_Booking__c.Appointment_Mode__c</members>
+        <members>PMS_Booking__c.Balance_Due__c</members>
+        <members>PMS_Booking__c.Card_Brand__c</members>
+        <members>PMS_Booking__c.Card_Expiry__c</members>
+        <members>PMS_Booking__c.Card_Last4__c</members>
+        <members>PMS_Booking__c.Card_Link_Sent_At__c</members>
+        <members>PMS_Booking__c.Card_Saved_At__c</members>
+        <members>PMS_Booking__c.Channel__c</members>
+        <members>PMS_Booking__c.Channex_Booking_Id__c</members>
+        <members>PMS_Booking__c.Channex_Revision_Id__c</members>
+        <members>PMS_Booking__c.Channex_Room_Key__c</members>
+        <members>PMS_Booking__c.Check_In_Invited_At__c</members>
+        <members>PMS_Booking__c.Check_In_Key__c</members>
+        <members>PMS_Booking__c.Children__c</members>
+        <members>PMS_Booking__c.Confirmation_Sent__c</members>
+        <members>PMS_Booking__c.Deposit_Amount__c</members>
+        <members>PMS_Booking__c.End__c</members>
+        <members>PMS_Booking__c.Escalation_Date__c</members>
+        <members>PMS_Booking__c.Escalation_Percent__c</members>
+        <members>PMS_Booking__c.Group_Block__c</members>
+        <members>PMS_Booking__c.Guarantee_Message__c</members>
+        <members>PMS_Booking__c.Guarantee_Status__c</members>
+        <members>PMS_Booking__c.Guarantee__c</members>
+        <members>PMS_Booking__c.Hours_Per_Week__c</members>
+        <members>PMS_Booking__c.Index_Allow_Below_Base__c</members>
+        <members>PMS_Booking__c.Index_Base_Rent__c</members>
+        <members>PMS_Booking__c.Index_Base_Value__c</members>
+        <members>PMS_Booking__c.Index_Clause__c</members>
+        <members>PMS_Booking__c.Index_Series__c</members>
+        <members>PMS_Booking__c.Index_Share__c</members>
+        <members>PMS_Booking__c.Last_Rent_Adjustment__c</members>
+        <members>PMS_Booking__c.Lease_Type__c</members>
+        <members>PMS_Booking__c.Matter__c</members>
+        <members>PMS_Booking__c.Nights__c</members>
+        <members>PMS_Booking__c.Notice_Period_Days__c</members>
+        <members>PMS_Booking__c.OTA_Name__c</members>
+        <members>PMS_Booking__c.OTA_Reservation_Code__c</members>
+        <members>PMS_Booking__c.Online_Check_In_At__c</members>
+        <members>PMS_Booking__c.Online_Check_In__c</members>
+        <members>PMS_Booking__c.Payment_Policy__c</members>
+        <members>PMS_Booking__c.Policy_Event_At__c</members>
+        <members>PMS_Booking__c.Policy_Fee_Amount__c</members>
+        <members>PMS_Booking__c.Policy_Fee_Charged__c</members>
+        <members>PMS_Booking__c.Policy_Pending__c</members>
+        <members>PMS_Booking__c.Practitioner__c</members>
+        <members>PMS_Booking__c.Preauth_Amount__c</members>
+        <members>PMS_Booking__c.Preauth_Expires_At__c</members>
+        <members>PMS_Booking__c.Preauth_Intent_Id__c</members>
+        <members>PMS_Booking__c.Preauth_Status__c</members>
+        <members>PMS_Booking__c.Primary_Contact__c</members>
+        <members>PMS_Booking__c.Project__c</members>
+        <members>PMS_Booking__c.Rate_Amount__c</members>
+        <members>PMS_Booking__c.Rate_Plan__c</members>
+        <members>PMS_Booking__c.Refund_Due__c</members>
+        <members>PMS_Booking__c.Reminder_Fee_Agreed__c</members>
+        <members>PMS_Booking__c.Renewal_Status__c</members>
+        <members>PMS_Booking__c.Rent_Due_Day__c</members>
+        <members>PMS_Booking__c.Rent_Frequency__c</members>
+        <members>PMS_Booking__c.Resource__c</members>
+        <members>PMS_Booking__c.Room_Night_Revenue__c</members>
+        <members>PMS_Booking__c.Room_Type_Requested__c</members>
+        <members>PMS_Booking__c.Service__c</members>
+        <members>PMS_Booking__c.Setup_Intent_Id__c</members>
+        <members>PMS_Booking__c.Site__c</members>
+        <members>PMS_Booking__c.Space__c</members>
+        <members>PMS_Booking__c.Special_Requests__c</members>
+        <members>PMS_Booking__c.Start__c</members>
+        <members>PMS_Booking__c.Status__c</members>
+        <members>PMS_Booking__c.Stripe_Payment_Method__c</members>
+        <members>PMS_Booking__c.Total_Amount__c</members>
+        <members>PMS_Booking__c.Web_Access_Key__c</members>
+        <members>PMS_Budget_Line__c.Actual__c</members>
+        <members>PMS_Budget_Line__c.Budget_Amount__c</members>
+        <members>PMS_Budget_Line__c.Category__c</members>
+        <members>PMS_Budget_Line__c.Committed__c</members>
+        <members>PMS_Budget_Line__c.Project__c</members>
+        <members>PMS_Budget_Line__c.Variance__c</members>
+        <members>PMS_Channel_Log__c.Booking__c</members>
+        <members>PMS_Channel_Log__c.Details__c</members>
+        <members>PMS_Channel_Log__c.Direction__c</members>
+        <members>PMS_Channel_Log__c.Kind__c</members>
+        <members>PMS_Channel_Log__c.Message__c</members>
+        <members>PMS_Channel_Log__c.Revision_Id__c</members>
+        <members>PMS_Channel_Log__c.Site__c</members>
+        <members>PMS_Channel_Log__c.Status__c</members>
+        <members>PMS_Channel_Mapping__c.Active__c</members>
+        <members>PMS_Channel_Mapping__c.Channex_Rate_Plan_Id__c</members>
+        <members>PMS_Channel_Mapping__c.Rate_Plan__c</members>
+        <members>PMS_Channel_Mapping__c.Room_Type__c</members>
+        <members>PMS_Channel_Mapping__c.Site__c</members>
+        <members>PMS_Charge__c.Account__c</members>
+        <members>PMS_Charge__c.Booking__c</members>
+        <members>PMS_Charge__c.Charge_Type__c</members>
+        <members>PMS_Charge__c.Description__c</members>
+        <members>PMS_Charge__c.Gross_Amount__c</members>
+        <members>PMS_Charge__c.Invoice__c</members>
+        <members>PMS_Charge__c.Matter__c</members>
+        <members>PMS_Charge__c.Net_Amount__c</members>
+        <members>PMS_Charge__c.Project__c</members>
+        <members>PMS_Charge__c.Quantity__c</members>
+        <members>PMS_Charge__c.Service_Date__c</members>
+        <members>PMS_Charge__c.Status__c</members>
+        <members>PMS_Charge__c.Tax_Amount__c</members>
+        <members>PMS_Charge__c.Tax_Rate__c</members>
+        <members>PMS_Charge__c.Time_Entry__c</members>
+        <members>PMS_Charge__c.Unit_Price__c</members>
+        <members>PMS_Check_In__c.Account__c</members>
+        <members>PMS_Check_In__c.Address__c</members>
+        <members>PMS_Check_In__c.Arrival_Time__c</members>
+        <members>PMS_Check_In__c.Booking__c</members>
+        <members>PMS_Check_In__c.Date_Of_Birth__c</members>
+        <members>PMS_Check_In__c.Emergency_Contact__c</members>
+        <members>PMS_Check_In__c.Full_Name__c</members>
+        <members>PMS_Check_In__c.Guests__c</members>
+        <members>PMS_Check_In__c.ID_Number__c</members>
+        <members>PMS_Check_In__c.ID_Type__c</members>
+        <members>PMS_Check_In__c.Move_In_Date__c</members>
+        <members>PMS_Check_In__c.Nationality__c</members>
+        <members>PMS_Check_In__c.Occupants__c</members>
+        <members>PMS_Check_In__c.Phone__c</members>
+        <members>PMS_Check_In__c.Special_Requests__c</members>
+        <members>PMS_Check_In__c.Submitted_At__c</members>
+        <members>PMS_Check_In__c.Submitted_Via__c</members>
+        <members>PMS_Check_In__c.Terms_Accepted__c</members>
+        <members>PMS_Check_In__c.Type__c</members>
+        <members>PMS_Check_In__c.Vehicle_Registration__c</members>
+        <members>PMS_Document_Request__c.Account__c</members>
+        <members>PMS_Document_Request__c.Booking__c</members>
+        <members>PMS_Document_Request__c.Contact__c</members>
+        <members>PMS_Document_Request__c.Decline_Reason__c</members>
+        <members>PMS_Document_Request__c.Document_Hash__c</members>
+        <members>PMS_Document_Request__c.Due_Date__c</members>
+        <members>PMS_Document_Request__c.Message__c</members>
+        <members>PMS_Document_Request__c.Original_Version_Id__c</members>
+        <members>PMS_Document_Request__c.Project__c</members>
+        <members>PMS_Document_Request__c.Requires_Signature__c</members>
+        <members>PMS_Document_Request__c.Signed_At__c</members>
+        <members>PMS_Document_Request__c.Signed_Version_Id__c</members>
+        <members>PMS_Document_Request__c.Signer_Email__c</members>
+        <members>PMS_Document_Request__c.Signer_IP__c</members>
+        <members>PMS_Document_Request__c.Signer_Name__c</members>
+        <members>PMS_Document_Request__c.Signer_User_Agent__c</members>
+        <members>PMS_Document_Request__c.Status__c</members>
+        <members>PMS_Document_Request__c.Title__c</members>
+        <members>PMS_Document_Request__c.Viewed_At__c</members>
+        <members>PMS_Dunning_Event__c.Balance__c</members>
+        <members>PMS_Dunning_Event__c.Days_Overdue__c</members>
+        <members>PMS_Dunning_Event__c.Fee_Posted__c</members>
+        <members>PMS_Dunning_Event__c.Interest_Posted__c</members>
+        <members>PMS_Dunning_Event__c.Invoice__c</members>
+        <members>PMS_Dunning_Event__c.Note__c</members>
+        <members>PMS_Dunning_Event__c.Sent_At__c</members>
+        <members>PMS_Dunning_Event__c.Sent_To__c</members>
+        <members>PMS_Dunning_Event__c.Stage__c</members>
+        <members>PMS_Dunning_Policy__c.Active__c</members>
+        <members>PMS_Dunning_Policy__c.Business_Late_Fee__c</members>
+        <members>PMS_Dunning_Policy__c.Charge_Interest__c</members>
+        <members>PMS_Dunning_Policy__c.Collections_Agency_Email__c</members>
+        <members>PMS_Dunning_Policy__c.Collections_Days__c</members>
+        <members>PMS_Dunning_Policy__c.Consumer_Reminder_Fee__c</members>
+        <members>PMS_Dunning_Policy__c.Fee_In_Terms__c</members>
+        <members>PMS_Dunning_Policy__c.Interest_Margin__c</members>
+        <members>PMS_Dunning_Policy__c.Is_Default__c</members>
+        <members>PMS_Dunning_Policy__c.Min_Days_Between__c</members>
+        <members>PMS_Dunning_Policy__c.Minimum_Balance__c</members>
+        <members>PMS_Dunning_Policy__c.Payment_Instructions__c</members>
+        <members>PMS_Dunning_Policy__c.Plan_Grace_Days__c</members>
+        <members>PMS_Dunning_Policy__c.Plan_Instalments__c</members>
+        <members>PMS_Dunning_Policy__c.Plan_Offer_Days__c</members>
+        <members>PMS_Dunning_Policy__c.Reference_Rate__c</members>
+        <members>PMS_Dunning_Policy__c.Reminder_1_Days__c</members>
+        <members>PMS_Dunning_Policy__c.Reminder_2_Days__c</members>
+        <members>PMS_Dunning_Policy__c.Sender_Name__c</members>
+        <members>PMS_Group_Block__c.Account__c</members>
+        <members>PMS_Group_Block__c.Arrival_Date__c</members>
+        <members>PMS_Group_Block__c.Cutoff_Date__c</members>
+        <members>PMS_Group_Block__c.Departure_Date__c</members>
+        <members>PMS_Group_Block__c.Rate_Plan__c</members>
+        <members>PMS_Group_Block__c.Rooms_Blocked__c</members>
+        <members>PMS_Group_Block__c.Rooms_Picked_Up__c</members>
+        <members>PMS_Group_Block__c.Site__c</members>
+        <members>PMS_Group_Block__c.Status__c</members>
+        <members>PMS_Index_Value__c.Month__c</members>
+        <members>PMS_Index_Value__c.Series__c</members>
+        <members>PMS_Index_Value__c.Source__c</members>
+        <members>PMS_Index_Value__c.Value__c</members>
+        <members>PMS_Index_Value__c.Year__c</members>
+        <members>PMS_Inspection_Item__c.Area__c</members>
+        <members>PMS_Inspection_Item__c.Condition__c</members>
+        <members>PMS_Inspection_Item__c.Inspection__c</members>
+        <members>PMS_Inspection_Item__c.Notes__c</members>
+        <members>PMS_Inspection_Item__c.Repair_Required__c</members>
+        <members>PMS_Inspection__c.Booking__c</members>
+        <members>PMS_Inspection__c.Inspection_Date__c</members>
+        <members>PMS_Inspection__c.Inspection_Type__c</members>
+        <members>PMS_Inspection__c.Inspector__c</members>
+        <members>PMS_Inspection__c.Notes__c</members>
+        <members>PMS_Inspection__c.Score__c</members>
+        <members>PMS_Inspection__c.Site__c</members>
+        <members>PMS_Inspection__c.Space__c</members>
+        <members>PMS_Intake_Form__c.Booking__c</members>
+        <members>PMS_Intake_Form__c.Consent_Given__c</members>
+        <members>PMS_Intake_Form__c.Contact__c</members>
+        <members>PMS_Intake_Form__c.Form_Type__c</members>
+        <members>PMS_Intake_Form__c.Matter__c</members>
+        <members>PMS_Intake_Form__c.Responses__c</members>
+        <members>PMS_Intake_Form__c.Signed_Date__c</members>
+        <members>PMS_Inventory_Day__c.Available__c</members>
+        <members>PMS_Inventory_Day__c.Inventory_Date__c</members>
+        <members>PMS_Inventory_Day__c.Out_Of_Order__c</members>
+        <members>PMS_Inventory_Day__c.Room_Type__c</members>
+        <members>PMS_Inventory_Day__c.Sold__c</members>
+        <members>PMS_Inventory_Day__c.Stop_Sell__c</members>
+        <members>PMS_Inventory_Day__c.Total_Rooms__c</members>
+        <members>PMS_Invoice__c.Account__c</members>
+        <members>PMS_Invoice__c.Amount_Paid__c</members>
+        <members>PMS_Invoice__c.Balance__c</members>
+        <members>PMS_Invoice__c.Booking__c</members>
+        <members>PMS_Invoice__c.Currency_Code__c</members>
+        <members>PMS_Invoice__c.Days_Overdue__c</members>
+        <members>PMS_Invoice__c.Due_Date__c</members>
+        <members>PMS_Invoice__c.Dunning_Last_Sent_At__c</members>
+        <members>PMS_Invoice__c.Dunning_Pause_Reason__c</members>
+        <members>PMS_Invoice__c.Dunning_Paused__c</members>
+        <members>PMS_Invoice__c.Dunning_Stage__c</members>
+        <members>PMS_Invoice__c.Interest_Through__c</members>
+        <members>PMS_Invoice__c.Issue_Date__c</members>
+        <members>PMS_Invoice__c.Late_Fee_Posted__c</members>
+        <members>PMS_Invoice__c.Matter__c</members>
+        <members>PMS_Invoice__c.Pay_Key__c</members>
+        <members>PMS_Invoice__c.Project__c</members>
+        <members>PMS_Invoice__c.Status__c</members>
+        <members>PMS_Invoice__c.Subtotal__c</members>
+        <members>PMS_Invoice__c.Tax_Total__c</members>
+        <members>PMS_Invoice__c.Total__c</members>
+        <members>PMS_Lease_Charge_Schedule__c.Active__c</members>
+        <members>PMS_Lease_Charge_Schedule__c.Amount__c</members>
+        <members>PMS_Lease_Charge_Schedule__c.Charge_Type__c</members>
+        <members>PMS_Lease_Charge_Schedule__c.End_Date__c</members>
+        <members>PMS_Lease_Charge_Schedule__c.Escalation_Percent__c</members>
+        <members>PMS_Lease_Charge_Schedule__c.Frequency__c</members>
+        <members>PMS_Lease_Charge_Schedule__c.Lease__c</members>
+        <members>PMS_Lease_Charge_Schedule__c.Next_Run_Date__c</members>
+        <members>PMS_Lease_Charge_Schedule__c.Start_Date__c</members>
+        <members>PMS_Listing__c.Asking_Rent__c</members>
+        <members>PMS_Listing__c.Available_From__c</members>
+        <members>PMS_Listing__c.Description__c</members>
+        <members>PMS_Listing__c.Listing_Status__c</members>
+        <members>PMS_Listing__c.Site__c</members>
+        <members>PMS_Listing__c.Space__c</members>
+        <members>PMS_Matter__c.Account__c</members>
+        <members>PMS_Matter__c.Close_Date__c</members>
+        <members>PMS_Matter__c.Conflict_Check_Status__c</members>
+        <members>PMS_Matter__c.Fee_Arrangement__c</members>
+        <members>PMS_Matter__c.Open_Date__c</members>
+        <members>PMS_Matter__c.Practice_Area__c</members>
+        <members>PMS_Matter__c.Primary_Contact__c</members>
+        <members>PMS_Matter__c.Responsible_Practitioner__c</members>
+        <members>PMS_Matter__c.Retainer_Balance__c</members>
+        <members>PMS_Matter__c.Site__c</members>
+        <members>PMS_Matter__c.Status__c</members>
+        <members>PMS_Meter_Reading__c.Billed__c</members>
+        <members>PMS_Meter_Reading__c.Consumption__c</members>
+        <members>PMS_Meter_Reading__c.Meter__c</members>
+        <members>PMS_Meter_Reading__c.Reading_Date__c</members>
+        <members>PMS_Meter_Reading__c.Reading_Value__c</members>
+        <members>PMS_Meter__c.Meter_Type__c</members>
+        <members>PMS_Meter__c.Space__c</members>
+        <members>PMS_Meter__c.Unit_Price__c</members>
+        <members>PMS_Milestone__c.Accepted_At__c</members>
+        <members>PMS_Milestone__c.Accepted_By__c</members>
+        <members>PMS_Milestone__c.Amount__c</members>
+        <members>PMS_Milestone__c.Customer_Comment__c</members>
+        <members>PMS_Milestone__c.Due_Date__c</members>
+        <members>PMS_Milestone__c.Invoiced__c</members>
+        <members>PMS_Milestone__c.Project__c</members>
+        <members>PMS_Milestone__c.Status__c</members>
+        <members>PMS_Module__mdt.App_Name__c</members>
+        <members>PMS_Module__mdt.Booking_Label__c</members>
+        <members>PMS_Module__mdt.Booking_Record_Type__c</members>
+        <members>PMS_Module__mdt.Default_Tax_Rate__c</members>
+        <members>PMS_Module__mdt.Enabled__c</members>
+        <members>PMS_Module__mdt.Invoice_Due_Days__c</members>
+        <members>PMS_Module__mdt.Invoice_Record_Type__c</members>
+        <members>PMS_Module__mdt.Pricing_Basis__c</members>
+        <members>PMS_Module__mdt.Site_Record_Type__c</members>
+        <members>PMS_Module__mdt.Space_Label__c</members>
+        <members>PMS_Module__mdt.Space_Record_Type__c</members>
+        <members>PMS_Owner_Statement__c.Arrears__c</members>
+        <members>PMS_Owner_Statement__c.Expenses__c</members>
+        <members>PMS_Owner_Statement__c.Generated_On__c</members>
+        <members>PMS_Owner_Statement__c.Gross_Rent__c</members>
+        <members>PMS_Owner_Statement__c.Management_Fee__c</members>
+        <members>PMS_Owner_Statement__c.Net_Payout__c</members>
+        <members>PMS_Owner_Statement__c.Occupancy_Basis__c</members>
+        <members>PMS_Owner_Statement__c.Occupancy_Percent__c</members>
+        <members>PMS_Owner_Statement__c.Owner_Account__c</members>
+        <members>PMS_Owner_Statement__c.Period_End__c</members>
+        <members>PMS_Owner_Statement__c.Period_Start__c</members>
+        <members>PMS_Owner_Statement__c.Site__c</members>
+        <members>PMS_Owner_Statement__c.Status__c</members>
+        <members>PMS_Payment_Plan_Instalment__c.Amount__c</members>
+        <members>PMS_Payment_Plan_Instalment__c.Due_Date__c</members>
+        <members>PMS_Payment_Plan_Instalment__c.Number__c</members>
+        <members>PMS_Payment_Plan_Instalment__c.Plan__c</members>
+        <members>PMS_Payment_Plan_Instalment__c.Status__c</members>
+        <members>PMS_Payment_Plan__c.Accepted_At__c</members>
+        <members>PMS_Payment_Plan__c.Account__c</members>
+        <members>PMS_Payment_Plan__c.Invoice__c</members>
+        <members>PMS_Payment_Plan__c.Paid_At_Start__c</members>
+        <members>PMS_Payment_Plan__c.Status__c</members>
+        <members>PMS_Payment_Plan__c.Total__c</members>
+        <members>PMS_Payment_Policy__c.Active__c</members>
+        <members>PMS_Payment_Policy__c.Auto_Charge_Fees__c</members>
+        <members>PMS_Payment_Policy__c.Auto_Send_Card_Link__c</members>
+        <members>PMS_Payment_Policy__c.Deposit_Basis__c</members>
+        <members>PMS_Payment_Policy__c.Deposit_Due_Days__c</members>
+        <members>PMS_Payment_Policy__c.Deposit_Value__c</members>
+        <members>PMS_Payment_Policy__c.Fee_Tax_Rate__c</members>
+        <members>PMS_Payment_Policy__c.Free_Cancellation_Hours__c</members>
+        <members>PMS_Payment_Policy__c.Guarantee_Method__c</members>
+        <members>PMS_Payment_Policy__c.Guest_Terms__c</members>
+        <members>PMS_Payment_Policy__c.Late_Cancel_Basis__c</members>
+        <members>PMS_Payment_Policy__c.Late_Cancel_Value__c</members>
+        <members>PMS_Payment_Policy__c.No_Show_Basis__c</members>
+        <members>PMS_Payment_Policy__c.No_Show_Value__c</members>
+        <members>PMS_Payment_Policy__c.Preauth_Hours_Before__c</members>
+        <members>PMS_Payment_Policy__c.Release_Hold_On_Checkout__c</members>
+        <members>PMS_Payment__c.Account__c</members>
+        <members>PMS_Payment__c.Amount__c</members>
+        <members>PMS_Payment__c.Booking__c</members>
+        <members>PMS_Payment__c.Gateway_Reference__c</members>
+        <members>PMS_Payment__c.Invoice__c</members>
+        <members>PMS_Payment__c.Method__c</members>
+        <members>PMS_Payment__c.Payment_Type__c</members>
+        <members>PMS_Payment__c.Received_Date__c</members>
+        <members>PMS_Payment__c.Status__c</members>
+        <members>PMS_Practitioner__c.Active__c</members>
+        <members>PMS_Practitioner__c.Hourly_Rate__c</members>
+        <members>PMS_Practitioner__c.Licence_Number__c</members>
+        <members>PMS_Practitioner__c.Site__c</members>
+        <members>PMS_Practitioner__c.Speciality__c</members>
+        <members>PMS_Practitioner__c.User__c</members>
+        <members>PMS_Practitioner__c.Working_Hours__c</members>
+        <members>PMS_Pricing_Factor__c.Active__c</members>
+        <members>PMS_Pricing_Factor__c.Adjust_Amount__c</members>
+        <members>PMS_Pricing_Factor__c.Adjust_Percent__c</members>
+        <members>PMS_Pricing_Factor__c.Date_From__c</members>
+        <members>PMS_Pricing_Factor__c.Date_To__c</members>
+        <members>PMS_Pricing_Factor__c.Days_Of_Week__c</members>
+        <members>PMS_Pricing_Factor__c.Max_Value__c</members>
+        <members>PMS_Pricing_Factor__c.Min_Value__c</members>
+        <members>PMS_Pricing_Factor__c.Room_Type__c</members>
+        <members>PMS_Pricing_Factor__c.Strategy__c</members>
+        <members>PMS_Pricing_Factor__c.Type__c</members>
+        <members>PMS_Pricing_Strategy__c.Active__c</members>
+        <members>PMS_Pricing_Strategy__c.Horizon_Days__c</members>
+        <members>PMS_Pricing_Strategy__c.Last_Run_At__c</members>
+        <members>PMS_Pricing_Strategy__c.Last_Run_Result__c</members>
+        <members>PMS_Pricing_Strategy__c.Max_Change_Percent__c</members>
+        <members>PMS_Pricing_Strategy__c.Max_Percent__c</members>
+        <members>PMS_Pricing_Strategy__c.Max_Rate__c</members>
+        <members>PMS_Pricing_Strategy__c.Min_Percent__c</members>
+        <members>PMS_Pricing_Strategy__c.Min_Rate__c</members>
+        <members>PMS_Pricing_Strategy__c.Rate_Plan__c</members>
+        <members>PMS_Pricing_Strategy__c.Round_To__c</members>
+        <members>PMS_Project_Task__c.Assignee__c</members>
+        <members>PMS_Project_Task__c.End_Date__c</members>
+        <members>PMS_Project_Task__c.Estimated_Hours__c</members>
+        <members>PMS_Project_Task__c.Milestone__c</members>
+        <members>PMS_Project_Task__c.Parent_Task__c</members>
+        <members>PMS_Project_Task__c.Percent_Complete__c</members>
+        <members>PMS_Project_Task__c.Predecessor__c</members>
+        <members>PMS_Project_Task__c.Priority__c</members>
+        <members>PMS_Project_Task__c.Project__c</members>
+        <members>PMS_Project_Task__c.Start_Date__c</members>
+        <members>PMS_Project_Task__c.Status__c</members>
+        <members>PMS_Project__c.Account__c</members>
+        <members>PMS_Project__c.Actual_Cost__c</members>
+        <members>PMS_Project__c.Billing_Type__c</members>
+        <members>PMS_Project__c.Budget_Lines_Total__c</members>
+        <members>PMS_Project__c.Budget__c</members>
+        <members>PMS_Project__c.End_Date__c</members>
+        <members>PMS_Project__c.Health__c</members>
+        <members>PMS_Project__c.Percent_Complete__c</members>
+        <members>PMS_Project__c.Project_Manager__c</members>
+        <members>PMS_Project__c.Site__c</members>
+        <members>PMS_Project__c.Start_Date__c</members>
+        <members>PMS_Project__c.Status__c</members>
+        <members>PMS_Project__c.Total_Estimated_Hours__c</members>
+        <members>PMS_RAID_Item__c.Description__c</members>
+        <members>PMS_RAID_Item__c.Due_Date__c</members>
+        <members>PMS_RAID_Item__c.Item_Owner__c</members>
+        <members>PMS_RAID_Item__c.Mitigation__c</members>
+        <members>PMS_RAID_Item__c.Project__c</members>
+        <members>PMS_RAID_Item__c.RAID_Type__c</members>
+        <members>PMS_RAID_Item__c.Severity__c</members>
+        <members>PMS_RAID_Item__c.Status__c</members>
+        <members>PMS_Rate_Plan__c.Active__c</members>
+        <members>PMS_Rate_Plan__c.Cancellation_Policy__c</members>
+        <members>PMS_Rate_Plan__c.Currency_Code__c</members>
+        <members>PMS_Rate_Plan__c.Module__c</members>
+        <members>PMS_Rate_Plan__c.Payment_Policy__c</members>
+        <members>PMS_Rate_Plan__c.Pricing_Basis__c</members>
+        <members>PMS_Rate_Plan__c.Site__c</members>
+        <members>PMS_Rate_Plan__c.Tax_Rate__c</members>
+        <members>PMS_Rate_Plan__c.Valid_From__c</members>
+        <members>PMS_Rate_Plan__c.Valid_To__c</members>
+        <members>PMS_Rate__c.Amount__c</members>
+        <members>PMS_Rate__c.Base_Amount__c</members>
+        <members>PMS_Rate__c.Date_From__c</members>
+        <members>PMS_Rate__c.Date_To__c</members>
+        <members>PMS_Rate__c.Days_Of_Week__c</members>
+        <members>PMS_Rate__c.Dynamic_Key__c</members>
+        <members>PMS_Rate__c.Dynamic__c</members>
+        <members>PMS_Rate__c.Locked__c</members>
+        <members>PMS_Rate__c.Min_Stay__c</members>
+        <members>PMS_Rate__c.Occupancy__c</members>
+        <members>PMS_Rate__c.Pricing_Notes__c</members>
+        <members>PMS_Rate__c.Rate_Plan__c</members>
+        <members>PMS_Rate__c.Service__c</members>
+        <members>PMS_Rate__c.Space_Type__c</members>
+        <members>PMS_Rent_Adjustment__c.Applied_At__c</members>
+        <members>PMS_Rent_Adjustment__c.Base_Index__c</members>
+        <members>PMS_Rent_Adjustment__c.Base_Rent__c</members>
+        <members>PMS_Rent_Adjustment__c.Change_Percent__c</members>
+        <members>PMS_Rent_Adjustment__c.Current_Index__c</members>
+        <members>PMS_Rent_Adjustment__c.Effective_Date__c</members>
+        <members>PMS_Rent_Adjustment__c.Index_Period__c</members>
+        <members>PMS_Rent_Adjustment__c.Kind__c</members>
+        <members>PMS_Rent_Adjustment__c.Lease__c</members>
+        <members>PMS_Rent_Adjustment__c.Negotiated_Percent__c</members>
+        <members>PMS_Rent_Adjustment__c.New_Rent__c</members>
+        <members>PMS_Rent_Adjustment__c.Note__c</members>
+        <members>PMS_Rent_Adjustment__c.Notice_Sent_At__c</members>
+        <members>PMS_Rent_Adjustment__c.Notice_Sent_To__c</members>
+        <members>PMS_Rent_Adjustment__c.Old_Rent__c</members>
+        <members>PMS_Rent_Adjustment__c.Status__c</members>
+        <members>PMS_Rent_Adjustment__c.Warning__c</members>
+        <members>PMS_Resource__c.Active__c</members>
+        <members>PMS_Resource__c.Bill_Rate__c</members>
+        <members>PMS_Resource__c.Cost_Rate__c</members>
+        <members>PMS_Resource__c.Resource_Type__c</members>
+        <members>PMS_Resource__c.Role__c</members>
+        <members>PMS_Resource__c.User__c</members>
+        <members>PMS_Resource__c.Weekly_Capacity__c</members>
+        <members>PMS_Room_Night__c.Rate__c</members>
+        <members>PMS_Room_Night__c.Reservation__c</members>
+        <members>PMS_Room_Night__c.Room_Type__c</members>
+        <members>PMS_Room_Night__c.Room__c</members>
+        <members>PMS_Room_Night__c.Status__c</members>
+        <members>PMS_Room_Night__c.Stay_Date__c</members>
+        <members>PMS_Service__c.Bookable_Online__c</members>
+        <members>PMS_Service__c.Description__c</members>
+        <members>PMS_Service__c.Duration_Minutes__c</members>
+        <members>PMS_Service__c.Payment_Policy__c</members>
+        <members>PMS_Service__c.Practice_Area__c</members>
+        <members>PMS_Service__c.Price__c</members>
+        <members>PMS_Service__c.Tax_Rate__c</members>
+        <members>PMS_Settings__c.Channex_Enabled__c</members>
+        <members>PMS_Settings__c.Channex_Horizon_Days__c</members>
+        <members>PMS_Settings__c.Checkout_Return_URL__c</members>
+        <members>PMS_Settings__c.Public_Pay_URL__c</members>
+        <members>PMS_Settings__c.Webhook_Secret__c</members>
+        <members>PMS_Site__c.Channex_Last_Pull__c</members>
+        <members>PMS_Site__c.Channex_Last_Push__c</members>
+        <members>PMS_Site__c.Channex_Prices_Include_VAT__c</members>
+        <members>PMS_Site__c.Channex_Property_Id__c</members>
+        <members>PMS_Site__c.Check_In_Time__c</members>
+        <members>PMS_Site__c.Check_Out_Time__c</members>
+        <members>PMS_Site__c.City__c</members>
+        <members>PMS_Site__c.Country__c</members>
+        <members>PMS_Site__c.Currency_Code__c</members>
+        <members>PMS_Site__c.Dunning_Policy__c</members>
+        <members>PMS_Site__c.Location__c</members>
+        <members>PMS_Site__c.Management_Fee_Percent__c</members>
+        <members>PMS_Site__c.Manager__c</members>
+        <members>PMS_Site__c.Module__c</members>
+        <members>PMS_Site__c.Owner_Account__c</members>
+        <members>PMS_Site__c.Payment_Policy__c</members>
+        <members>PMS_Site__c.Phone__c</members>
+        <members>PMS_Site__c.Postal_Code__c</members>
+        <members>PMS_Site__c.Site_Type__c</members>
+        <members>PMS_Site__c.Status__c</members>
+        <members>PMS_Site__c.Street__c</members>
+        <members>PMS_Site__c.Time_Zone__c</members>
+        <members>PMS_Site__c.Total_Spaces__c</members>
+        <members>PMS_Space_Type__c.Channex_Room_Type_Id__c</members>
+        <members>PMS_Space_Type__c.Default_Occupancy__c</members>
+        <members>PMS_Space_Type__c.Default_Rate__c</members>
+        <members>PMS_Space_Type__c.Description__c</members>
+        <members>PMS_Space_Type__c.Site__c</members>
+        <members>PMS_Space__c.Amenities__c</members>
+        <members>PMS_Space__c.Base_Rate__c</members>
+        <members>PMS_Space__c.Bedrooms__c</members>
+        <members>PMS_Space__c.Bookable__c</members>
+        <members>PMS_Space__c.Floor__c</members>
+        <members>PMS_Space__c.Max_Occupancy__c</members>
+        <members>PMS_Space__c.Operational_Status__c</members>
+        <members>PMS_Space__c.Site__c</members>
+        <members>PMS_Space__c.Size_Sqm__c</members>
+        <members>PMS_Space__c.Space_Type__c</members>
+        <members>PMS_Time_Entry__c.Amount__c</members>
+        <members>PMS_Time_Entry__c.Approval_Status__c</members>
+        <members>PMS_Time_Entry__c.Billable__c</members>
+        <members>PMS_Time_Entry__c.Case__c</members>
+        <members>PMS_Time_Entry__c.Description__c</members>
+        <members>PMS_Time_Entry__c.Entry_Date__c</members>
+        <members>PMS_Time_Entry__c.Hours__c</members>
+        <members>PMS_Time_Entry__c.Matter__c</members>
+        <members>PMS_Time_Entry__c.Project_Task__c</members>
+        <members>PMS_Time_Entry__c.Project__c</members>
+        <members>PMS_Time_Entry__c.Rate__c</members>
+        <members>PMS_Time_Entry__c.Resource__c</members>
+        <members>PMS_Vendor_Bill__c.Amount__c</members>
+        <members>PMS_Vendor_Bill__c.Bill_Date__c</members>
+        <members>PMS_Vendor_Bill__c.Due_Date__c</members>
+        <members>PMS_Vendor_Bill__c.Notes__c</members>
+        <members>PMS_Vendor_Bill__c.Owner_Statement__c</members>
+        <members>PMS_Vendor_Bill__c.Paid_Date__c</members>
+        <members>PMS_Vendor_Bill__c.Site__c</members>
+        <members>PMS_Vendor_Bill__c.Status__c</members>
+        <members>PMS_Vendor_Bill__c.Tax_Amount__c</members>
+        <members>PMS_Vendor_Bill__c.Total__c</members>
+        <members>PMS_Vendor_Bill__c.Vendor_Account__c</members>
+        <members>PMS_Vendor_Bill__c.Vendor_Invoice_Number__c</members>
+        <members>PMS_Vendor_Bill__c.Work_Order__c</members>
+        <members>PMS_Vendor_Quote__c.Amount__c</members>
+        <members>PMS_Vendor_Quote__c.Decision_Notes__c</members>
+        <members>PMS_Vendor_Quote__c.Description__c</members>
+        <members>PMS_Vendor_Quote__c.Status__c</members>
+        <members>PMS_Vendor_Quote__c.Tax_Amount__c</members>
+        <members>PMS_Vendor_Quote__c.Total__c</members>
+        <members>PMS_Vendor_Quote__c.Valid_Until__c</members>
+        <members>PMS_Vendor_Quote__c.Vendor_Account__c</members>
+        <members>PMS_Vendor_Quote__c.Work_Order__c</members>
+        <members>PMS_Work_Order__c.Access_Instructions__c</members>
+        <members>PMS_Work_Order__c.Case__c</members>
+        <members>PMS_Work_Order__c.Completed_Date__c</members>
+        <members>PMS_Work_Order__c.Currency_Code__c</members>
+        <members>PMS_Work_Order__c.Description__c</members>
+        <members>PMS_Work_Order__c.Entry_Permission__c</members>
+        <members>PMS_Work_Order__c.Not_To_Exceed__c</members>
+        <members>PMS_Work_Order__c.Priority__c</members>
+        <members>PMS_Work_Order__c.Scheduled_Date__c</members>
+        <members>PMS_Work_Order__c.Site__c</members>
+        <members>PMS_Work_Order__c.Space__c</members>
+        <members>PMS_Work_Order__c.Status__c</members>
+        <members>PMS_Work_Order__c.Subject__c</members>
+        <members>PMS_Work_Order__c.Vendor_Account__c</members>
+        <members>PMS_Work_Order__c.Vendor_Notes__c</members>
         <name>CustomField</name>
     </types>
     <types>
+        <members>PMS_Access_Object.Application</members>
+        <members>PMS_Access_Object.Approval_Request</members>
+        <members>PMS_Access_Object.Booking</members>
+        <members>PMS_Access_Object.Channel_Log</members>
+        <members>PMS_Access_Object.Channel_Mapping</members>
+        <members>PMS_Access_Object.Charge</members>
+        <members>PMS_Access_Object.Check_In</members>
+        <members>PMS_Access_Object.Document_Request</members>
+        <members>PMS_Access_Object.Dunning_Event</members>
+        <members>PMS_Access_Object.Group_Block</members>
+        <members>PMS_Access_Object.Inspection</members>
+        <members>PMS_Access_Object.Intake_Form</members>
+        <members>PMS_Access_Object.Invoice</members>
+        <members>PMS_Access_Object.Listing</members>
+        <members>PMS_Access_Object.Matter</members>
+        <members>PMS_Access_Object.Meter</members>
+        <members>PMS_Access_Object.Owner_Statement</members>
+        <members>PMS_Access_Object.Payment</members>
+        <members>PMS_Access_Object.Payment_Plan</members>
+        <members>PMS_Access_Object.Practitioner</members>
+        <members>PMS_Access_Object.Pricing_Strategy</members>
+        <members>PMS_Access_Object.Project</members>
+        <members>PMS_Access_Object.Rate_Plan</members>
+        <members>PMS_Access_Object.Rent_Adjustment</members>
+        <members>PMS_Access_Object.Site</members>
+        <members>PMS_Access_Object.Space_Type</members>
+        <members>PMS_Access_Object.Time_Entry</members>
+        <members>PMS_Access_Object.Vendor_Bill</members>
+        <members>PMS_Access_Object.Work_Order</members>
         <members>PMS_Module.Hotel</members>
         <members>PMS_Module.Practice</members>
         <members>PMS_Module.Project</members>
@@ -120,15 +846,25 @@
         <name>CustomMetadata</name>
     </types>
     <types>
+        <members>PMS_Access_Object__mdt</members>
+        <members>PMS_Access_Rollout__c</members>
+        <members>PMS_Access_Rule__c</members>
+        <members>PMS_Access_Team_Member__c</members>
+        <members>PMS_Access_Team__c</members>
         <members>PMS_Application__c</members>
         <members>PMS_Approval_Request__c</members>
         <members>PMS_Booking_Party__c</members>
         <members>PMS_Booking__c</members>
         <members>PMS_Budget_Line__c</members>
+        <members>PMS_Channel_Log__c</members>
+        <members>PMS_Channel_Mapping__c</members>
         <members>PMS_Charge__c</members>
         <members>PMS_Check_In__c</members>
         <members>PMS_Document_Request__c</members>
+        <members>PMS_Dunning_Event__c</members>
+        <members>PMS_Dunning_Policy__c</members>
         <members>PMS_Group_Block__c</members>
+        <members>PMS_Index_Value__c</members>
         <members>PMS_Inspection_Item__c</members>
         <members>PMS_Inspection__c</members>
         <members>PMS_Intake_Form__c</members>
@@ -142,13 +878,19 @@
         <members>PMS_Milestone__c</members>
         <members>PMS_Module__mdt</members>
         <members>PMS_Owner_Statement__c</members>
+        <members>PMS_Payment_Plan_Instalment__c</members>
+        <members>PMS_Payment_Plan__c</members>
+        <members>PMS_Payment_Policy__c</members>
         <members>PMS_Payment__c</members>
         <members>PMS_Practitioner__c</members>
+        <members>PMS_Pricing_Factor__c</members>
+        <members>PMS_Pricing_Strategy__c</members>
         <members>PMS_Project_Task__c</members>
         <members>PMS_Project__c</members>
         <members>PMS_RAID_Item__c</members>
         <members>PMS_Rate_Plan__c</members>
         <members>PMS_Rate__c</members>
+        <members>PMS_Rent_Adjustment__c</members>
         <members>PMS_Resource__c</members>
         <members>PMS_Room_Night__c</members>
         <members>PMS_Service__c</members>
@@ -163,6 +905,12 @@
         <name>CustomObject</name>
     </types>
     <types>
+        <members>PMS_Hide_Amounts</members>
+        <members>PMS_Hide_Customer_Details</members>
+        <members>PMS_Manage_Access</members>
+        <name>CustomPermission</name>
+    </types>
+    <types>
         <members>PMS_Booking</members>
         <members>PMS_Customer_Portal</members>
         <members>PMS_Partner_Portal</members>
@@ -170,13 +918,23 @@
         <name>CustomSite</name>
     </types>
     <types>
+        <members>Diary</members>
+        <members>Front_Desk</members>
+        <members>New_Booking</members>
+        <members>PMS_Access_Rule__c</members>
+        <members>PMS_Access_Setup</members>
+        <members>PMS_Access_Team__c</members>
         <members>PMS_Application__c</members>
         <members>PMS_Approval_Request__c</members>
         <members>PMS_Booking__c</members>
+        <members>PMS_Channel_Log__c</members>
+        <members>PMS_Channel_Mapping__c</members>
         <members>PMS_Charge__c</members>
         <members>PMS_Check_In__c</members>
         <members>PMS_Document_Request__c</members>
+        <members>PMS_Dunning_Policy__c</members>
         <members>PMS_Group_Block__c</members>
+        <members>PMS_Index_Value__c</members>
         <members>PMS_Inspection__c</members>
         <members>PMS_Intake_Form__c</members>
         <members>PMS_Inventory_Day__c</members>
@@ -186,12 +944,17 @@
         <members>PMS_Meter__c</members>
         <members>PMS_Milestone__c</members>
         <members>PMS_Owner_Statement__c</members>
+        <members>PMS_Payment_Plan__c</members>
+        <members>PMS_Payment_Policy__c</members>
         <members>PMS_Payment__c</members>
         <members>PMS_Practitioner__c</members>
+        <members>PMS_Pricing_Strategy__c</members>
         <members>PMS_Project_Task__c</members>
         <members>PMS_Project__c</members>
         <members>PMS_RAID_Item__c</members>
         <members>PMS_Rate_Plan__c</members>
+        <members>PMS_Rent_Adjustment__c</members>
+        <members>PMS_Rent_Review</members>
         <members>PMS_Resource__c</members>
         <members>PMS_Room_Night__c</members>
         <members>PMS_Service__c</members>
@@ -202,9 +965,6 @@
         <members>PMS_Vendor_Bill__c</members>
         <members>PMS_Vendor_Quote__c</members>
         <members>PMS_Work_Order__c</members>
-        <members>Diary</members>
-        <members>Front_Desk</members>
-        <members>New_Booking</members>
         <name>CustomTab</name>
     </types>
     <types>
@@ -213,16 +973,144 @@
         <name>Dashboard</name>
     </types>
     <types>
-        <members>PMS_Booking1</members>
-        <members>PMS_Customer_Portal1</members>
-        <members>PMS_Partner_Portal1</members>
-        <name>DigitalExperienceConfig</name>
+        <members>site/PMS_Booking1.sfdc_cms__appPage/mainAppPage</members>
+        <members
+    >site/PMS_Booking1.sfdc_cms__brandingSet/Build_Your_Own_LWR</members>
+        <members
+    >site/PMS_Booking1.sfdc_cms__languageSettings/languages</members>
+        <members
+    >site/PMS_Booking1.sfdc_cms__mobilePublisherConfig/mobilePublisherConfig</members>
+        <members>site/PMS_Booking1.sfdc_cms__route/Check_Password</members>
+        <members>site/PMS_Booking1.sfdc_cms__route/Error</members>
+        <members>site/PMS_Booking1.sfdc_cms__route/Forgot_Password</members>
+        <members>site/PMS_Booking1.sfdc_cms__route/Home</members>
+        <members>site/PMS_Booking1.sfdc_cms__route/Login</members>
+        <members>site/PMS_Booking1.sfdc_cms__route/News_Detail__c</members>
+        <members>site/PMS_Booking1.sfdc_cms__route/Register</members>
+        <members
+    >site/PMS_Booking1.sfdc_cms__route/Service_Not_Available</members>
+        <members>site/PMS_Booking1.sfdc_cms__route/Too_Many_Requests</members>
+        <members>site/PMS_Booking1.sfdc_cms__site/PMS_Booking1</members>
+        <members>site/PMS_Booking1.sfdc_cms__styles/print_css</members>
+        <members>site/PMS_Booking1.sfdc_cms__styles/styles_css</members>
+        <members>site/PMS_Booking1.sfdc_cms__theme/Build_Your_Own_LWR</members>
+        <members
+    >site/PMS_Booking1.sfdc_cms__themeLayout/scopedHeaderAndFooter</members>
+        <members
+    >site/PMS_Booking1.sfdc_cms__themeLayout/snaThemeLayout</members>
+        <members
+    >site/PMS_Booking1.sfdc_cms__view/checkPasswordResetEmail</members>
+        <members>site/PMS_Booking1.sfdc_cms__view/error</members>
+        <members>site/PMS_Booking1.sfdc_cms__view/forgotPassword</members>
+        <members>site/PMS_Booking1.sfdc_cms__view/home</members>
+        <members>site/PMS_Booking1.sfdc_cms__view/login</members>
+        <members>site/PMS_Booking1.sfdc_cms__view/newsDetail</members>
+        <members>site/PMS_Booking1.sfdc_cms__view/register</members>
+        <members>site/PMS_Booking1.sfdc_cms__view/serviceNotAvailable</members>
+        <members>site/PMS_Booking1.sfdc_cms__view/tooManyRequests</members>
+        <members
+    >site/PMS_Customer_Portal1.sfdc_cms__appPage/mainAppPage</members>
+        <members
+    >site/PMS_Customer_Portal1.sfdc_cms__brandingSet/Build_Your_Own_LWR</members>
+        <members
+    >site/PMS_Customer_Portal1.sfdc_cms__languageSettings/languages</members>
+        <members
+    >site/PMS_Customer_Portal1.sfdc_cms__mobilePublisherConfig/mobilePublisherConfig</members>
+        <members
+    >site/PMS_Customer_Portal1.sfdc_cms__route/Check_Password</members>
+        <members>site/PMS_Customer_Portal1.sfdc_cms__route/Error</members>
+        <members
+    >site/PMS_Customer_Portal1.sfdc_cms__route/Forgot_Password</members>
+        <members>site/PMS_Customer_Portal1.sfdc_cms__route/Home</members>
+        <members>site/PMS_Customer_Portal1.sfdc_cms__route/Login</members>
+        <members
+    >site/PMS_Customer_Portal1.sfdc_cms__route/News_Detail__c</members>
+        <members>site/PMS_Customer_Portal1.sfdc_cms__route/Register</members>
+        <members
+    >site/PMS_Customer_Portal1.sfdc_cms__route/Service_Not_Available</members>
+        <members
+    >site/PMS_Customer_Portal1.sfdc_cms__route/Too_Many_Requests</members>
+        <members
+    >site/PMS_Customer_Portal1.sfdc_cms__site/PMS_Customer_Portal1</members>
+        <members>site/PMS_Customer_Portal1.sfdc_cms__styles/print_css</members>
+        <members>site/PMS_Customer_Portal1.sfdc_cms__styles/styles_css</members>
+        <members
+    >site/PMS_Customer_Portal1.sfdc_cms__theme/Build_Your_Own_LWR</members>
+        <members
+    >site/PMS_Customer_Portal1.sfdc_cms__themeLayout/scopedHeaderAndFooter</members>
+        <members
+    >site/PMS_Customer_Portal1.sfdc_cms__themeLayout/snaThemeLayout</members>
+        <members
+    >site/PMS_Customer_Portal1.sfdc_cms__view/checkPasswordResetEmail</members>
+        <members>site/PMS_Customer_Portal1.sfdc_cms__view/error</members>
+        <members
+    >site/PMS_Customer_Portal1.sfdc_cms__view/forgotPassword</members>
+        <members>site/PMS_Customer_Portal1.sfdc_cms__view/home</members>
+        <members>site/PMS_Customer_Portal1.sfdc_cms__view/login</members>
+        <members>site/PMS_Customer_Portal1.sfdc_cms__view/newsDetail</members>
+        <members>site/PMS_Customer_Portal1.sfdc_cms__view/register</members>
+        <members
+    >site/PMS_Customer_Portal1.sfdc_cms__view/serviceNotAvailable</members>
+        <members
+    >site/PMS_Customer_Portal1.sfdc_cms__view/tooManyRequests</members>
+        <members
+    >site/PMS_Partner_Portal1.sfdc_cms__appPage/mainAppPage</members>
+        <members
+    >site/PMS_Partner_Portal1.sfdc_cms__brandingSet/Build_Your_Own_LWR</members>
+        <members
+    >site/PMS_Partner_Portal1.sfdc_cms__languageSettings/languages</members>
+        <members
+    >site/PMS_Partner_Portal1.sfdc_cms__mobilePublisherConfig/mobilePublisherConfig</members>
+        <members
+    >site/PMS_Partner_Portal1.sfdc_cms__route/Check_Password</members>
+        <members>site/PMS_Partner_Portal1.sfdc_cms__route/Error</members>
+        <members
+    >site/PMS_Partner_Portal1.sfdc_cms__route/Forgot_Password</members>
+        <members>site/PMS_Partner_Portal1.sfdc_cms__route/Home</members>
+        <members>site/PMS_Partner_Portal1.sfdc_cms__route/Login</members>
+        <members
+    >site/PMS_Partner_Portal1.sfdc_cms__route/News_Detail__c</members>
+        <members>site/PMS_Partner_Portal1.sfdc_cms__route/Register</members>
+        <members
+    >site/PMS_Partner_Portal1.sfdc_cms__route/Service_Not_Available</members>
+        <members
+    >site/PMS_Partner_Portal1.sfdc_cms__route/Too_Many_Requests</members>
+        <members
+    >site/PMS_Partner_Portal1.sfdc_cms__site/PMS_Partner_Portal1</members>
+        <members>site/PMS_Partner_Portal1.sfdc_cms__styles/print_css</members>
+        <members>site/PMS_Partner_Portal1.sfdc_cms__styles/styles_css</members>
+        <members
+    >site/PMS_Partner_Portal1.sfdc_cms__theme/Build_Your_Own_LWR</members>
+        <members
+    >site/PMS_Partner_Portal1.sfdc_cms__themeLayout/scopedHeaderAndFooter</members>
+        <members
+    >site/PMS_Partner_Portal1.sfdc_cms__themeLayout/snaThemeLayout</members>
+        <members
+    >site/PMS_Partner_Portal1.sfdc_cms__view/checkPasswordResetEmail</members>
+        <members>site/PMS_Partner_Portal1.sfdc_cms__view/error</members>
+        <members
+    >site/PMS_Partner_Portal1.sfdc_cms__view/forgotPassword</members>
+        <members>site/PMS_Partner_Portal1.sfdc_cms__view/home</members>
+        <members>site/PMS_Partner_Portal1.sfdc_cms__view/login</members>
+        <members>site/PMS_Partner_Portal1.sfdc_cms__view/newsDetail</members>
+        <members>site/PMS_Partner_Portal1.sfdc_cms__view/register</members>
+        <members
+    >site/PMS_Partner_Portal1.sfdc_cms__view/serviceNotAvailable</members>
+        <members
+    >site/PMS_Partner_Portal1.sfdc_cms__view/tooManyRequests</members>
+        <name>DigitalExperience</name>
     </types>
     <types>
         <members>site/PMS_Booking1</members>
         <members>site/PMS_Customer_Portal1</members>
         <members>site/PMS_Partner_Portal1</members>
         <name>DigitalExperienceBundle</name>
+    </types>
+    <types>
+        <members>PMS_Booking1</members>
+        <members>PMS_Customer_Portal1</members>
+        <members>PMS_Partner_Portal1</members>
+        <name>DigitalExperienceConfig</name>
     </types>
     <types>
         <members>Stripe_API</members>
@@ -233,6 +1121,17 @@
         <members>Front_Desk</members>
         <members>Hotel_Site_Record_Page</members>
         <members>New_Booking</members>
+        <members>PMS_Access_Setup</members>
+        <members>PMS_Admin_Home</members>
+        <members>PMS_Booking_Record_Page</members>
+        <members>PMS_Hotel_Home</members>
+        <members>PMS_Invoice_Record_Page</members>
+        <members>PMS_Practice_Home</members>
+        <members>PMS_Pricing_Strategy_Record_Page</members>
+        <members>PMS_Projects_Home</members>
+        <members>PMS_Property_Home</members>
+        <members>PMS_Site_Record_Page</members>
+        <members>PMS_Space_Record_Page</members>
         <members>Project_Page</members>
         <members>Property_Site_Record_Page1</members>
         <name>FlexiPage</name>
@@ -251,15 +1150,24 @@
         <name>GenAiPlannerBundle</name>
     </types>
     <types>
+        <members>PMS_Access_Object__mdt-PMS Access Object Layout</members>
+        <members>PMS_Access_Rule__c-Access Rule Layout</members>
+        <members>PMS_Access_Team_Member__c-Access Team Member Layout</members>
+        <members>PMS_Access_Team__c-Access Team Layout</members>
         <members>PMS_Application__c-Rental Application Layout</members>
         <members>PMS_Approval_Request__c-Approval Request Layout</members>
         <members>PMS_Booking_Party__c-Booking Party Layout</members>
         <members>PMS_Booking__c-Booking Layout</members>
         <members>PMS_Budget_Line__c-Budget Line Layout</members>
+        <members>PMS_Channel_Log__c-Channel Log Layout</members>
+        <members>PMS_Channel_Mapping__c-Channel Mapping Layout</members>
         <members>PMS_Charge__c-Charge Layout</members>
         <members>PMS_Check_In__c-Online Check-In Layout</members>
         <members>PMS_Document_Request__c-Document Request Layout</members>
+        <members>PMS_Dunning_Event__c-Dunning Event Layout</members>
+        <members>PMS_Dunning_Policy__c-Dunning Policy Layout</members>
         <members>PMS_Group_Block__c-Group Block Layout</members>
+        <members>PMS_Index_Value__c-Index Value Layout</members>
         <members>PMS_Inspection_Item__c-Inspection Item Layout</members>
         <members>PMS_Inspection__c-Inspection Layout</members>
         <members>PMS_Intake_Form__c-Intake Form Layout</members>
@@ -274,13 +1182,19 @@
         <members>PMS_Milestone__c-Milestone Layout</members>
         <members>PMS_Module__mdt-PMS Module Layout</members>
         <members>PMS_Owner_Statement__c-Owner Statement Layout</members>
+        <members>PMS_Payment_Plan_Instalment__c-Instalment Layout</members>
+        <members>PMS_Payment_Plan__c-Payment Plan Layout</members>
+        <members>PMS_Payment_Policy__c-Payment Policy Layout</members>
         <members>PMS_Payment__c-Payment Layout</members>
         <members>PMS_Practitioner__c-Practitioner Layout</members>
+        <members>PMS_Pricing_Factor__c-Pricing Factor Layout</members>
+        <members>PMS_Pricing_Strategy__c-Pricing Strategy Layout</members>
         <members>PMS_Project_Task__c-Project Task Layout</members>
         <members>PMS_Project__c-Project Layout</members>
         <members>PMS_RAID_Item__c-RAID Item Layout</members>
         <members>PMS_Rate_Plan__c-Rate Plan Layout</members>
         <members>PMS_Rate__c-Rate Layout</members>
+        <members>PMS_Rent_Adjustment__c-Rent Adjustment Layout</members>
         <members>PMS_Resource__c-Resource Layout</members>
         <members>PMS_Room_Night__c-Room Night Layout</members>
         <members>PMS_Service__c-Service Layout</members>
@@ -294,7 +1208,11 @@
         <name>Layout</name>
     </types>
     <types>
+        <members>pmsAccessConsole</members>
+        <members>pmsAppHome</members>
+        <members>pmsBookingGuarantee</members>
         <members>pmsBookingWizard</members>
+        <members>pmsChannexPanel</members>
         <members>pmsCheckInForm</members>
         <members>pmsCustomerPortal</members>
         <members>pmsCustomerPortalV2</members>
@@ -302,16 +1220,76 @@
         <members>pmsFrontDeskToday</members>
         <members>pmsGanttChart</members>
         <members>pmsGuestCheckIn</members>
+        <members>pmsHomeChart</members>
+        <members>pmsInvoiceDunning</members>
         <members>pmsPartnerPortal</members>
+        <members>pmsPortalMoney</members>
         <members>pmsPractitionerCalendar</members>
+        <members>pmsPricingCalendar</members>
         <members>pmsPublicBooking</members>
+        <members>pmsRentReview</members>
         <members>pmsRentRoll</members>
+        <members>pmsRevenueAttention</members>
         <members>pmsRoomGrid</members>
         <members>pmsStripePayLink</members>
         <name>LightningComponentBundle</name>
     </types>
     <types>
         <members>Case.PMS_Open_Requests</members>
+        <members>PMS_Application__c.All</members>
+        <members>PMS_Approval_Request__c.All</members>
+        <members>PMS_Booking__c.Active_Leases</members>
+        <members>PMS_Booking__c.All</members>
+        <members>PMS_Booking__c.Arrivals_Today</members>
+        <members>PMS_Booking__c.Departures_Today</members>
+        <members>PMS_Booking__c.Guarantee_Action_Needed</members>
+        <members>PMS_Booking__c.In_House</members>
+        <members>PMS_Booking__c.OTA_Bookings</members>
+        <members>PMS_Booking__c.Upcoming_Appointments</members>
+        <members>PMS_Channel_Log__c.All</members>
+        <members>PMS_Channel_Log__c.Problems</members>
+        <members>PMS_Channel_Mapping__c.All</members>
+        <members>PMS_Charge__c.All</members>
+        <members>PMS_Charge__c.Unbilled_Charges</members>
+        <members>PMS_Check_In__c.All</members>
+        <members>PMS_Document_Request__c.All</members>
+        <members>PMS_Dunning_Event__c.All</members>
+        <members>PMS_Dunning_Policy__c.All</members>
+        <members>PMS_Group_Block__c.All</members>
+        <members>PMS_Index_Value__c.All</members>
+        <members>PMS_Inspection__c.All</members>
+        <members>PMS_Invoice__c.All</members>
+        <members>PMS_Invoice__c.Arrears_Collections</members>
+        <members>PMS_Invoice__c.Arrears_In_Dunning</members>
+        <members>PMS_Invoice__c.Open_Invoices</members>
+        <members>PMS_Invoice__c.Overdue_Invoices</members>
+        <members>PMS_Listing__c.All</members>
+        <members>PMS_Matter__c.All</members>
+        <members>PMS_Owner_Statement__c.All</members>
+        <members>PMS_Payment_Plan__c.All</members>
+        <members>PMS_Payment_Plan__c.Open_Plans</members>
+        <members>PMS_Payment_Policy__c.All</members>
+        <members>PMS_Payment__c.All</members>
+        <members>PMS_Practitioner__c.All</members>
+        <members>PMS_Pricing_Strategy__c.All</members>
+        <members>PMS_Project_Task__c.Open_Tasks</members>
+        <members>PMS_Project__c.All</members>
+        <members>PMS_RAID_Item__c.All</members>
+        <members>PMS_Rate_Plan__c.All</members>
+        <members>PMS_Rent_Adjustment__c.All</members>
+        <members>PMS_Rent_Adjustment__c.Open</members>
+        <members>PMS_Resource__c.All</members>
+        <members>PMS_Service__c.All</members>
+        <members>PMS_Site__c.All</members>
+        <members>PMS_Space_Type__c.All</members>
+        <members>PMS_Space__c.All</members>
+        <members>PMS_Space__c.Out_Of_Service</members>
+        <members>PMS_Space__c.Rooms_To_Clean</members>
+        <members>PMS_Space__c.Vacant_Units</members>
+        <members>PMS_Time_Entry__c.All</members>
+        <members>PMS_Vendor_Bill__c.All</members>
+        <members>PMS_Vendor_Quote__c.All</members>
+        <members>PMS_Work_Order__c.All</members>
         <name>ListView</name>
     </types>
     <types>
@@ -335,14 +1313,25 @@
         <name>Network</name>
     </types>
     <types>
+        <members>PMS_Access_Manager</members>
         <members>PMS_App_Access</members>
+        <members>PMS_Channex</members>
+        <members>PMS_Concierge_Access</members>
         <members>PMS_Core_Admin</members>
         <members>PMS_Customer_Portal</members>
         <members>PMS_Customer_Portal_Management</members>
+        <members>PMS_Dunning</members>
+        <members>PMS_Dynamic_Pricing</members>
+        <members>PMS_Experience_Access</members>
+        <members>PMS_Guarantees</members>
         <members>PMS_Guest_Check_In</members>
+        <members>PMS_Hide_Amounts</members>
+        <members>PMS_Hide_Customer_Details</members>
         <members>PMS_Partner_Management</members>
         <members>PMS_Partner_Portal</members>
+        <members>PMS_Payment_Link</members>
         <members>PMS_Public_Booking</members>
+        <members>PMS_Rent_Review</members>
         <members>PMS_Stripe_Access</members>
         <name>PermissionSet</name>
     </types>
@@ -362,6 +1351,25 @@
     <types>
         <members>PMS_Invoice__c.Stripe_Pay_Link</members>
         <name>QuickAction</name>
+    </types>
+    <types>
+        <members>PMS_Booking__c.Allocation</members>
+        <members>PMS_Booking__c.Appointment</members>
+        <members>PMS_Booking__c.Lease</members>
+        <members>PMS_Booking__c.Reservation</members>
+        <members>PMS_Invoice__c.Client_Bill</members>
+        <members>PMS_Invoice__c.Folio</members>
+        <members>PMS_Invoice__c.Project_Invoice</members>
+        <members>PMS_Invoice__c.Rent_Invoice</members>
+        <members>PMS_Site__c.Hotel</members>
+        <members>PMS_Site__c.Practice_Branch</members>
+        <members>PMS_Site__c.Project_Location</members>
+        <members>PMS_Site__c.Property</members>
+        <members>PMS_Space__c.Consulting_Room</members>
+        <members>PMS_Space__c.Resource</members>
+        <members>PMS_Space__c.Room</members>
+        <members>PMS_Space__c.Unit</members>
+        <name>RecordType</name>
     </types>
     <types>
         <members>PMS_Reports</members>
@@ -408,6 +1416,18 @@
         <members>SNA_qRJK5_sf_default_cdn_PMS_Partner_Portal1</members>
         <members>pmsPdfLib</members>
         <name>StaticResource</name>
+    </types>
+    <types>
+        <members>PMS_Booking__c.End_After_Start</members>
+        <members>PMS_Charge__c.Positive_Quantity</members>
+        <members>PMS_Group_Block__c.Departure_After_Arrival</members>
+        <members>PMS_Matter__c.Conflict_Check_Before_Open</members>
+        <members>PMS_Payment__c.Positive_Amount</members>
+        <members>PMS_Project_Task__c.Percent_Range</members>
+        <members>PMS_Project__c.End_After_Start</members>
+        <members>PMS_Rate__c.Date_Range</members>
+        <members>PMS_Time_Entry__c.Hours_Range</members>
+        <name>ValidationRule</name>
     </types>
     <version>67.0</version>
 </Package>

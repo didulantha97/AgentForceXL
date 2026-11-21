@@ -1,6 +1,7 @@
 /**
- * Tests for pms-integration: access-share triggers on the revenue objects, the home "needs attention"
- * block and the portal "My payments" component.
+ * Tests for pms-integration: access-share triggers on the revenue objects and the portal "My payments"
+ * component. The home "needs attention" block (PMS_RevenueHomeController, Core) is tested in Core's
+ * PMS_RevenueHomeControllerTest.
  *
  * Records are inserted with allOrNone = false so an org validation rule can't fail the whole test:
  * the access triggers run on before insert, so they are exercised either way.
@@ -8,7 +9,7 @@
 @IsTest
 private class PMS_IntegrationPackTest {
   static Id rt(Schema.SObjectType t, String devName) {
-    return PMS_TestDataFactory.rt(t, devName);
+    return PMS_ExperienceTestFactory.rt(t, devName);
   }
 
   static SObject tryInsert(SObject rec) {
@@ -18,6 +19,14 @@ private class PMS_IntegrationPackTest {
 
   @IsTest
   static void accessConfigCoversRevenueObjects() {
+    // Queried directly: Core's PMS_AccessService is not visible to this package.
+    Map<String, PMS_Access_Object__mdt> byObject = new Map<String, PMS_Access_Object__mdt>();
+    for (PMS_Access_Object__mdt c : [
+      SELECT Object_API_Name__c, Site_Paths__c, Rule_Key__c
+      FROM PMS_Access_Object__mdt
+    ]) {
+      byObject.put(c.Object_API_Name__c, c);
+    }
     for (
       String o : new List<String>{
         'PMS_Dunning_Event__c',
@@ -28,7 +37,7 @@ private class PMS_IntegrationPackTest {
         'PMS_Pricing_Strategy__c'
       }
     ) {
-      PMS_Access_Object__mdt cfg = PMS_AccessService.configFor(o);
+      PMS_Access_Object__mdt cfg = byObject.get(o);
       System.assertNotEquals(null, cfg, 'No access config for ' + o);
       System.assert(
         String.isNotBlank(cfg.Site_Paths__c),
@@ -37,22 +46,22 @@ private class PMS_IntegrationPackTest {
     }
     System.assertEquals(
       'Invoice',
-      PMS_AccessService.configFor('PMS_Dunning_Event__c').Rule_Key__c
+      byObject.get('PMS_Dunning_Event__c').Rule_Key__c
     );
     System.assertEquals(
       'Booking',
-      PMS_AccessService.configFor('PMS_Rent_Adjustment__c').Rule_Key__c
+      byObject.get('PMS_Rent_Adjustment__c').Rule_Key__c
     );
     System.assertEquals(
       'Rate_Plan',
-      PMS_AccessService.configFor('PMS_Pricing_Strategy__c').Rule_Key__c
+      byObject.get('PMS_Pricing_Strategy__c').Rule_Key__c
     );
   }
 
   @IsTest
   static void triggersRunAndHomeAndPortalLoad() {
-    PMS_TestDataFactory.Hotel h = PMS_TestDataFactory.hotel(1);
-    PMS_TestDataFactory.Property p = PMS_TestDataFactory.property();
+    PMS_ExperienceTestFactory.Hotel h = PMS_ExperienceTestFactory.hotel(1);
+    PMS_ExperienceTestFactory.Property p = PMS_ExperienceTestFactory.property();
     Date today = Date.today();
 
     PMS_Invoice__c inv = (PMS_Invoice__c) tryInsert(
@@ -123,7 +132,7 @@ private class PMS_IntegrationPackTest {
     );
     // Kind__c is a restricted picklist: 'Availability' is a valid value, so the insert (and the
     // access trigger) really runs.
-    PMS_Channel_Log__c log = (PMS_Channel_Log__c) tryInsert(
+    tryInsert(
       new PMS_Channel_Log__c(
         Site__c = h.site.Id,
         Status__c = 'Error',
@@ -146,44 +155,10 @@ private class PMS_IntegrationPackTest {
       )
     );
 
-    for (
-      String m : new List<String>{
-        'Admin',
-        'Hotel',
-        'Property',
-        'Projects',
-        'Practice',
-        null
-      }
-    ) {
-      PMS_RevenueHomeController.Result res = PMS_RevenueHomeController.getAttention(
-        m
-      );
-      System.assertNotEquals(null, res);
-      System.assertNotEquals(null, res.items);
-      System.assert(
-        res.warnings.isEmpty(),
-        'Home block failed for ' + m + ': ' + res.warnings
-      );
-    }
-
     PMS_PortalMoneyController.payBaseOverride = 'https://example.test/pay';
     PMS_PortalMoneyController.accountOverride = h.guestAccount.Id;
     PMS_PortalMoneyController.Result mine = PMS_PortalMoneyController.getMyPayments();
     Test.stopTest();
-
-    if (log != null) {
-      PMS_RevenueHomeController.Result hotel = PMS_RevenueHomeController.getAttention(
-        'Hotel'
-      );
-      Integer errors = 0;
-      for (PMS_RevenueHomeController.Item it : hotel.items) {
-        if (it.key == 'channelErrors') {
-          errors = it.count;
-        }
-      }
-      System.assert(errors >= 1, 'The channel error log is counted');
-    }
 
     System.assert(mine.hasAccount);
     if (reservation != null) {
@@ -206,22 +181,6 @@ private class PMS_IntegrationPackTest {
   }
 
   @IsTest
-  static void reportIdsNeverFails() {
-    // Reports are not visible to tests without SeeAllData, so this checks the call is safe and
-    // that every configured key has a developer name and a report name.
-    Map<String, Id> ids = PMS_RevenueHomeController.reportIds();
-    System.assertNotEquals(null, ids);
-    for (String key : PMS_RevenueHomeController.REPORTS.keySet()) {
-      List<String> r = PMS_RevenueHomeController.REPORTS.get(key);
-      System.assertEquals(2, r.size(), 'Developer name and name for ' + key);
-    }
-    System.assert(
-      PMS_RevenueHomeController.REPORTS.containsKey('channelErrors'),
-      'The channel errors tile has a report'
-    );
-  }
-
-  @IsTest
   static void portalWithoutAccountIsEmpty() {
     PMS_PortalMoneyController.Result res = PMS_PortalMoneyController.getMyPayments();
     System.assertEquals(
@@ -230,47 +189,5 @@ private class PMS_IntegrationPackTest {
       'An internal user has no portal account'
     );
     System.assert(res.invoices.isEmpty());
-  }
-
-  @IsTest
-  static void helpers() {
-    System.assertEquals(
-      'Reservation',
-      PMS_RevenueHomeController.bookingRecordType('Hotel')
-    );
-    System.assertEquals(
-      'Lease',
-      PMS_RevenueHomeController.bookingRecordType('Property')
-    );
-    System.assertEquals(
-      'Appointment',
-      PMS_RevenueHomeController.bookingRecordType('Practice')
-    );
-    System.assertEquals(
-      null,
-      PMS_RevenueHomeController.bookingRecordType('Admin')
-    );
-    System.assertEquals(
-      'Project_Invoice',
-      PMS_RevenueHomeController.invoiceRecordType('Projects')
-    );
-    System.assertEquals(
-      'Rent_Invoice',
-      PMS_RevenueHomeController.invoiceRecordType('Property')
-    );
-    System.assertEquals(
-      'a · b',
-      PMS_RevenueHomeController.join(new List<String>{ 'a', null, '', 'b' })
-    );
-    System.assertNotEquals(null, PMS_RevenueHomeController.money(12.5, 'SEK'));
-    PMS_RevenueHomeController.hideAmounts = true;
-    System.assertEquals(
-      null,
-      PMS_RevenueHomeController.money(12.5, 'SEK'),
-      'Amounts are hidden'
-    );
-    System.assertEquals(null, PMS_RevenueHomeController.fmt((Date) null));
-    System.assertNotEquals(null, PMS_RevenueHomeController.fmt(Date.today()));
-    System.assertNotEquals(null, PMS_RevenueHomeController.fmt(Datetime.now()));
   }
 }

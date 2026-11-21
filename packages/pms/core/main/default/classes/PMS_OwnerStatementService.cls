@@ -84,6 +84,66 @@ public without sharing class PMS_OwnerStatementService {
     public List<Line> costs = new List<Line>();
     @NamespaceAccessible
     public Set<Id> billIds = new Set<Id>();
+
+    @NamespaceAccessible
+    public Date getPeriodStart() {
+      return periodStart;
+    }
+    @NamespaceAccessible
+    public Date getPeriodEnd() {
+      return periodEnd;
+    }
+    @NamespaceAccessible
+    public Decimal getGross() {
+      return gross;
+    }
+    @NamespaceAccessible
+    public Decimal getExpenses() {
+      return expenses;
+    }
+    @NamespaceAccessible
+    public Decimal getFee() {
+      return fee;
+    }
+    @NamespaceAccessible
+    public Decimal getNet() {
+      return net;
+    }
+    @NamespaceAccessible
+    public Decimal getArrears() {
+      return arrears;
+    }
+    @NamespaceAccessible
+    public List<Line> getIncome() {
+      return income;
+    }
+
+    @NamespaceAccessible
+    public List<Line> getCosts() {
+      return costs;
+    }
+
+    @NamespaceAccessible
+    public Decimal getFeePercent() {
+      return feePercent;
+    }
+
+    @NamespaceAccessible
+    public String getOccupancyBasis() {
+      return occupancyBasis;
+    }
+
+    @NamespaceAccessible
+    public Decimal getOccupancyPct() {
+      return occupancyPct;
+    }
+
+    /** Drops the line detail, keeping totals only. */
+    @NamespaceAccessible
+    public void clearLines() {
+      income = null;
+      costs = null;
+    }
   }
 
   // ------------------------------------------------------------------ figures

@@ -14,51 +14,55 @@ public inherited sharing class PMS_BookingService {
 
   @NamespaceAccessible
   public class BookingRequest {
-    @AuraEnabled
+    @NamespaceAccessible
+    public BookingRequest() {
+    }
+
+    @NamespaceAccessible
     public String module;
-    @AuraEnabled
+    @NamespaceAccessible
     public Id siteId;
-    @AuraEnabled
+    @NamespaceAccessible
     public Id spaceId;
-    @AuraEnabled
+    @NamespaceAccessible
     public Id spaceTypeId;
-    @AuraEnabled
+    @NamespaceAccessible
     public Id accountId;
-    @AuraEnabled
+    @NamespaceAccessible
     public Id contactId;
-    @AuraEnabled
+    @NamespaceAccessible
     public Date startDate;
-    @AuraEnabled
+    @NamespaceAccessible
     public Date endDate;
-    @AuraEnabled
+    @NamespaceAccessible
     public Datetime startDatetime;
-    @AuraEnabled
+    @NamespaceAccessible
     public Datetime endDatetime;
-    @AuraEnabled
+    @NamespaceAccessible
     public Integer adults;
-    @AuraEnabled
+    @NamespaceAccessible
     public Integer children;
-    @AuraEnabled
+    @NamespaceAccessible
     public String channel;
-    @AuraEnabled
+    @NamespaceAccessible
     public String status;
-    @AuraEnabled
+    @NamespaceAccessible
     public Id ratePlanId;
-    @AuraEnabled
+    @NamespaceAccessible
     public Id serviceId;
-    @AuraEnabled
+    @NamespaceAccessible
     public Id practitionerId;
-    @AuraEnabled
+    @NamespaceAccessible
     public Id matterId;
-    @AuraEnabled
+    @NamespaceAccessible
     public Id projectId;
-    @AuraEnabled
+    @NamespaceAccessible
     public Id resourceId;
-    @AuraEnabled
+    @NamespaceAccessible
     public Decimal hoursPerWeek;
-    @AuraEnabled
+    @NamespaceAccessible
     public String appointmentMode;
-    @AuraEnabled
+    @NamespaceAccessible
     public String specialRequests;
   }
 

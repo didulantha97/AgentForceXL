@@ -45,6 +45,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>PMS_PayLinkService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>PMS_PricingService</apexClass>
         <enabled>true</enabled>
     </classAccesses>

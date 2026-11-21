@@ -94,6 +94,40 @@ public without sharing class PMS_PortalMoneyController {
   @TestVisible
   static String payBaseOverride;
 
+  /** ", CurrencyIsoCode" only in a multi-currency org (the field does not exist otherwise). */
+  static String cur() {
+    return UserInfo.isMultiCurrencyOrganization() ? ', CurrencyIsoCode' : '';
+  }
+
+  /**
+   * Currency label for a row: the Currency_Code__c found at codePath (the invoice itself, or the
+   * invoice / site the row belongs to) when filled in, else the record's CurrencyIsoCode
+   * (multi-currency orgs), else the org default.
+   */
+  @TestVisible
+  static String iso(SObject rec, String codePath) {
+    String code = codeAt(rec, codePath);
+    if (String.isNotBlank(code)) {
+      return code;
+    }
+    if (UserInfo.isMultiCurrencyOrganization()) {
+      String isoCode = (String) rec.get('CurrencyIsoCode');
+      if (String.isNotBlank(isoCode)) {
+        return isoCode;
+      }
+    }
+    return UserInfo.getDefaultCurrency();
+  }
+
+  private static String codeAt(SObject rec, String path) {
+    List<String> parts = path.split('\\.');
+    SObject node = rec;
+    for (Integer i = 0; i < parts.size() - 1 && node != null; i++) {
+      node = node.getSObject(parts[i]);
+    }
+    return node == null ? null : (String) node.get(parts[parts.size() - 1]);
+  }
+
   @AuraEnabled
   public static Result getMyPayments() {
     Result res = new Result();
@@ -105,30 +139,24 @@ public without sharing class PMS_PortalMoneyController {
     Date today = Date.today();
     String payBase = payBase();
 
-    for (PMS_Invoice__c inv : [
-      SELECT
-        Id,
-        Name,
-        Due_Date__c,
-        Balance__c,
-        CurrencyIsoCode,
-        Dunning_Stage__c,
-        Pay_Key__c,
-        Status__c
-      FROM PMS_Invoice__c
-      WHERE
-        Account__c = :acct
-        AND Balance__c > 0
-        AND Status__c IN ('Issued', 'Partially Paid', 'Overdue')
-      ORDER BY Due_Date__c
-      LIMIT 50
-    ]) {
+    for (
+      PMS_Invoice__c inv : (List<PMS_Invoice__c>) Database.queryWithBinds(
+        'SELECT Id, Name, Due_Date__c, Balance__c' +
+          cur() +
+          ', Currency_Code__c, Dunning_Stage__c, Pay_Key__c, Status__c FROM PMS_Invoice__c ' +
+          'WHERE Account__c = :acct AND Balance__c > 0 ' +
+          'AND Status__c IN (\'Issued\', \'Partially Paid\', \'Overdue\') ' +
+          'ORDER BY Due_Date__c LIMIT 50',
+        new Map<String, Object>{ 'acct' => acct },
+        AccessLevel.SYSTEM_MODE
+      )
+    ) {
       InvoiceRow r = new InvoiceRow();
       r.id = inv.Id;
       r.name = inv.Name;
       r.dueDate = inv.Due_Date__c;
       r.balance = inv.Balance__c;
-      r.currencyCode = inv.CurrencyIsoCode;
+      r.currencyCode = iso(inv, 'Currency_Code__c');
       r.stage = inv.Dunning_Stage__c;
       r.overdue =
         inv.Status__c == 'Overdue' ||
@@ -145,33 +173,24 @@ public without sharing class PMS_PortalMoneyController {
       res.invoices.add(r);
     }
 
-    for (PMS_Payment_Plan_Instalment__c i : [
-      SELECT
-        Number__c,
-        Due_Date__c,
-        Amount__c,
-        CurrencyIsoCode,
-        Status__c,
-        Plan__r.Invoice__r.Name
-      FROM PMS_Payment_Plan_Instalment__c
-      WHERE
-        Plan__r.Account__c = :acct
-        AND Plan__r.Status__c NOT IN (
-          'Completed',
-          'Cancelled',
-          'Defaulted',
-          'Broken',
-          'Declined'
-        )
-      ORDER BY Due_Date__c
-      LIMIT 50
-    ]) {
+    for (
+      PMS_Payment_Plan_Instalment__c i : (List<PMS_Payment_Plan_Instalment__c>) Database.queryWithBinds(
+        'SELECT Number__c, Due_Date__c, Amount__c' +
+          cur() +
+          ', Status__c, Plan__r.Invoice__r.Name, Plan__r.Invoice__r.Currency_Code__c FROM PMS_Payment_Plan_Instalment__c ' +
+          'WHERE Plan__r.Account__c = :acct AND Plan__r.Status__c NOT IN ' +
+          '(\'Completed\', \'Cancelled\', \'Defaulted\', \'Broken\', \'Declined\') ' +
+          'ORDER BY Due_Date__c LIMIT 50',
+        new Map<String, Object>{ 'acct' => acct },
+        AccessLevel.SYSTEM_MODE
+      )
+    ) {
       InstalmentRow r = new InstalmentRow();
       r.invoiceName = i.Plan__r?.Invoice__r?.Name;
       r.instalmentNumber = i.Number__c == null ? null : i.Number__c.intValue();
       r.dueDate = i.Due_Date__c;
       r.amount = i.Amount__c;
-      r.currencyCode = i.CurrencyIsoCode;
+      r.currencyCode = iso(i, 'Plan__r.Invoice__r.Currency_Code__c');
       r.status = i.Status__c;
       r.overdue =
         i.Status__c != 'Paid' &&
@@ -201,24 +220,17 @@ public without sharing class PMS_PortalMoneyController {
     }
 
     Date yearAgo = today.addDays(-365);
-    for (PMS_Rent_Adjustment__c a : [
-      SELECT
-        Lease__r.Name,
-        Kind__c,
-        Effective_Date__c,
-        Old_Rent__c,
-        New_Rent__c,
-        Change_Percent__c,
-        CurrencyIsoCode,
-        Status__c
-      FROM PMS_Rent_Adjustment__c
-      WHERE
-        Lease__r.Account__c = :acct
-        AND Status__c IN ('Notice Sent', 'Applied')
-        AND Effective_Date__c >= :yearAgo
-      ORDER BY Effective_Date__c DESC
-      LIMIT 10
-    ]) {
+    for (
+      PMS_Rent_Adjustment__c a : (List<PMS_Rent_Adjustment__c>) Database.queryWithBinds(
+        'SELECT Lease__r.Name, Kind__c, Effective_Date__c, Old_Rent__c, New_Rent__c, Change_Percent__c' +
+          cur() +
+          ', Lease__r.Site__r.Currency_Code__c, Status__c FROM PMS_Rent_Adjustment__c ' +
+          'WHERE Lease__r.Account__c = :acct AND Status__c IN (\'Notice Sent\', \'Applied\') ' +
+          'AND Effective_Date__c >= :yearAgo ORDER BY Effective_Date__c DESC LIMIT 10',
+        new Map<String, Object>{ 'acct' => acct, 'yearAgo' => yearAgo },
+        AccessLevel.SYSTEM_MODE
+      )
+    ) {
       RentRow r = new RentRow();
       r.leaseName = a.Lease__r?.Name;
       r.kind = a.Kind__c;
@@ -226,7 +238,7 @@ public without sharing class PMS_PortalMoneyController {
       r.oldRent = a.Old_Rent__c;
       r.newRent = a.New_Rent__c;
       r.changePercent = a.Change_Percent__c;
-      r.currencyCode = a.CurrencyIsoCode;
+      r.currencyCode = iso(a, 'Lease__r.Site__r.Currency_Code__c');
       r.status = a.Status__c;
       res.rentChanges.add(r);
     }

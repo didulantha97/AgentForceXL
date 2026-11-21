@@ -356,6 +356,66 @@ private class PMS_ChannexTest {
     Assert.areEqual('Warning', o.logs[0].Status__c);
   }
 
+  // PMS_TriggerBypass.policyFees: Core sets it while writing OTA cancellations (so Experience's
+  // guarantee trigger skips policy fees) and must always restore it. The Experience side of the
+  // contract is covered in PMS_PolicyFeeBypassTest.
+  @isTest
+  static void policyFeeBypassIsRestoredAfterProcess() {
+    Date arrive = Date.today().addDays(10);
+    PMS_ChannexBookings.process(parse(revision('r1', 'new', 1, arrive, 2)));
+    Assert.isFalse(PMS_TriggerBypass.policyFees, 'not set by create');
+    PMS_ChannexBookings.Outcome o = PMS_ChannexBookings.process(
+      parse(revision('r2', 'cancelled', 1, arrive, 2))
+    );
+    Assert.areEqual(1, o.ackIds.size(), JSON.serialize(o.logs));
+    Assert.areEqual(
+      'Cancelled',
+      [SELECT Status__c FROM PMS_Booking__c WHERE Channex_Booking_Id__c != NULL]
+      .Status__c
+    );
+    Assert.isFalse(
+      PMS_TriggerBypass.policyFees,
+      'flag restored after the cancel'
+    );
+  }
+
+  @isTest
+  static void policyFeeBypassIsRestoredWhenTheUpdateThrows() {
+    Date arrive = Date.today().addDays(10);
+    PMS_ChannexBookings.process(parse(revision('r1', 'new', 1, arrive, 2)));
+    // Channex_Revision_Id__c holds 36 characters, so this revision id makes the cancel update fail.
+    String tooLong = 'r2-' + 'x'.repeat(60);
+    PMS_ChannexBookings.Outcome o = PMS_ChannexBookings.process(
+      parse(revision(tooLong, 'cancelled', 1, arrive, 2))
+    );
+    Assert.isTrue(o.ackIds.isEmpty(), 'a failed revision is not acknowledged');
+    Assert.areEqual(1, o.logs.size());
+    Assert.areEqual('Error', o.logs[0].Kind__c);
+    Assert.areEqual(
+      'Confirmed',
+      [SELECT Status__c FROM PMS_Booking__c WHERE Channex_Booking_Id__c != NULL]
+      .Status__c,
+      'rolled back'
+    );
+    Assert.isFalse(
+      PMS_TriggerBypass.policyFees,
+      'flag restored after the exception'
+    );
+  }
+
+  @isTest
+  static void policyFeeBypassRestoresThePreviousValueNotJustFalse() {
+    Date arrive = Date.today().addDays(10);
+    PMS_ChannexBookings.process(parse(revision('r1', 'new', 2, arrive, 2)));
+    PMS_TriggerBypass.policyFees = true;
+    PMS_ChannexBookings.Outcome o = PMS_ChannexBookings.process(
+      parse(revision('r2', 'modified', 1, arrive, 2)) // drops a room, which cancels it
+    );
+    Assert.areEqual(1, o.ackIds.size(), JSON.serialize(o.logs));
+    Assert.isTrue(PMS_TriggerBypass.policyFees, 'an outer bypass stays on');
+    PMS_TriggerBypass.policyFees = false;
+  }
+
   @isTest
   static void unmappedRoomIsNotAcknowledged() {
     update new PMS_Space_Type__c(

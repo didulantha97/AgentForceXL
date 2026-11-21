@@ -331,8 +331,7 @@ public without sharing class PMS_PartnerPortalController {
         today.toStartOfMonth(),
         today
       );
-      ss.monthToDate.income = null; // totals only on the overview
-      ss.monthToDate.costs = null;
+      ss.monthToDate.clearLines(); // totals only on the overview
       ss.openJobs = openJobs.containsKey(s.Id) ? openJobs.get(s.Id) : 0;
       ss.units = unitsBySite.containsKey(s.Id)
         ? unitsBySite.get(s.Id)
@@ -451,9 +450,9 @@ public without sharing class PMS_PartnerPortalController {
       );
       StatementDetail d = new StatementDetail();
       d.statement = toRow(st); // the published totals are what count
-      d.income = f.income;
-      d.costs = f.costs;
-      d.feePercent = f.feePercent;
+      d.income = f.getIncome();
+      d.costs = f.getCosts();
+      d.feePercent = f.getFeePercent();
       return d;
     } catch (Exception e) {
       throw handled(e);

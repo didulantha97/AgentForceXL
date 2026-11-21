@@ -437,13 +437,13 @@ public without sharing class PMS_PublicBookingController {
           : plan.Cancellation_Policy__c;
         if (o.available > 0) {
           PMS_PricingService.Quote q = stayQuote(plan, t.Id, arrive, depart);
-          o.net = q.net;
-          o.tax = q.tax;
-          o.gross = q.gross;
-          o.perNight = q.unitPrice;
-          o.currencyCode = String.isBlank(q.currencyCode)
+          o.net = q.getNet();
+          o.tax = q.getTax();
+          o.gross = q.getGross();
+          o.perNight = q.getUnitPrice();
+          o.currencyCode = String.isBlank(q.getCurrencyCode())
             ? site.Currency_Code__c
-            : q.currencyCode;
+            : q.getCurrencyCode();
         }
         options.add(o);
       }
@@ -1121,7 +1121,7 @@ public without sharing class PMS_PublicBookingController {
     qr.startDate = today;
     qr.endDate = today;
     qr.hours = Decimal.valueOf(minutes) / 60;
-    return PMS_PricingService.quote(qr).gross;
+    return PMS_PricingService.quote(qr).getGross();
   }
 
   private static SiteInfo toSite(PMS_Site__c s) {

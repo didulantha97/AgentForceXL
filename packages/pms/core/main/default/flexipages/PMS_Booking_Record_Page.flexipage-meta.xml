@@ -247,11 +247,7 @@
             >EQUAL</operator><rightValue>Lease</rightValue></criteria><criteria
           ><leftValue>{!Record.RecordType.DeveloperName}</leftValue><operator
             >EQUAL</operator><rightValue
-            >Reservation</rightValue></criteria></visibilityRule></fieldInstance></itemInstances><itemInstances
-    ><fieldInstance><fieldInstanceProperties><name>uiBehavior</name><value
-          >none</value></fieldInstanceProperties><fieldItem
-        >Record.CurrencyIsoCode</fieldItem><identifier
-        >RecordCurrencyIsoCodeField</identifier></fieldInstance></itemInstances><name
+            >Reservation</rightValue></criteria></visibilityRule></fieldInstance></itemInstances><name
     >Facet-s5c0</name><type>Facet</type></flexiPageRegions><flexiPageRegions
   ><itemInstances><fieldInstance><fieldInstanceProperties><name
           >uiBehavior</name><value

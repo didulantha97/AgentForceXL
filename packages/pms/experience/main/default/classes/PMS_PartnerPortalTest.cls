@@ -120,16 +120,16 @@ private class PMS_PartnerPortalTest {
     PMS_PartnerPortalController.SiteSummary s = h.sites[0];
     PMS_ExperienceTestFactory.num(
       9000,
-      s.monthToDate.gross,
+      s.monthToDate.getGross(),
       'income this month'
     );
-    PMS_ExperienceTestFactory.num(900, s.monthToDate.fee, '10% fee');
-    PMS_ExperienceTestFactory.num(8100, s.monthToDate.net, 'net');
+    PMS_ExperienceTestFactory.num(900, s.monthToDate.getFee(), '10% fee');
+    PMS_ExperienceTestFactory.num(8100, s.monthToDate.getNet(), 'net');
     Assert.areEqual(1, s.units.size());
     Assert.areEqual('Let', s.units[0].status);
     Assert.isTrue(
-      s.monthToDate.occupancyBasis.startsWith('1 of 1 units let'),
-      s.monthToDate.occupancyBasis
+      s.monthToDate.getOccupancyBasis().startsWith('1 of 1 units let'),
+      s.monthToDate.getOccupancyBasis()
     );
     Assert.areEqual(0, h.statements.size());
 
@@ -202,8 +202,8 @@ private class PMS_PartnerPortalTest {
       monday,
       monday.addDays(4)
     );
-    Assert.areEqual('2 of 10 room nights', f.occupancyBasis);
-    PMS_ExperienceTestFactory.num(20.0, f.occupancyPct, 'occupancy');
+    Assert.areEqual('2 of 10 room nights', f.getOccupancyBasis());
+    PMS_ExperienceTestFactory.num(20.0, f.getOccupancyPct(), 'occupancy');
   }
 
   // ------------------------------------------------------------------ vendors
@@ -326,6 +326,7 @@ private class PMS_PartnerPortalTest {
       'invoice.pdf',
       PDF
     );
+    Integer emailInvocations = Limits.getEmailInvocations();
     Test.stopTest();
     Assert.areEqual(1, r.bills.size());
     Assert.isFalse(r.canBill);
@@ -349,8 +350,8 @@ private class PMS_PartnerPortalTest {
         e.getMessage()
       );
     }
-    Assert.isFalse(
-      PMS_WorkOrderService.outbox.isEmpty(),
+    Assert.isTrue(
+      emailInvocations > 0,
       'Staff were emailed about vendor actions'
     );
 

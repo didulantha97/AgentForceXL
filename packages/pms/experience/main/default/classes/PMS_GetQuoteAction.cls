@@ -50,22 +50,22 @@ public with sharing class PMS_GetQuoteAction {
       qr.hours = r.hours;
       PMS_PricingService.Quote q = PMS_PricingService.quote(qr);
       Result res = new Result();
-      res.net = q.net;
-      res.tax = q.tax;
-      res.gross = q.gross;
+      res.net = q.getNet();
+      res.tax = q.getTax();
+      res.gross = q.getGross();
       res.summary =
-        q.units +
+        q.getUnits() +
         ' x ' +
-        q.pricingBasis.toLowerCase() +
+        q.getPricingBasis().toLowerCase() +
         ' at ' +
-        q.unitPrice +
+        q.getUnitPrice() +
         ' = ' +
-        q.net +
+        q.getNet() +
         ' + tax ' +
-        q.tax +
+        q.getTax() +
         ' = ' +
-        q.gross +
-        (q.currencyCode == null ? '' : ' ' + q.currencyCode);
+        q.getGross() +
+        (q.getCurrencyCode() == null ? '' : ' ' + q.getCurrencyCode());
       results.add(res);
     }
     return results;

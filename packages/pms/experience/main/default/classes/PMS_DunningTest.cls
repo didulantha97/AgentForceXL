@@ -123,8 +123,12 @@ private class PMS_DunningTest {
     Assert.areEqual('Overdue', after.Status__c);
     Assert.isTrue(after.Late_Fee_Posted__c);
     Assert.isNotNull(after.Pay_Key__c);
-    PMS_TestDataFactory.num(450, lateCharges(inv.Id), 'business late fee');
-    PMS_TestDataFactory.num(1450, after.Balance__c, 'balance with fee');
+    PMS_ExperienceTestFactory.num(
+      450,
+      lateCharges(inv.Id),
+      'business late fee'
+    );
+    PMS_ExperienceTestFactory.num(1450, after.Balance__c, 'balance with fee');
     PMS_Dunning_Event__c e = [
       SELECT Stage__c, Sent_To__c, Fee_Posted__c, Interest_Posted__c
       FROM PMS_Dunning_Event__c
@@ -136,7 +140,7 @@ private class PMS_DunningTest {
       .Email,
       e.Sent_To__c
     );
-    PMS_TestDataFactory.num(
+    PMS_ExperienceTestFactory.num(
       0,
       e.Interest_Posted__c,
       'no interest on reminder 1'
@@ -147,7 +151,7 @@ private class PMS_DunningTest {
   static void consumerFeeOnlyWhenAgreed() {
     PMS_Invoice__c noTerms = invoice('Consumer', 10, null);
     run(noTerms.Id);
-    PMS_TestDataFactory.num(
+    PMS_ExperienceTestFactory.num(
       0,
       lateCharges(noTerms.Id),
       'no fee without agreement'
@@ -159,7 +163,7 @@ private class PMS_DunningTest {
     update p;
     PMS_Invoice__c withTerms = invoice('Consumer', 10, null);
     run(withTerms.Id);
-    PMS_TestDataFactory.num(
+    PMS_ExperienceTestFactory.num(
       60,
       lateCharges(withTerms.Id),
       'consumer reminder fee'
@@ -187,7 +191,7 @@ private class PMS_DunningTest {
     Assert.areEqual('Reminder 2', after.Dunning_Stage__c);
     Assert.areEqual(Date.today(), after.Interest_Through__c);
     // 1000 x 10% x 30 / 365
-    PMS_TestDataFactory.num(8.22, lateCharges(inv.Id), 'interest');
+    PMS_ExperienceTestFactory.num(8.22, lateCharges(inv.Id), 'interest');
   }
 
   @isTest
@@ -236,8 +240,8 @@ private class PMS_DunningTest {
     for (PMS_Payment_Plan_Instalment__c i : plan.Instalments__r) {
       sum += i.Amount__c;
     }
-    PMS_TestDataFactory.num(plan.Total__c, sum, 'instalments add up');
-    PMS_TestDataFactory.num(
+    PMS_ExperienceTestFactory.num(plan.Total__c, sum, 'instalments add up');
+    PMS_ExperienceTestFactory.num(
       333,
       plan.Instalments__r[0].Amount__c,
       'first instalment'
@@ -272,9 +276,9 @@ private class PMS_DunningTest {
 
   @isTest
   static void brokenPlanGoesToCollectionsWithLeaseTasks() {
-    PMS_TestDataFactory.Property prop = PMS_TestDataFactory.property();
+    PMS_ExperienceTestFactory.Property prop = PMS_ExperienceTestFactory.property();
     PMS_Booking__c lease = new PMS_Booking__c(
-      RecordTypeId = PMS_TestDataFactory.rt(
+      RecordTypeId = PMS_ExperienceTestFactory.rt(
         PMS_Booking__c.SObjectType,
         'Lease'
       ),
@@ -483,12 +487,12 @@ private class PMS_DunningTest {
       PMS_DunningService.nextStep(inv, p, Date.today(), false),
       'plan offer switched off: straight to collections'
     );
-    PMS_TestDataFactory.num(
+    PMS_ExperienceTestFactory.num(
       22.47,
       PMS_DunningService.interestFor(inv, p, 0, Date.today()),
       '2000 x 10% x 41/365'
     );
-    PMS_TestDataFactory.num(
+    PMS_ExperienceTestFactory.num(
       17.52,
       PMS_DunningService.interestFor(inv, p, 440, Date.today()),
       'fees excluded from the principal'

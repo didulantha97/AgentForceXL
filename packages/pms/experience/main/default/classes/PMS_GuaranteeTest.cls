@@ -88,7 +88,7 @@ private class PMS_GuaranteeTest {
       Webhook_Secret__c = SECRET,
       Checkout_Return_URL__c = 'https://example.com/pay/PMS_PaymentComplete'
     );
-    PMS_TestDataFactory.hotel(1);
+    PMS_ExperienceTestFactory.hotel(1);
   }
 
   private static PMS_Payment_Policy__c policy(String method) {
@@ -124,7 +124,7 @@ private class PMS_GuaranteeTest {
     PMS_Rate_Plan__c plan = [SELECT Id FROM PMS_Rate_Plan__c LIMIT 1];
     Contact guest = [SELECT Id, AccountId FROM Contact LIMIT 1];
     PMS_Booking__c b = new PMS_Booking__c(
-      RecordTypeId = PMS_TestDataFactory.rt(
+      RecordTypeId = PMS_ExperienceTestFactory.rt(
         PMS_Booking__c.SObjectType,
         'Reservation'
       ),
@@ -188,27 +188,27 @@ private class PMS_GuaranteeTest {
   static void amountsAndFees() {
     Datetime arrival = Datetime.now().addHours(48);
     PMS_Booking__c b = inMemory(3000, 3, arrival);
-    PMS_TestDataFactory.num(
+    PMS_ExperienceTestFactory.num(
       1000,
       PMS_PolicyService.amountFor('First Night', null, b),
       'first night'
     );
-    PMS_TestDataFactory.num(
+    PMS_ExperienceTestFactory.num(
       900,
       PMS_PolicyService.amountFor('Percent of Total', 30, b),
       'percent'
     );
-    PMS_TestDataFactory.num(
+    PMS_ExperienceTestFactory.num(
       3000,
       PMS_PolicyService.amountFor('Fixed Amount', 5000, b),
       'capped at total'
     );
-    PMS_TestDataFactory.num(
+    PMS_ExperienceTestFactory.num(
       3000,
       PMS_PolicyService.amountFor('Full Stay', null, b),
       'full stay'
     );
-    PMS_TestDataFactory.num(
+    PMS_ExperienceTestFactory.num(
       0,
       PMS_PolicyService.amountFor('None', 10, b),
       'none'
@@ -231,7 +231,7 @@ private class PMS_GuaranteeTest {
       Datetime.now()
     );
     Assert.areEqual('Free cancellation', free.kind);
-    PMS_TestDataFactory.num(0, free.gross, 'free');
+    PMS_ExperienceTestFactory.num(0, free.gross, 'free');
 
     PMS_PolicyService.FeeDecision late = PMS_PolicyService.feeFor(
       b,
@@ -240,8 +240,8 @@ private class PMS_GuaranteeTest {
       arrival.addHours(-2)
     );
     Assert.areEqual('Late cancellation', late.kind);
-    PMS_TestDataFactory.num(1000, late.net, 'late net');
-    PMS_TestDataFactory.num(1250, late.gross, 'late gross with 25% VAT');
+    PMS_ExperienceTestFactory.num(1000, late.net, 'late net');
+    PMS_ExperienceTestFactory.num(1250, late.gross, 'late gross with 25% VAT');
 
     PMS_PolicyService.FeeDecision noShow = PMS_PolicyService.feeFor(
       b,
@@ -249,7 +249,7 @@ private class PMS_GuaranteeTest {
       'No Show',
       arrival
     );
-    PMS_TestDataFactory.num(1500, noShow.net, 'no-show net');
+    PMS_ExperienceTestFactory.num(1500, noShow.net, 'no-show net');
 
     Assert.isTrue(
       PMS_PolicyService.depositDueNow(b, p, Datetime.now()),
@@ -334,7 +334,7 @@ private class PMS_GuaranteeTest {
     );
     Test.stopTest();
     Assert.areEqual('payment', r.mode);
-    PMS_TestDataFactory.num(800, r.amount, 'deposit');
+    PMS_ExperienceTestFactory.num(800, r.amount, 'deposit');
     Assert.isTrue(mock.sent('line_items[0][price_data][unit_amount]=80000'));
     Assert.isTrue(
       mock.sent('payment_intent_data[setup_future_usage]=off_session')
@@ -355,7 +355,7 @@ private class PMS_GuaranteeTest {
     PMS_Site__c site = [SELECT Id FROM PMS_Site__c LIMIT 1];
     Contact guest = [SELECT Id, AccountId FROM Contact LIMIT 1];
     PMS_Booking__c b = new PMS_Booking__c(
-      RecordTypeId = PMS_TestDataFactory.rt(
+      RecordTypeId = PMS_ExperienceTestFactory.rt(
         PMS_Booking__c.SObjectType,
         'Reservation'
       ),
@@ -485,7 +485,7 @@ private class PMS_GuaranteeTest {
     );
     PMS_Booking__c after = reload(b.Id);
     Assert.areEqual('Authorized', after.Preauth_Status__c);
-    PMS_TestDataFactory.num(800, after.Preauth_Amount__c, 'hold amount');
+    PMS_ExperienceTestFactory.num(800, after.Preauth_Amount__c, 'hold amount');
 
     postEvent(
       'payment_intent.canceled',
@@ -518,7 +518,7 @@ private class PMS_GuaranteeTest {
       FROM PMS_Payment__c
       WHERE Gateway_Reference__c = 'pi_fee'
     ];
-    PMS_TestDataFactory.num(500, p.Amount__c, 'fee payment');
+    PMS_ExperienceTestFactory.num(500, p.Amount__c, 'fee payment');
     Assert.areEqual(b.Id, p.Booking__c);
     postEvent(
       'payment_intent.succeeded',
@@ -595,7 +595,11 @@ private class PMS_GuaranteeTest {
     PMS_Booking__c after = reload(b.Id);
     Assert.isTrue(after.Policy_Fee_Charged__c, after.Guarantee_Message__c);
     Assert.isFalse(after.Policy_Pending__c);
-    PMS_TestDataFactory.num(600, after.Policy_Fee_Amount__c, 'no-show fee');
+    PMS_ExperienceTestFactory.num(
+      600,
+      after.Policy_Fee_Amount__c,
+      'no-show fee'
+    );
     Assert.areEqual('Captured', after.Preauth_Status__c);
     Assert.areEqual(
       'Settled',
@@ -608,7 +612,7 @@ private class PMS_GuaranteeTest {
       FROM PMS_Charge__c
       WHERE Booking__c = :b.Id AND Charge_Type__c = 'Cancellation Fee'
     ];
-    PMS_TestDataFactory.num(600, fee.Unit_Price__c, 'fee charge');
+    PMS_ExperienceTestFactory.num(600, fee.Unit_Price__c, 'fee charge');
     PMS_Payment__c pay = [
       SELECT Amount__c, Invoice__c
       FROM PMS_Payment__c
@@ -657,7 +661,11 @@ private class PMS_GuaranteeTest {
     PMS_Booking__c after = reload(b.Id);
     Assert.isTrue(after.Policy_Fee_Charged__c);
     Assert.areEqual('Released', after.Preauth_Status__c);
-    PMS_TestDataFactory.num(200, after.Refund_Due__c, 'deposit to refund');
+    PMS_ExperienceTestFactory.num(
+      200,
+      after.Refund_Due__c,
+      'deposit to refund'
+    );
     Assert.areEqual(
       0,
       [
@@ -760,7 +768,7 @@ private class PMS_GuaranteeTest {
     );
     Test.stopTest();
     Assert.isTrue(s.policyApplied);
-    PMS_TestDataFactory.num(500, s.policyFee, 'late fee');
+    PMS_ExperienceTestFactory.num(500, s.policyFee, 'late fee');
     try {
       PMS_GuaranteeController.applyPolicyNow(b.Id);
       Assert.fail('applying twice must fail');
@@ -792,7 +800,7 @@ private class PMS_GuaranteeTest {
       after.Guarantee_Message__c
     );
     Assert.areEqual('Hold Placed', after.Guarantee_Status__c);
-    PMS_TestDataFactory.num(800, after.Preauth_Amount__c, 'hold');
+    PMS_ExperienceTestFactory.num(800, after.Preauth_Amount__c, 'hold');
     Assert.isTrue(mock.sent('capture_method=manual'));
     Assert.isNotNull(after.Preauth_Expires_At__c);
   }
@@ -820,7 +828,7 @@ private class PMS_GuaranteeTest {
       FROM PMS_Payment__c
       WHERE Booking__c = :b.Id
     ];
-    PMS_TestDataFactory.num(800, pay.Amount__c, 'deposit');
+    PMS_ExperienceTestFactory.num(800, pay.Amount__c, 'deposit');
     Assert.areEqual('Deposit', pay.Payment_Type__c);
   }
 
@@ -927,7 +935,7 @@ private class PMS_GuaranteeTest {
     );
     Test.stopTest();
     Assert.areEqual('Deposit Paid', s.guaranteeStatus, s.message);
-    PMS_TestDataFactory.num(800, s.depositPaid, 'deposit paid');
+    PMS_ExperienceTestFactory.num(800, s.depositPaid, 'deposit paid');
     Assert.isFalse(s.canChargeDeposit);
   }
 
@@ -971,7 +979,7 @@ private class PMS_GuaranteeTest {
     Test.stopTest();
     Assert.areEqual('Captured', s.holdStatus, s.message);
     Assert.isTrue(mock.sent('amount_to_capture=25000'));
-    PMS_TestDataFactory.num(
+    PMS_ExperienceTestFactory.num(
       250,
       [
         SELECT Amount__c
@@ -1016,7 +1024,7 @@ private class PMS_GuaranteeTest {
   static void stripeClientHelpers() {
     Assert.areEqual(1235L, PMS_StripeClient.toMinor(12.345, 'sek'));
     Assert.areEqual(500L, PMS_StripeClient.toMinor(500, 'JPY'));
-    PMS_TestDataFactory.num(
+    PMS_ExperienceTestFactory.num(
       12.34,
       PMS_StripeClient.toMajor(1234, 'sek'),
       'sek'

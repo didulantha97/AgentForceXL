@@ -27,7 +27,7 @@ public without sharing class PMS_GuaranteeTriggerHandler {
     List<PMS_Booking__c> newList,
     Map<Id, PMS_Booking__c> oldMap
   ) {
-    if (bypass) {
+    if (bypass || PMS_TriggerBypass.policyFees) {
       return;
     }
     for (PMS_Booking__c b : newList) {
@@ -45,7 +45,7 @@ public without sharing class PMS_GuaranteeTriggerHandler {
   }
 
   public static void afterInsert(List<PMS_Booking__c> newList) {
-    if (bypass) {
+    if (bypass || PMS_TriggerBypass.policyFees) {
       return;
     }
     Set<Id> ids = new Set<Id>();
@@ -68,7 +68,7 @@ public without sharing class PMS_GuaranteeTriggerHandler {
     List<PMS_Booking__c> newList,
     Map<Id, PMS_Booking__c> oldMap
   ) {
-    if (bypass) {
+    if (bypass || PMS_TriggerBypass.policyFees) {
       return;
     }
     Set<Id> ids = new Set<Id>();

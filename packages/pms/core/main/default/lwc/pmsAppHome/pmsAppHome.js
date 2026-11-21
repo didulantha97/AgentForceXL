@@ -3,7 +3,7 @@ import { NavigationMixin } from "lightning/navigation";
 import { encodeDefaultFieldValues } from "lightning/pageReferenceUtils";
 import { refreshApex } from "@salesforce/apex";
 import getHome from "@salesforce/apex/PMS_HomeController.getHome";
-import createInvoiceLink from "@salesforce/apex/PMS_StripeCheckout.createInvoiceLink";
+import createInvoiceLink from "@salesforce/apex/PMS_PayLinkService.createInvoiceLink";
 
 /*
  * PMS app home page. One component serves every app; the "module" property (set per page in

@@ -256,7 +256,9 @@ public with sharing class PMS_RevenueHomeController {
   static Item holds(String rt) {
     Datetime soon = Datetime.now().addHours(24);
     String q =
-      'SELECT Id, Name, Preauth_Expires_At__c, Preauth_Amount__c, CurrencyIsoCode, Account__r.Name ' +
+      'SELECT Id, Name, Preauth_Expires_At__c, Preauth_Amount__c' +
+      cur() +
+      ', Site__r.Currency_Code__c, Account__r.Name ' +
       'FROM PMS_Booking__c WHERE Preauth_Status__c = \'Authorized\' AND Preauth_Expires_At__c <= :soon' +
       rtFilter('RecordType.DeveloperName', rt) +
       ' ORDER BY Preauth_Expires_At__c LIMIT ' +
@@ -280,7 +282,7 @@ public with sharing class PMS_RevenueHomeController {
             join(
               new List<String>{
                 'expires ' + fmt(b.Preauth_Expires_At__c),
-                money(b.Preauth_Amount__c, b.CurrencyIsoCode),
+                money(b.Preauth_Amount__c, iso(b, 'Site__r.Currency_Code__c')),
                 customer(b.Account__r?.Name)
               }
             )
@@ -293,7 +295,9 @@ public with sharing class PMS_RevenueHomeController {
 
   static Item fees(String rt) {
     String q =
-      'SELECT Id, Name, Status__c, Policy_Fee_Amount__c, CurrencyIsoCode, Policy_Event_At__c, Account__r.Name ' +
+      'SELECT Id, Name, Status__c, Policy_Fee_Amount__c' +
+      cur() +
+      ', Policy_Event_At__c, Site__r.Currency_Code__c, Account__r.Name ' +
       'FROM PMS_Booking__c WHERE Policy_Pending__c = TRUE' +
       rtFilter('RecordType.DeveloperName', rt) +
       ' ORDER BY Policy_Event_At__c DESC LIMIT ' +
@@ -317,7 +321,10 @@ public with sharing class PMS_RevenueHomeController {
             join(
               new List<String>{
                 b.Status__c,
-                money(b.Policy_Fee_Amount__c, b.CurrencyIsoCode),
+                money(
+                  b.Policy_Fee_Amount__c,
+                  iso(b, 'Site__r.Currency_Code__c')
+                ),
                 customer(b.Account__r?.Name)
               }
             )
@@ -330,7 +337,9 @@ public with sharing class PMS_RevenueHomeController {
 
   static Item refunds(String rt) {
     String q =
-      'SELECT Id, Name, Refund_Due__c, CurrencyIsoCode, Account__r.Name ' +
+      'SELECT Id, Name, Refund_Due__c' +
+      cur() +
+      ', Site__r.Currency_Code__c, Account__r.Name ' +
       'FROM PMS_Booking__c WHERE Refund_Due__c > 0' +
       rtFilter('RecordType.DeveloperName', rt) +
       ' ORDER BY LastModifiedDate DESC LIMIT ' +
@@ -353,7 +362,7 @@ public with sharing class PMS_RevenueHomeController {
             b.Name,
             join(
               new List<String>{
-                money(b.Refund_Due__c, b.CurrencyIsoCode),
+                money(b.Refund_Due__c, iso(b, 'Site__r.Currency_Code__c')),
                 customer(b.Account__r?.Name)
               }
             )
@@ -366,7 +375,9 @@ public with sharing class PMS_RevenueHomeController {
 
   static Item reminders(String rt) {
     String q =
-      'SELECT Id, Name, Dunning_Stage__c, Dunning_Paused__c, Days_Overdue__c, Balance__c, CurrencyIsoCode, Account__r.Name ' +
+      'SELECT Id, Name, Dunning_Stage__c, Dunning_Paused__c, Days_Overdue__c, Balance__c' +
+      cur() +
+      ', Currency_Code__c, Account__r.Name ' +
       'FROM PMS_Invoice__c WHERE Dunning_Stage__c != NULL AND Balance__c > 0' +
       rtFilter('RecordType.DeveloperName', rt) +
       ' ORDER BY Days_Overdue__c DESC NULLS LAST LIMIT ' +
@@ -401,7 +412,7 @@ public with sharing class PMS_RevenueHomeController {
                 inv.Dunning_Stage__c +
                 (inv.Dunning_Paused__c ? ' (paused)' : ''),
                 days,
-                money(inv.Balance__c, inv.CurrencyIsoCode),
+                money(inv.Balance__c, iso(inv, 'Currency_Code__c')),
                 customer(inv.Account__r?.Name)
               }
             )
@@ -432,7 +443,9 @@ public with sharing class PMS_RevenueHomeController {
   static Item instalments(String rt) {
     Date today = Date.today();
     String q =
-      'SELECT Id, Number__c, Due_Date__c, Amount__c, CurrencyIsoCode, Status__c, Plan__r.Invoice__c, Plan__r.Invoice__r.Name, Plan__r.Invoice__r.Account__r.Name ' +
+      'SELECT Id, Number__c, Due_Date__c, Amount__c' +
+      cur() +
+      ', Status__c, Plan__r.Invoice__c, Plan__r.Invoice__r.Currency_Code__c, Plan__r.Invoice__r.Name, Plan__r.Invoice__r.Account__r.Name ' +
       'FROM PMS_Payment_Plan_Instalment__c WHERE Due_Date__c < :today AND Status__c NOT IN (\'Paid\', \'Cancelled\', \'Waived\')' +
       rtFilter('Plan__r.Invoice__r.RecordType.DeveloperName', rt) +
       ' ORDER BY Due_Date__c LIMIT ' +
@@ -465,7 +478,10 @@ public with sharing class PMS_RevenueHomeController {
             join(
               new List<String>{
                 'due ' + fmt(i.Due_Date__c),
-                money(i.Amount__c, i.CurrencyIsoCode),
+                money(
+                  i.Amount__c,
+                  iso(i, 'Plan__r.Invoice__r.Currency_Code__c')
+                ),
                 customer(i.Plan__r?.Invoice__r?.Account__r?.Name)
               }
             )
@@ -663,6 +679,41 @@ public with sharing class PMS_RevenueHomeController {
       }
     }
     return String.join(keep, ' · ');
+  }
+
+  @TestVisible
+  /** ", CurrencyIsoCode" only in a multi-currency org (the field does not exist otherwise). */
+  static String cur() {
+    return UserInfo.isMultiCurrencyOrganization() ? ', CurrencyIsoCode' : '';
+  }
+
+  /**
+   * Currency label for a row: the Currency_Code__c found at codePath (the invoice itself, or the
+   * site / invoice the row belongs to) when filled in, else the record's CurrencyIsoCode
+   * (multi-currency orgs), else the org default.
+   */
+  @TestVisible
+  static String iso(SObject rec, String codePath) {
+    String code = codeAt(rec, codePath);
+    if (String.isNotBlank(code)) {
+      return code;
+    }
+    if (UserInfo.isMultiCurrencyOrganization()) {
+      String isoCode = (String) rec.get('CurrencyIsoCode');
+      if (String.isNotBlank(isoCode)) {
+        return isoCode;
+      }
+    }
+    return UserInfo.getDefaultCurrency();
+  }
+
+  private static String codeAt(SObject rec, String path) {
+    List<String> parts = path.split('\\.');
+    SObject node = rec;
+    for (Integer i = 0; i < parts.size() - 1 && node != null; i++) {
+      node = node.getSObject(parts[i]);
+    }
+    return node == null ? null : (String) node.get(parts[parts.size() - 1]);
   }
 
   @TestVisible

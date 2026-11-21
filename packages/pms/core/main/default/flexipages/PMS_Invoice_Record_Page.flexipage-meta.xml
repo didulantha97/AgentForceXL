@@ -97,10 +97,6 @@
         >RecordTax_Total__cField</identifier></fieldInstance></itemInstances><itemInstances
     ><fieldInstance><fieldInstanceProperties><name>uiBehavior</name><value
           >none</value></fieldInstanceProperties><fieldItem
-        >Record.CurrencyIsoCode</fieldItem><identifier
-        >RecordCurrencyIsoCodeField</identifier></fieldInstance></itemInstances><itemInstances
-    ><fieldInstance><fieldInstanceProperties><name>uiBehavior</name><value
-          >none</value></fieldInstanceProperties><fieldItem
         >Record.Currency_Code__c</fieldItem><identifier
         >RecordCurrency_Code__cField</identifier></fieldInstance></itemInstances><name
     >Facet-s1c0</name><type>Facet</type></flexiPageRegions><flexiPageRegions

@@ -533,12 +533,12 @@ public without sharing class PMS_ChannexBookings {
     if (rows.isEmpty()) {
       return;
     }
-    Boolean before = PMS_GuaranteeTriggerHandler.bypass;
-    PMS_GuaranteeTriggerHandler.bypass = true; // the OTA applies its own cancellation terms
+    Boolean before = PMS_TriggerBypass.policyFees;
+    PMS_TriggerBypass.policyFees = true; // the OTA applies its own cancellation terms
     try {
       update rows;
     } finally {
-      PMS_GuaranteeTriggerHandler.bypass = before;
+      PMS_TriggerBypass.policyFees = before;
     }
   }
 

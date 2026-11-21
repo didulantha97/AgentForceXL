@@ -39,11 +39,7 @@
     ><fieldInstance><fieldInstanceProperties><name>uiBehavior</name><value
           >none</value></fieldInstanceProperties><fieldItem
         >Record.Floor__c</fieldItem><identifier
-        >RecordFloor__cField</identifier></fieldInstance></itemInstances><itemInstances
-    ><fieldInstance><fieldInstanceProperties><name>uiBehavior</name><value
-          >none</value></fieldInstanceProperties><fieldItem
-        >Record.CurrencyIsoCode</fieldItem><identifier
-        >RecordCurrencyIsoCodeField</identifier></fieldInstance></itemInstances><name
+        >RecordFloor__cField</identifier></fieldInstance></itemInstances><name
     >Facet-s0c0</name><type>Facet</type></flexiPageRegions><flexiPageRegions
   ><itemInstances><fieldInstance><fieldInstanceProperties><name
           >uiBehavior</name><value

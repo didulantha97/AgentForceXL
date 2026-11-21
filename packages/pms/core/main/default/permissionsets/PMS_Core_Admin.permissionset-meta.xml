@@ -24,10 +24,20 @@
   >Full access to every Unified PMS object, field, tab, app and record type. For PMS administrators and the build team.</description>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Account.PMS_Party_Role__c</field>
+        <field>Account.PMS_Customer_Type__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.PMS_Party_Role__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Stripe_Customer_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>Case.Entry_Permission__c</field>
         <readable>true</readable>
@@ -62,7 +72,82 @@
         <field>Contact.PMS_ID_Verified__c</field>
         <readable>true</readable>
     </fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Access_Rule__c.Active__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Access_Rule__c.Description__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Access_Rule__c.Objects__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Access_Rule__c.Site__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Access_Team_Member__c.Active__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Access_Team_Member__c.End_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Access_Team_Member__c.Start_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Access_Team_Member__c.Unique_Key__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Access_Team_Member__c.User__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Access_Team__c.Active__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Access_Team__c.All_Internal_Users__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Access_Team__c.Description__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Access_Team__c.Hide_Amounts__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Access_Team__c.Hide_Customer_Details__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>PMS_Access_Team__c.Member_Count__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>PMS_Application__c.Applicant__c</field>
         <readable>true</readable>
@@ -112,7 +197,67 @@
         <field>PMS_Application__c.Space__c</field>
         <readable>true</readable>
     </fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Approval_Request__c.Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Approval_Request__c.Amount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Approval_Request__c.Decided_At__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Approval_Request__c.Decided_By__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Approval_Request__c.Decision_Comment__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Approval_Request__c.Details__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Approval_Request__c.Due_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Approval_Request__c.Project__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Approval_Request__c.Schedule_Impact_Days__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Approval_Request__c.Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Approval_Request__c.Title__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Approval_Request__c.Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>PMS_Booking_Party__c.Contact__c</field>
         <readable>true</readable>
@@ -152,12 +297,57 @@
         <field>PMS_Booking__c.Balance_Due__c</field>
         <readable>true</readable>
     </fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Booking__c.Card_Brand__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Booking__c.Card_Expiry__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Booking__c.Card_Last4__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Booking__c.Card_Link_Sent_At__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Booking__c.Card_Saved_At__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>PMS_Booking__c.Channel__c</field>
         <readable>true</readable>
     </fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Booking__c.Channex_Booking_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Booking__c.Channex_Revision_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>PMS_Booking__c.Channex_Room_Key__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Booking__c.Check_In_Invited_At__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>PMS_Booking__c.Children__c</field>
         <readable>true</readable>
@@ -192,7 +382,17 @@
         <field>PMS_Booking__c.Group_Block__c</field>
         <readable>true</readable>
     </fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Booking__c.Guarantee_Message__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Booking__c.Guarantee_Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>PMS_Booking__c.Guarantee__c</field>
         <readable>true</readable>
@@ -202,7 +402,42 @@
         <field>PMS_Booking__c.Hours_Per_Week__c</field>
         <readable>true</readable>
     </fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Booking__c.Index_Allow_Below_Base__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Booking__c.Index_Base_Rent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Booking__c.Index_Base_Value__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Booking__c.Index_Clause__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Booking__c.Index_Series__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Booking__c.Index_Share__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Booking__c.Last_Rent_Adjustment__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>PMS_Booking__c.Lease_Type__c</field>
         <readable>true</readable>
@@ -222,12 +457,77 @@
         <field>PMS_Booking__c.Notice_Period_Days__c</field>
         <readable>true</readable>
     </fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Booking__c.OTA_Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Booking__c.OTA_Reservation_Code__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Booking__c.Online_Check_In_At__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Booking__c.Online_Check_In__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Booking__c.Payment_Policy__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Booking__c.Policy_Event_At__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Booking__c.Policy_Fee_Amount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Booking__c.Policy_Fee_Charged__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Booking__c.Policy_Pending__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>PMS_Booking__c.Practitioner__c</field>
         <readable>true</readable>
     </fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Booking__c.Preauth_Amount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Booking__c.Preauth_Expires_At__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Booking__c.Preauth_Intent_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Booking__c.Preauth_Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>PMS_Booking__c.Primary_Contact__c</field>
         <readable>true</readable>
@@ -247,7 +547,17 @@
         <field>PMS_Booking__c.Rate_Plan__c</field>
         <readable>true</readable>
     </fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Booking__c.Refund_Due__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Booking__c.Reminder_Fee_Agreed__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>PMS_Booking__c.Renewal_Status__c</field>
         <readable>true</readable>
@@ -282,7 +592,12 @@
         <field>PMS_Booking__c.Service__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Booking__c.Setup_Intent_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>PMS_Booking__c.Site__c</field>
         <readable>true</readable>
@@ -307,7 +622,12 @@
         <field>PMS_Booking__c.Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Booking__c.Stripe_Payment_Method__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>PMS_Booking__c.Total_Amount__c</field>
         <readable>true</readable>
@@ -337,7 +657,72 @@
         <field>PMS_Budget_Line__c.Variance__c</field>
         <readable>true</readable>
     </fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Channel_Log__c.Booking__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Channel_Log__c.Details__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Channel_Log__c.Direction__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Channel_Log__c.Kind__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Channel_Log__c.Message__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Channel_Log__c.Revision_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Channel_Log__c.Site__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Channel_Log__c.Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Channel_Mapping__c.Active__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Channel_Mapping__c.Channex_Rate_Plan_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Channel_Mapping__c.Rate_Plan__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Channel_Mapping__c.Room_Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Channel_Mapping__c.Site__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>PMS_Charge__c.Account__c</field>
         <readable>true</readable>
@@ -417,7 +802,342 @@
         <field>PMS_Charge__c.Unit_Price__c</field>
         <readable>true</readable>
     </fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Check_In__c.Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Check_In__c.Address__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Check_In__c.Arrival_Time__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Check_In__c.Booking__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Check_In__c.Date_Of_Birth__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Check_In__c.Emergency_Contact__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Check_In__c.Full_Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Check_In__c.Guests__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Check_In__c.ID_Number__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Check_In__c.ID_Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Check_In__c.Move_In_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Check_In__c.Nationality__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Check_In__c.Occupants__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Check_In__c.Phone__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Check_In__c.Special_Requests__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Check_In__c.Submitted_At__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Check_In__c.Submitted_Via__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Check_In__c.Terms_Accepted__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Check_In__c.Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Check_In__c.Vehicle_Registration__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Document_Request__c.Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Document_Request__c.Booking__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Document_Request__c.Contact__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Document_Request__c.Decline_Reason__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Document_Request__c.Document_Hash__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Document_Request__c.Due_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Document_Request__c.Message__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Document_Request__c.Original_Version_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Document_Request__c.Project__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Document_Request__c.Requires_Signature__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Document_Request__c.Signed_At__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Document_Request__c.Signed_Version_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Document_Request__c.Signer_Email__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Document_Request__c.Signer_IP__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Document_Request__c.Signer_Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Document_Request__c.Signer_User_Agent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Document_Request__c.Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Document_Request__c.Title__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Document_Request__c.Viewed_At__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Dunning_Event__c.Balance__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Dunning_Event__c.Days_Overdue__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Dunning_Event__c.Fee_Posted__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Dunning_Event__c.Interest_Posted__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Dunning_Event__c.Invoice__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Dunning_Event__c.Note__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Dunning_Event__c.Sent_At__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Dunning_Event__c.Sent_To__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Dunning_Event__c.Stage__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Dunning_Policy__c.Active__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Dunning_Policy__c.Business_Late_Fee__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Dunning_Policy__c.Charge_Interest__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Dunning_Policy__c.Collections_Agency_Email__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Dunning_Policy__c.Collections_Days__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Dunning_Policy__c.Consumer_Reminder_Fee__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Dunning_Policy__c.Fee_In_Terms__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Dunning_Policy__c.Interest_Margin__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Dunning_Policy__c.Is_Default__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Dunning_Policy__c.Min_Days_Between__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Dunning_Policy__c.Minimum_Balance__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Dunning_Policy__c.Payment_Instructions__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Dunning_Policy__c.Plan_Grace_Days__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Dunning_Policy__c.Plan_Instalments__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Dunning_Policy__c.Plan_Offer_Days__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Dunning_Policy__c.Reference_Rate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Dunning_Policy__c.Reminder_1_Days__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Dunning_Policy__c.Reminder_2_Days__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Dunning_Policy__c.Sender_Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>PMS_Group_Block__c.Account__c</field>
         <readable>true</readable>
@@ -462,7 +1182,32 @@
         <field>PMS_Group_Block__c.Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Index_Value__c.Month__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Index_Value__c.Series__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Index_Value__c.Source__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Index_Value__c.Value__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Index_Value__c.Year__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>PMS_Inspection_Item__c.Area__c</field>
         <readable>true</readable>
@@ -522,7 +1267,12 @@
         <field>PMS_Inspection__c.Space__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Intake_Form__c.Booking__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>PMS_Intake_Form__c.Consent_Given__c</field>
         <readable>true</readable>
@@ -612,12 +1362,42 @@
         <field>PMS_Invoice__c.Due_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Invoice__c.Dunning_Last_Sent_At__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Invoice__c.Dunning_Pause_Reason__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Invoice__c.Dunning_Paused__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Invoice__c.Dunning_Stage__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Invoice__c.Interest_Through__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>PMS_Invoice__c.Issue_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Invoice__c.Late_Fee_Posted__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>PMS_Invoice__c.Matter__c</field>
         <readable>true</readable>
@@ -792,12 +1572,27 @@
         <field>PMS_Meter__c.Unit_Price__c</field>
         <readable>true</readable>
     </fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Milestone__c.Accepted_At__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Milestone__c.Accepted_By__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>PMS_Milestone__c.Amount__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Milestone__c.Customer_Comment__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>PMS_Milestone__c.Due_Date__c</field>
         <readable>true</readable>
@@ -812,12 +1607,22 @@
         <field>PMS_Milestone__c.Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Owner_Statement__c.Arrears__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>PMS_Owner_Statement__c.Expenses__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Owner_Statement__c.Generated_On__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>PMS_Owner_Statement__c.Gross_Rent__c</field>
         <readable>true</readable>
@@ -832,7 +1637,17 @@
         <field>PMS_Owner_Statement__c.Net_Payout__c</field>
         <readable>true</readable>
     </fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Owner_Statement__c.Occupancy_Basis__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Owner_Statement__c.Occupancy_Percent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>PMS_Owner_Statement__c.Owner_Account__c</field>
         <readable>true</readable>
@@ -857,7 +1672,137 @@
         <field>PMS_Owner_Statement__c.Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Payment_Plan_Instalment__c.Amount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Payment_Plan_Instalment__c.Due_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Payment_Plan_Instalment__c.Number__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Payment_Plan_Instalment__c.Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Payment_Plan__c.Accepted_At__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Payment_Plan__c.Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Payment_Plan__c.Invoice__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Payment_Plan__c.Paid_At_Start__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Payment_Plan__c.Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Payment_Plan__c.Total__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Payment_Policy__c.Active__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Payment_Policy__c.Auto_Charge_Fees__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Payment_Policy__c.Auto_Send_Card_Link__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Payment_Policy__c.Deposit_Basis__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Payment_Policy__c.Deposit_Due_Days__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Payment_Policy__c.Deposit_Value__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Payment_Policy__c.Fee_Tax_Rate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Payment_Policy__c.Free_Cancellation_Hours__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Payment_Policy__c.Guarantee_Method__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Payment_Policy__c.Guest_Terms__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Payment_Policy__c.Late_Cancel_Basis__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Payment_Policy__c.Late_Cancel_Value__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Payment_Policy__c.No_Show_Basis__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Payment_Policy__c.No_Show_Value__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Payment_Policy__c.Preauth_Hours_Before__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Payment_Policy__c.Release_Hold_On_Checkout__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>PMS_Payment__c.Account__c</field>
         <readable>true</readable>
@@ -932,7 +1877,112 @@
         <field>PMS_Practitioner__c.Working_Hours__c</field>
         <readable>true</readable>
     </fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Pricing_Factor__c.Active__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Pricing_Factor__c.Adjust_Amount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Pricing_Factor__c.Adjust_Percent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Pricing_Factor__c.Date_From__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Pricing_Factor__c.Date_To__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Pricing_Factor__c.Days_Of_Week__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Pricing_Factor__c.Max_Value__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Pricing_Factor__c.Min_Value__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Pricing_Factor__c.Room_Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Pricing_Factor__c.Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Pricing_Strategy__c.Active__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Pricing_Strategy__c.Horizon_Days__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Pricing_Strategy__c.Last_Run_At__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Pricing_Strategy__c.Last_Run_Result__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Pricing_Strategy__c.Max_Change_Percent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Pricing_Strategy__c.Max_Percent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Pricing_Strategy__c.Max_Rate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Pricing_Strategy__c.Min_Percent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Pricing_Strategy__c.Min_Rate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Pricing_Strategy__c.Rate_Plan__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Pricing_Strategy__c.Round_To__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>PMS_Project_Task__c.Assignee__c</field>
         <readable>true</readable>
@@ -1102,7 +2152,12 @@
         <field>PMS_Rate_Plan__c.Module__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Rate_Plan__c.Payment_Policy__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>PMS_Rate_Plan__c.Pricing_Basis__c</field>
         <readable>true</readable>
@@ -1127,7 +2182,12 @@
         <field>PMS_Rate_Plan__c.Valid_To__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Rate__c.Base_Amount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>PMS_Rate__c.Date_From__c</field>
         <readable>true</readable>
@@ -1142,12 +2202,37 @@
         <field>PMS_Rate__c.Days_Of_Week__c</field>
         <readable>true</readable>
     </fieldPermissions>
+        <fieldPermissions>
+        <editable>false</editable>
+        <field>PMS_Rate__c.Dynamic_Key__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Rate__c.Dynamic__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Rate__c.Locked__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>PMS_Rate__c.Min_Stay__c</field>
         <readable>true</readable>
     </fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Rate__c.Occupancy__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Rate__c.Pricing_Notes__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>PMS_Rate__c.Service__c</field>
         <readable>true</readable>
@@ -1157,7 +2242,92 @@
         <field>PMS_Rate__c.Space_Type__c</field>
         <readable>true</readable>
     </fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Rent_Adjustment__c.Applied_At__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Rent_Adjustment__c.Base_Index__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Rent_Adjustment__c.Base_Rent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Rent_Adjustment__c.Change_Percent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Rent_Adjustment__c.Current_Index__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Rent_Adjustment__c.Effective_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Rent_Adjustment__c.Index_Period__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Rent_Adjustment__c.Kind__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Rent_Adjustment__c.Lease__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Rent_Adjustment__c.Negotiated_Percent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Rent_Adjustment__c.New_Rent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Rent_Adjustment__c.Note__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Rent_Adjustment__c.Notice_Sent_At__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Rent_Adjustment__c.Notice_Sent_To__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Rent_Adjustment__c.Old_Rent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Rent_Adjustment__c.Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Rent_Adjustment__c.Warning__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>PMS_Resource__c.Active__c</field>
         <readable>true</readable>
@@ -1227,7 +2397,12 @@
         <field>PMS_Service__c.Duration_Minutes__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Service__c.Payment_Policy__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>PMS_Service__c.Practice_Area__c</field>
         <readable>true</readable>
@@ -1242,7 +2417,27 @@
         <field>PMS_Service__c.Tax_Rate__c</field>
         <readable>true</readable>
     </fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Site__c.Channex_Last_Pull__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Site__c.Channex_Last_Push__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Site__c.Channex_Prices_Include_VAT__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Site__c.Channex_Property_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>PMS_Site__c.Check_In_Time__c</field>
         <readable>true</readable>
@@ -1267,12 +2462,22 @@
         <field>PMS_Site__c.Currency_Code__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Site__c.Dunning_Policy__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>PMS_Site__c.Location__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Site__c.Management_Fee_Percent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>PMS_Site__c.Manager__c</field>
         <readable>true</readable>
@@ -1287,7 +2492,12 @@
         <field>PMS_Site__c.Owner_Account__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Site__c.Payment_Policy__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>PMS_Site__c.Phone__c</field>
         <readable>true</readable>
@@ -1322,7 +2532,12 @@
         <field>PMS_Site__c.Total_Spaces__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Space_Type__c.Channex_Room_Type_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>PMS_Space_Type__c.Default_Occupancy__c</field>
         <readable>true</readable>
@@ -1437,8 +2652,218 @@
         <field>PMS_Time_Entry__c.Resource__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <hasActivationRequired>false</hasActivationRequired>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Vendor_Bill__c.Amount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Vendor_Bill__c.Bill_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Vendor_Bill__c.Due_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Vendor_Bill__c.Notes__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Vendor_Bill__c.Owner_Statement__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Vendor_Bill__c.Paid_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Vendor_Bill__c.Site__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Vendor_Bill__c.Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Vendor_Bill__c.Tax_Amount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>PMS_Vendor_Bill__c.Total__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Vendor_Bill__c.Vendor_Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Vendor_Bill__c.Vendor_Invoice_Number__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Vendor_Bill__c.Work_Order__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Vendor_Quote__c.Amount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Vendor_Quote__c.Decision_Notes__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Vendor_Quote__c.Description__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Vendor_Quote__c.Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Vendor_Quote__c.Tax_Amount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>PMS_Vendor_Quote__c.Total__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Vendor_Quote__c.Valid_Until__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Vendor_Quote__c.Vendor_Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Work_Order__c.Access_Instructions__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Work_Order__c.Case__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Work_Order__c.Completed_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Work_Order__c.Currency_Code__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Work_Order__c.Description__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Work_Order__c.Entry_Permission__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Work_Order__c.Not_To_Exceed__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Work_Order__c.Priority__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Work_Order__c.Scheduled_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Work_Order__c.Site__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Work_Order__c.Space__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Work_Order__c.Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Work_Order__c.Subject__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Work_Order__c.Vendor_Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PMS_Work_Order__c.Vendor_Notes__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+<hasActivationRequired>false</hasActivationRequired>
     <label>PMS Core Admin</label>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>PMS_Access_Rule__c</object>
+        <viewAllFields>false</viewAllFields>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>PMS_Access_Team_Member__c</object>
+        <viewAllFields>false</viewAllFields>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>PMS_Access_Team__c</object>
+        <viewAllFields>false</viewAllFields>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
     <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>
@@ -1446,6 +2871,16 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>PMS_Application__c</object>
+        <viewAllFields>false</viewAllFields>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>PMS_Approval_Request__c</object>
         <viewAllFields>false</viewAllFields>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
@@ -1485,6 +2920,26 @@
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
+        <object>PMS_Channel_Log__c</object>
+        <viewAllFields>false</viewAllFields>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>PMS_Channel_Mapping__c</object>
+        <viewAllFields>false</viewAllFields>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
         <object>PMS_Charge__c</object>
         <viewAllFields>false</viewAllFields>
         <viewAllRecords>true</viewAllRecords>
@@ -1495,7 +2950,57 @@
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
+        <object>PMS_Check_In__c</object>
+        <viewAllFields>false</viewAllFields>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>PMS_Document_Request__c</object>
+        <viewAllFields>false</viewAllFields>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>PMS_Dunning_Event__c</object>
+        <viewAllFields>false</viewAllFields>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>PMS_Dunning_Policy__c</object>
+        <viewAllFields>false</viewAllFields>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
         <object>PMS_Group_Block__c</object>
+        <viewAllFields>false</viewAllFields>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>PMS_Index_Value__c</object>
         <viewAllFields>false</viewAllFields>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
@@ -1624,6 +3129,36 @@
         <allowDelete>true</allowDelete>
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>PMS_Payment_Plan_Instalment__c</object>
+        <viewAllFields>false</viewAllFields>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>PMS_Payment_Plan__c</object>
+        <viewAllFields>false</viewAllFields>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>PMS_Payment_Policy__c</object>
+        <viewAllFields>false</viewAllFields>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>PMS_Payment__c</object>
         <viewAllFields>false</viewAllFields>
@@ -1636,6 +3171,26 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>PMS_Practitioner__c</object>
+        <viewAllFields>false</viewAllFields>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>PMS_Pricing_Factor__c</object>
+        <viewAllFields>false</viewAllFields>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>PMS_Pricing_Strategy__c</object>
         <viewAllFields>false</viewAllFields>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
@@ -1688,6 +3243,16 @@
         <object>PMS_Rate__c</object>
         <viewAllFields>false</viewAllFields>
         <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>PMS_Rent_Adjustment__c</object>
+        <viewAllFields>false</viewAllFields>
+        <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
         <allowCreate>true</allowCreate>
@@ -1756,6 +3321,36 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>PMS_Time_Entry__c</object>
+        <viewAllFields>false</viewAllFields>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>PMS_Vendor_Bill__c</object>
+        <viewAllFields>false</viewAllFields>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>PMS_Vendor_Quote__c</object>
+        <viewAllFields>false</viewAllFields>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>PMS_Work_Order__c</object>
         <viewAllFields>false</viewAllFields>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>

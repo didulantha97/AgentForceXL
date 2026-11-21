@@ -127,7 +127,7 @@ public without sharing class PMS_WebBookingHold {
     qr.hours =
       Decimal.valueOf((b.End__c.getTime() - b.Start__c.getTime()) / 60000) / 60;
     PMS_PricingService.Quote q = PMS_PricingService.quote(qr);
-    if (q.gross == null || q.gross <= 0) {
+    if (q.getGross() == null || q.getGross() <= 0) {
       throw new PMS_Exception(
         'We could not price this appointment. Please contact us to book.'
       );
@@ -146,8 +146,8 @@ public without sharing class PMS_WebBookingHold {
       Charge_Type__c = 'Consultation Fee',
       Description__c = (b.Service__r.Name + ' (prepaid online)').left(255),
       Quantity__c = 1,
-      Unit_Price__c = q.net,
-      Tax_Rate__c = q.taxRate,
+      Unit_Price__c = q.getNet(),
+      Tax_Rate__c = q.getTaxRate(),
       Service_Date__c = qr.startDate,
       Status__c = 'Invoiced'
     );

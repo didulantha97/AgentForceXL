@@ -48,10 +48,54 @@ public inherited sharing class PMS_PricingService {
     public String currencyCode;
     @AuraEnabled
     public List<QuoteLine> lines = new List<QuoteLine>();
+
+    @NamespaceAccessible
+    public String getPricingBasis() {
+      return pricingBasis;
+    }
+
+    @NamespaceAccessible
+    public Decimal getUnits() {
+      return units;
+    }
+
+    @NamespaceAccessible
+    public Decimal getUnitPrice() {
+      return unitPrice;
+    }
+
+    @NamespaceAccessible
+    public Decimal getNet() {
+      return net;
+    }
+
+    @NamespaceAccessible
+    public Decimal getTaxRate() {
+      return taxRate;
+    }
+
+    @NamespaceAccessible
+    public Decimal getTax() {
+      return tax;
+    }
+
+    @NamespaceAccessible
+    public Decimal getGross() {
+      return gross;
+    }
+
+    @NamespaceAccessible
+    public String getCurrencyCode() {
+      return currencyCode;
+    }
   }
 
   @NamespaceAccessible
   public class QuoteRequest {
+    @NamespaceAccessible
+    public QuoteRequest() {
+    }
+
     @NamespaceAccessible
     public String module;
     @NamespaceAccessible
