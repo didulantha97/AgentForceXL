@@ -6,7 +6,9 @@
 //   LWC in site pages      c:pmsPublicBooking         -> <ns>:pmsPublicBooking
 //   objects / fields       PMS_Booking__c.Status__c   -> <ns>__PMS_Booking__c.<ns>__Status__c
 //   Apex classes, flows    PMS_CreateBookingAction    -> <ns>__PMS_CreateBookingAction
+//   Experience flexipages  PMS_Booking_Record_Page_Plus -> <ns>__PMS_Booking_Record_Page_Plus
 //   file names             PMS_Booking__c.sharingRules-meta.xml -> <ns>__PMS_Booking__c...
+//   object directories     objects/PMS_Booking__c/ -> objects/<ns>__PMS_Booking__c/
 //
 // Every custom field and object in org-setup belongs to PMS Core, so every
 // un-namespaced X__c / X__r / X__mdt token gets the prefix. Apex classes and
@@ -54,6 +56,11 @@ for (const pkg of ["core", "experience"]) {
   );
   namesIn(path.join(base, "pages"), ".page").forEach((n) => packaged.add(n));
 }
+// Experience-owned record pages referenced by object-level View overrides.
+namesIn(
+  path.join(pmsRoot, "experience", "main", "default", "flexipages"),
+  ".flexipage-meta.xml"
+).forEach((n) => packaged.add(n));
 
 const TEXT = /\.(xml|json|js|html|css|txt|agent|yaml|yml)$/i;
 const customToken =
@@ -90,13 +97,71 @@ function renameFile(name) {
   );
 }
 
+// Object folders (objects/PMS_Booking__c/) are named after the object.
+function renameDir(name) {
+  if (!ns) return name;
+  return name.replace(/^([A-Za-z][A-Za-z0-9_]*?__(?:c|mdt))$/, `${ns}__$1`);
+}
+
+// Objects whose org-setup definition carries sharing defaults (OWD). The admin may have changed
+// them (Access Console), so they are never deployed with the source values: the caller passes the
+// target org's current values in PMS_OWD_JSON ({"PMS_Booking__c":{"internal":"Private","external":"Private"}},
+// keyed by un-namespaced API name). Without that variable the object files are left out entirely.
+const OWD_OBJECTS = ["PMS_Booking__c", "PMS_Invoice__c"];
+let owd = null;
+try {
+  owd = process.env.PMS_OWD_JSON ? JSON.parse(process.env.PMS_OWD_JSON) : null;
+} catch (e) {
+  owd = null;
+}
+const SHARING =
+  /^(Private|Read|ReadWrite|ReadWriteTransfer|FullAccess|ControlledByParent)$/;
+function applyOwd(text, objectName) {
+  const cur = owd && owd[objectName];
+  if (
+    !cur ||
+    !SHARING.test(cur.internal || "") ||
+    !SHARING.test(cur.external || "")
+  ) {
+    return null;
+  }
+  return text
+    .replace(
+      /<sharingModel>[^<]*<\/sharingModel>/,
+      `<sharingModel>${cur.internal}</sharingModel>`
+    )
+    .replace(
+      /<externalSharingModel>[^<]*<\/externalSharingModel>/,
+      `<externalSharingModel>${cur.external}</externalSharingModel>`
+    );
+}
+
 let files = 0;
+function to_(dest, name) {
+  return path.join(dest, renameFile(name));
+}
 function copy(src, dest) {
   fs.mkdirSync(dest, { recursive: true });
   for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
     const from = path.join(src, entry.name);
     if (entry.isDirectory()) {
-      copy(from, path.join(dest, entry.name));
+      copy(from, path.join(dest, renameDir(entry.name)));
+      continue;
+    }
+    const owdObject = entry.name.replace(/\.object-meta\.xml$/, "");
+    if (
+      entry.name.endsWith(".object-meta.xml") &&
+      OWD_OBJECTS.includes(owdObject)
+    ) {
+      const patched = applyOwd(fs.readFileSync(from, "utf8"), owdObject);
+      if (patched === null) {
+        console.error(
+          `warning: current sharing defaults of ${owdObject} unknown; NOT deploying its object definition (OWD left as it is)`
+        );
+        continue;
+      }
+      fs.writeFileSync(to_(dest, entry.name), rewrite(patched));
+      files++;
       continue;
     }
     const to = path.join(dest, renameFile(entry.name));

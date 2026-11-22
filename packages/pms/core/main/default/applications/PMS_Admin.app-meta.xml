@@ -1,5 +1,53 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+            <actionOverrides>
+        <actionName>View</actionName>
+        <content>PMS_Site_Record_Page</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+        <pageOrSobjectType>PMS_Site__c</pageOrSobjectType>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <content>PMS_Site_Record_Page</content>
+        <formFactor>Small</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+        <pageOrSobjectType>PMS_Site__c</pageOrSobjectType>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <content>PMS_Space_Record_Page</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+        <pageOrSobjectType>PMS_Space__c</pageOrSobjectType>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <content>PMS_Space_Record_Page</content>
+        <formFactor>Small</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+        <pageOrSobjectType>PMS_Space__c</pageOrSobjectType>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <content>PMS_Pricing_Strategy_Record_Page</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+        <pageOrSobjectType>PMS_Pricing_Strategy__c</pageOrSobjectType>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <content>PMS_Admin_Home</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+        <pageOrSobjectType>standard-home</pageOrSobjectType>
+    </actionOverrides>
     <brand>
         <headerColor>#032D60</headerColor>
         <shouldOverrideOrgTheme>false</shouldOverrideOrgTheme>
@@ -15,19 +63,42 @@
     <label>PMS Admin</label>
     <navType>Standard</navType>
     <tabs>standard-home</tabs>
-    <tabs>PMS_Site__c</tabs>
-    <tabs>PMS_Space__c</tabs>
-    <tabs>PMS_Space_Type__c</tabs>
     <tabs>PMS_Booking__c</tabs>
-    <tabs>PMS_Rate_Plan__c</tabs>
-    <tabs>PMS_Charge__c</tabs>
     <tabs>PMS_Invoice__c</tabs>
     <tabs>PMS_Payment__c</tabs>
-    <tabs>PMS_Time_Entry__c</tabs>
-    <tabs>PMS_Inspection__c</tabs>
+    <tabs>standard-Account</tabs>
+    <tabs>standard-Contact</tabs>
+    <tabs>standard-Case</tabs>
+    <tabs>PMS_Site__c</tabs>
+    <tabs>PMS_Space__c</tabs>
+    <tabs>standard-report</tabs>
+    <tabs>standard-Dashboard</tabs>
+    <tabs>PMS_Access_Setup</tabs>
+    <tabs>PMS_Access_Team__c</tabs>
+    <tabs>PMS_Access_Rule__c</tabs>
+    <tabs>PMS_Space_Type__c</tabs>
+    <tabs>PMS_Rate_Plan__c</tabs>
+    <tabs>PMS_Service__c</tabs>
+    <tabs>PMS_Charge__c</tabs>
+    <tabs>PMS_Payment_Plan__c</tabs>
+    <tabs>PMS_Payment_Policy__c</tabs>
+    <tabs>PMS_Dunning_Policy__c</tabs>
+    <tabs>PMS_Pricing_Strategy__c</tabs>
+    <tabs>PMS_Rent_Review</tabs>
+    <tabs>PMS_Rent_Adjustment__c</tabs>
+    <tabs>PMS_Index_Value__c</tabs>
+    <tabs>PMS_Channel_Mapping__c</tabs>
+    <tabs>PMS_Channel_Log__c</tabs>
+    <tabs>PMS_Work_Order__c</tabs>
+    <tabs>PMS_Vendor_Quote__c</tabs>
+    <tabs>PMS_Vendor_Bill__c</tabs>
+    <tabs>PMS_Owner_Statement__c</tabs>
+    <tabs>PMS_Document_Request__c</tabs>
+    <tabs>PMS_Approval_Request__c</tabs>
+    <tabs>PMS_Check_In__c</tabs>
     <tabs>PMS_Listing__c</tabs>
     <tabs>PMS_Application__c</tabs>
-    <tabs>PMS_Owner_Statement__c</tabs>
+    <tabs>PMS_Inspection__c</tabs>
     <tabs>PMS_Meter__c</tabs>
     <tabs>PMS_Group_Block__c</tabs>
     <tabs>PMS_Inventory_Day__c</tabs>
@@ -36,15 +107,10 @@
     <tabs>PMS_Project_Task__c</tabs>
     <tabs>PMS_Milestone__c</tabs>
     <tabs>PMS_Resource__c</tabs>
+    <tabs>PMS_Time_Entry__c</tabs>
     <tabs>PMS_RAID_Item__c</tabs>
     <tabs>PMS_Matter__c</tabs>
     <tabs>PMS_Practitioner__c</tabs>
-    <tabs>PMS_Service__c</tabs>
     <tabs>PMS_Intake_Form__c</tabs>
-    <tabs>standard-Account</tabs>
-    <tabs>standard-Contact</tabs>
-    <tabs>standard-Case</tabs>
-    <tabs>standard-report</tabs>
-    <tabs>standard-Dashboard</tabs>
     <uiType>Lightning</uiType>
 </CustomApplication>

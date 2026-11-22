@@ -4,6 +4,10 @@
     <description
   >Channel manager: the Channel Manager panel, mappings, sync logs and the Channex fields. Add principal access to the Channex external credential to this set (README) so its users can press Send now.</description>
     <hasActivationRequired>false</hasActivationRequired>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>PMS_Use_Channex</name>
+    </customPermissions>
     <classAccesses>
         <apexClass>PMS_ChannexController</apexClass>
         <enabled>true</enabled>

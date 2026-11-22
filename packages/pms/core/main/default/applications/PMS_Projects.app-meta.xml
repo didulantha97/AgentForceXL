@@ -1,5 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+        <actionOverrides>
+        <actionName>View</actionName>
+        <content>PMS_Site_Record_Page</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+        <pageOrSobjectType>PMS_Site__c</pageOrSobjectType>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <content>PMS_Site_Record_Page</content>
+        <formFactor>Small</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+        <pageOrSobjectType>PMS_Site__c</pageOrSobjectType>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <content>PMS_Space_Record_Page</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+        <pageOrSobjectType>PMS_Space__c</pageOrSobjectType>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <content>PMS_Space_Record_Page</content>
+        <formFactor>Small</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+        <pageOrSobjectType>PMS_Space__c</pageOrSobjectType>
+    </actionOverrides>
     <actionOverrides>
         <actionName>View</actionName>
         <content>Project_Page</content>
@@ -15,6 +47,14 @@
         <skipRecordTypeSelect>false</skipRecordTypeSelect>
         <type>Flexipage</type>
         <pageOrSobjectType>PMS_Project__c</pageOrSobjectType>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <content>PMS_Projects_Home</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+        <pageOrSobjectType>standard-home</pageOrSobjectType>
     </actionOverrides>
     <brand>
         <headerColor>#C23934</headerColor>
@@ -34,15 +74,19 @@
     <tabs>PMS_Project__c</tabs>
     <tabs>PMS_Project_Task__c</tabs>
     <tabs>PMS_Milestone__c</tabs>
-    <tabs>PMS_Resource__c</tabs>
-    <tabs>PMS_Booking__c</tabs>
-    <tabs>New_Booking</tabs>
     <tabs>PMS_Time_Entry__c</tabs>
     <tabs>PMS_RAID_Item__c</tabs>
+    <tabs>PMS_Approval_Request__c</tabs>
     <tabs>PMS_Invoice__c</tabs>
     <tabs>standard-Account</tabs>
-    <tabs>standard-Contact</tabs>
     <tabs>standard-report</tabs>
     <tabs>standard-Dashboard</tabs>
+    <tabs>PMS_Resource__c</tabs>
+    <tabs>PMS_Booking__c</tabs>
+    <tabs>PMS_Document_Request__c</tabs>
+    <tabs>standard-Contact</tabs>
+    <tabs>PMS_Payment__c</tabs>
+    <tabs>PMS_Payment_Plan__c</tabs>
+    <tabs>PMS_Dunning_Policy__c</tabs>
     <uiType>Lightning</uiType>
 </CustomApplication>

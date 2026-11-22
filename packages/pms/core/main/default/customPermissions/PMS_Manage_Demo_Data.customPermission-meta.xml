@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomPermission xmlns="http://soap.sforce.com/2006/04/metadata"><description
+  >Can load and remove demo data packs (sandbox, scratch, trial and Developer Edition orgs only).</description><isLicensed
+  >false</isLicensed><label>PMS Manage Demo Data</label></CustomPermission>

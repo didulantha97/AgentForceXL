@@ -2,8 +2,11 @@
 // Run by scripts/pms-package.sh org-setup after the sites are deployed. Safe to re-run.
 // __NAMESPACE__ is replaced by the script with the package namespace ('' for source deploys).
 String ns = '__NAMESPACE__';
+// PMS_Payments gets the Stripe webhook (PMS_Payment_Integration) but not the generic gateway webhook
+// (PMS_Payment_Gateway / PMS_PaymentWebhook): nothing in PMS posts to it, so a public endpoint is not needed.
 Map<String, List<String>> permSetsBySite = new Map<String, List<String>>{
-  'PMS_Booking' => new List<String>{ 'PMS_Public_Booking', 'PMS_Stripe_Access' }
+  'PMS_Booking' => new List<String>{ 'PMS_Public_Booking', 'PMS_Stripe_Access' },
+  'PMS_Payments' => new List<String>{ 'PMS_Payment_Link', 'PMS_Payment_Integration' }
 };
 Set<String> psNames = new Set<String>();
 for (List<String> names : permSetsBySite.values()) {

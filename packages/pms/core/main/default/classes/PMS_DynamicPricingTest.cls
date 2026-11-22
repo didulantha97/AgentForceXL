@@ -48,10 +48,19 @@ private class PMS_DynamicPricingTest {
         FROM PermissionSet
         WHERE Name = 'PMS_Dynamic_Pricing'
       ];
-      insert new PermissionSetAssignment(
-        PermissionSetId = ps.Id,
-        AssigneeId = me.Id
-      );
+      if (
+        [
+            SELECT Id
+            FROM PermissionSetAssignment
+            WHERE PermissionSetId = :ps.Id AND AssigneeId = :me.Id
+          ]
+          .isEmpty()
+      ) {
+        insert new PermissionSetAssignment(
+          PermissionSetId = ps.Id,
+          AssigneeId = me.Id
+        );
+      }
     }
   }
 

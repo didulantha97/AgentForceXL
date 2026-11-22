@@ -67,7 +67,18 @@ global without sharing class PMS_StripeWebhook {
           : new Map<String, Object>{ 'id' => p.Id, 'status' => p.Status__c }
       );
     } catch (Exception e) {
-      respond(res, 400, new Map<String, Object>{ 'error' => e.getMessage() });
+      System.debug(
+        LoggingLevel.ERROR,
+        'Stripe webhook failed: ' +
+          e.getMessage() +
+          '\n' +
+          e.getStackTraceString()
+      );
+      respond(
+        res,
+        400,
+        new Map<String, Object>{ 'error' => 'Webhook could not be processed' }
+      );
     }
   }
 
@@ -101,11 +112,27 @@ global without sharing class PMS_StripeWebhook {
     }
     String expected = sign(ts + '.' + body, secret);
     for (String s : signatures) {
-      if (expected.equalsIgnoreCase(s)) {
+      if (constantTimeEquals(expected, s)) {
         return true;
       }
     }
     return false;
+  }
+
+  /** Compares two strings without stopping at the first difference (always walks the longer one). */
+  @TestVisible
+  private static Boolean constantTimeEquals(String a, String b) {
+    if (a == null || b == null) {
+      return false;
+    }
+    Integer diff = a.length() ^ b.length();
+    Integer n = Math.max(a.length(), b.length());
+    for (Integer i = 0; i < n; i++) {
+      Integer x = i < a.length() ? a.charAt(i) : 0;
+      Integer y = i < b.length() ? b.charAt(i) : 0;
+      diff |= x ^ y;
+    }
+    return diff == 0;
   }
 
   @TestVisible

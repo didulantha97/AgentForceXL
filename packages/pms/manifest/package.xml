@@ -1348,6 +1348,8 @@
         <members>PMS_Hide_Customer_Details</members>
         <members>PMS_Partner_Management</members>
         <members>PMS_Partner_Portal</members>
+        <members>PMS_Payment_Gateway</members>
+        <members>PMS_Payment_Integration</members>
         <members>PMS_Payment_Link</members>
         <members>PMS_Public_Booking</members>
         <members>PMS_Rent_Review</members>

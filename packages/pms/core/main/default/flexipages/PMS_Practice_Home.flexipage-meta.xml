@@ -31,6 +31,16 @@
                 <identifier>pms_app_home</identifier>
             </componentInstance>
         </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>module</name>
+                    <value>Practice</value>
+                </componentInstanceProperties>
+                <componentName>c:pmsRevenueAttention</componentName>
+                <identifier>pms_revenue_attention</identifier>
+            </componentInstance>
+        </itemInstances>
         <name>top</name>
         <type>Region</type>
     </flexiPageRegions>

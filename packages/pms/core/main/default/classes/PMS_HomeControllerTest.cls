@@ -237,6 +237,53 @@ private class PMS_HomeControllerTest {
   }
 
   @isTest
+  static void pendingApplicationAppearsInThePropertyApplicationsQueue() {
+    PMS_Site__c site = [
+      SELECT Id
+      FROM PMS_Site__c
+      WHERE RecordType.DeveloperName = 'Property'
+      LIMIT 1
+    ];
+    PMS_Space__c unit = [
+      SELECT Id
+      FROM PMS_Space__c
+      WHERE Site__c = :site.Id
+      LIMIT 1
+    ];
+    Account acc = PMS_TestDataFactory.account('Applicant AB');
+    Contact applicant = PMS_TestDataFactory.contact(acc.Id, 'Applicant');
+    PMS_Application__c pending = new PMS_Application__c(
+      Applicant__c = applicant.Id,
+      Space__c = unit.Id,
+      Decision__c = 'Pending'
+    );
+    PMS_Application__c decided = new PMS_Application__c(
+      Applicant__c = applicant.Id,
+      Space__c = unit.Id,
+      Decision__c = 'Approved'
+    );
+    insert new List<PMS_Application__c>{ pending, decided };
+
+    Test.startTest();
+    PMS_HomeController.HomeData d = PMS_HomeController.getHome(
+      'Property',
+      site.Id
+    );
+    Test.stopTest();
+    assertNoQueryErrors(d);
+    Assert.isTrue(d.warnings.isEmpty(), 'no warnings: ' + d.warnings);
+    PMS_HomeController.Section apps;
+    for (PMS_HomeController.Section sec : d.sections) {
+      if (sec.key == 'applications') {
+        apps = sec;
+      }
+    }
+    Assert.isNotNull(apps, 'the Property home has an applications queue');
+    Assert.areEqual(1, apps.total, 'only the pending application is queued');
+    Assert.areEqual(pending.Id, apps.items[0].recordId);
+  }
+
+  @isTest
   static void projectsHome() {
     PMS_HomeController.HomeData d = PMS_HomeController.getHome(
       'Projects',

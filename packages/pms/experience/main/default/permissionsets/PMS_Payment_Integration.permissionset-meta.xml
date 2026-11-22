@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <classAccesses>
+        <apexClass>PMS_StripeWebhook</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <description
+  >Integration only: the Stripe webhook (/services/apexrest/pms/stripe). Assigned to the PMS Payments site guest user; optional for administrators (not given to the installer); never part of PMS Standard User.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>PMS Payment Integration</label>
+</PermissionSet>

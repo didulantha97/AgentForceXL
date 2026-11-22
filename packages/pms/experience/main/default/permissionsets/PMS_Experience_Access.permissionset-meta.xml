@@ -20,12 +20,8 @@
         <apexClass>PMS_GetQuoteAction</apexClass>
         <enabled>true</enabled>
     </classAccesses>
-    <classAccesses>
-        <apexClass>PMS_PaymentWebhook</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
     <description
-  >Internal-user access to PMS Experience Apex (agent actions, booking invoice, payment webhook). Assign together with PMS App Access.</description>
+  >Internal-user access to PMS Experience Apex (agent actions and the booking invoice flow action). Assign together with PMS App Access. The payment webhook is in PMS Payment Integration.</description>
     <hasActivationRequired>false</hasActivationRequired>
     <label>PMS Experience Access</label>
 </PermissionSet>

@@ -51,7 +51,8 @@
           "versionNumber": "1.0.0.LATEST"
         }
       ],
-      "definitionFile": "packages/pms/config/pms-scratch-def.json"
+      "definitionFile": "packages/pms/config/pms-scratch-def.json",
+      "postInstallScript": "PMS_ExperienceInstallHandler"
     },
     {
       "path": "packages/pms/org-setup",

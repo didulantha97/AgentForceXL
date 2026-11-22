@@ -25,6 +25,14 @@
             <componentInstance>
                 <componentName>pmsPricingCalendar</componentName>
                 <identifier>c_pmsPricingCalendar</identifier>
+                <visibilityRule>
+                    <criteria>
+                      <leftValue
+            >{!$Permission.CustomPermission.PMS_Use_Dynamic_Pricing}</leftValue>
+                      <operator>EQUAL</operator>
+                      <rightValue>true</rightValue>
+                    </criteria>
+                </visibilityRule>
             </componentInstance>
         </itemInstances>
         <name>Facet-calendar</name>

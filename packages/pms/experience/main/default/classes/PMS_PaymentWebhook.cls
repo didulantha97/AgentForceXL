@@ -7,6 +7,10 @@
  * and header X-PMS-Signature = hex(HMAC-SHA256(body, PMS_Settings__c.Webhook_Secret__c)).
  * Payments are upserted on Gateway Reference, so retries never double-count.
  * Card details never reach Salesforce: the gateway's hosted page takes the card.
+ *
+ * Nothing in PMS posts to this endpoint and it is not exposed to any site guest user by default: class access
+ * is in the PMS_Payment_Gateway permission set, assigned only when a gateway is connected on purpose.
+ * The signature is compared in constant time and errors are never echoed back to the caller.
  */
 @RestResource(urlMapping='/pms/payments')
 global with sharing class PMS_PaymentWebhook {
@@ -49,9 +53,12 @@ global with sharing class PMS_PaymentWebhook {
       );
     } catch (Exception e) {
       res.statusCode = 400;
-      res.responseBody = Blob.valueOf(
-        JSON.serialize(new Map<String, String>{ 'error' => e.getMessage() })
+      // The reason stays in the debug log; callers only learn that the payment was not accepted.
+      System.debug(
+        LoggingLevel.WARN,
+        'PMS payment webhook rejected a payload: ' + e.getMessage()
       );
+      res.responseBody = Blob.valueOf('{"error":"payment not accepted"}');
     }
   }
 
@@ -65,7 +72,23 @@ global with sharing class PMS_PaymentWebhook {
     String expected = EncodingUtil.convertToHex(
       Crypto.generateMac('hmacSHA256', Blob.valueOf(body), Blob.valueOf(secret))
     );
-    return expected.equalsIgnoreCase(signature.trim());
+    return constantTimeEquals(expected, signature.trim().toLowerCase());
+  }
+
+  /** Compares two strings without stopping at the first difference (always walks the longer one). */
+  @TestVisible
+  private static Boolean constantTimeEquals(String a, String b) {
+    if (a == null || b == null) {
+      return false;
+    }
+    Integer diff = a.length() ^ b.length();
+    Integer n = Math.max(a.length(), b.length());
+    for (Integer i = 0; i < n; i++) {
+      Integer x = i < a.length() ? a.charAt(i) : 0;
+      Integer y = i < b.length() ? b.charAt(i) : 0;
+      diff |= x ^ y;
+    }
+    return diff == 0;
   }
 
   public static PMS_Payment__c process(Payload p) {

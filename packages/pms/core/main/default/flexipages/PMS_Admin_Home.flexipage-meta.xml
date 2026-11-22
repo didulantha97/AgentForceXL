@@ -34,6 +34,22 @@
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
+                    <name>module</name>
+                    <value>Admin</value>
+                </componentInstanceProperties>
+                <componentName>c:pmsRevenueAttention</componentName>
+                <identifier>pms_revenue_attention</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentName>c:pmsDemoDataCard</componentName>
+                <identifier>pms_demo_data_card</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
                     <name>dashboardName</name>
                     <value>Service_KPIs1</value>
                 </componentInstanceProperties>

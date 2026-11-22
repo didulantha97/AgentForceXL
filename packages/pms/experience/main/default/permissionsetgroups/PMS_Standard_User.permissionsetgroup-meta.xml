@@ -7,6 +7,10 @@
     <mutingPermissionSets>PMS_Standard_User_Muting</mutingPermissionSets>
     <permissionSets>PMS_App_Access</permissionSets>
     <permissionSets>PMS_Core_Admin</permissionSets>
+    <permissionSets>PMS_Customer_Portal_Management</permissionSets>
+    <permissionSets>PMS_Dunning</permissionSets>
+    <permissionSets>PMS_Experience_Access</permissionSets>
+    <permissionSets>PMS_Guarantees</permissionSets>
     <permissionSets>PMS_Partner_Management</permissionSets>
     <permissionSets>PMS_Stripe_Access</permissionSets>
     <status>Updated</status>

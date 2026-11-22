@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+        <actionOverrides>
+        <actionName>View</actionName>
+        <content>PMS_Site_Record_Page</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+        <pageOrSobjectType>PMS_Site__c</pageOrSobjectType>
+    </actionOverrides>
     <actionOverrides>
         <actionName>View</actionName>
-        <content>Property_Site_Record_Page1</content>
+        <content>PMS_Site_Record_Page</content>
         <formFactor>Small</formFactor>
         <skipRecordTypeSelect>false</skipRecordTypeSelect>
         <type>Flexipage</type>
@@ -10,11 +18,27 @@
     </actionOverrides>
     <actionOverrides>
         <actionName>View</actionName>
-        <content>Property_Site_Record_Page1</content>
+        <content>PMS_Space_Record_Page</content>
         <formFactor>Large</formFactor>
         <skipRecordTypeSelect>false</skipRecordTypeSelect>
         <type>Flexipage</type>
-        <pageOrSobjectType>PMS_Site__c</pageOrSobjectType>
+        <pageOrSobjectType>PMS_Space__c</pageOrSobjectType>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <content>PMS_Space_Record_Page</content>
+        <formFactor>Small</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+        <pageOrSobjectType>PMS_Space__c</pageOrSobjectType>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <content>PMS_Property_Home</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+        <pageOrSobjectType>standard-home</pageOrSobjectType>
     </actionOverrides>
     <brand>
         <headerColor>#0B827C</headerColor>
@@ -34,18 +58,29 @@
     <tabs>PMS_Site__c</tabs>
     <tabs>PMS_Space__c</tabs>
     <tabs>PMS_Booking__c</tabs>
-    <tabs>New_Booking</tabs>
-    <tabs>PMS_Listing__c</tabs>
-    <tabs>PMS_Application__c</tabs>
+    <tabs>standard-Contact</tabs>
     <tabs>PMS_Invoice__c</tabs>
     <tabs>PMS_Payment__c</tabs>
     <tabs>standard-Case</tabs>
-    <tabs>PMS_Inspection__c</tabs>
-    <tabs>PMS_Meter__c</tabs>
-    <tabs>PMS_Owner_Statement__c</tabs>
-    <tabs>standard-Account</tabs>
-    <tabs>standard-Contact</tabs>
+    <tabs>PMS_Work_Order__c</tabs>
     <tabs>standard-report</tabs>
     <tabs>standard-Dashboard</tabs>
+    <tabs>PMS_Payment_Plan__c</tabs>
+    <tabs>PMS_Rent_Review</tabs>
+    <tabs>PMS_Rent_Adjustment__c</tabs>
+    <tabs>PMS_Index_Value__c</tabs>
+    <tabs>PMS_Listing__c</tabs>
+    <tabs>PMS_Application__c</tabs>
+    <tabs>New_Booking</tabs>
+    <tabs>PMS_Document_Request__c</tabs>
+    <tabs>PMS_Check_In__c</tabs>
+    <tabs>PMS_Inspection__c</tabs>
+    <tabs>PMS_Meter__c</tabs>
+    <tabs>PMS_Vendor_Quote__c</tabs>
+    <tabs>PMS_Vendor_Bill__c</tabs>
+    <tabs>PMS_Owner_Statement__c</tabs>
+    <tabs>PMS_Dunning_Policy__c</tabs>
+    <tabs>PMS_Payment_Policy__c</tabs>
+    <tabs>standard-Account</tabs>
     <uiType>Lightning</uiType>
 </CustomApplication>

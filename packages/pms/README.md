@@ -43,7 +43,13 @@ user its permission sets, and assigns `PMS_App_Access`, `PMS_Core_Admin` and
 - Enter the Stripe secret key: Setup > Named Credentials > External Credentials >
   Stripe API > StripePrincipal. Then fill in **PMS Settings** (webhook secret and
   checkout return URL).
-- Assign the `PMS_Standard_User` permission set group to staff.
+- Assign the `PMS_Standard_User` permission set group to staff:
+  `scripts/pms-package.sh access <org> --user <username> --role staff`
+  (`--role admin`, the default, assigns every admin permission set). The package post-install
+  scripts already give the installing admin `PMS_Core_Admin` + `PMS_App_Access` (Core) and the
+  Experience admin sets; add-on sets (Access Manager, Channex, Dynamic Pricing, Rent Review) need
+  `access <org> --role admin`.
+- Audit access from source at any time: `node packages/pms/scripts/access-audit.js [--check]`.
 
 ## Free orgs (trial Dev Hubs, Developer Edition, scratch)
 

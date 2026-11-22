@@ -2252,7 +2252,7 @@ public with sharing class PMS_HomeController {
             c.isAdminView
               ? ''
               : '(Space__r.Site__c IN :siteIds OR Listing__r.Site__c IN :siteIds)',
-            'Decision__c = null'
+            '(Decision__c = null OR Decision__c = \'Pending\')'
           }
         ) +
         ' ORDER BY CreatedDate ASC LIMIT ' +

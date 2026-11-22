@@ -4,6 +4,10 @@
     <description
   >Revenue managers: Pricing Strategies and Factors, the pricing calendar, and locking daily rates.</description>
     <hasActivationRequired>false</hasActivationRequired>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>PMS_Use_Dynamic_Pricing</name>
+    </customPermissions>
     <classAccesses>
         <apexClass>PMS_PricingCalendarController</apexClass>
         <enabled>true</enabled>
