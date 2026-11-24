@@ -1,0 +1,12 @@
+.kpi {
+  min-width: 0;
+}
+.kpi-value {
+  overflow-wrap: anywhere;
+}
+.pref-highlight {
+  border-left: 0.25rem solid var(--slds-g-color-brand-base-50, #0176d3);
+}
+.stay-row + .stay-row {
+  border-top: 1px solid var(--slds-g-color-border-base-1, #e5e5e5);
+}

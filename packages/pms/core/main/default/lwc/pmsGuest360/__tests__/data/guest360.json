@@ -1,0 +1,129 @@
+{
+  "identity": {
+    "contactId": "003000000000001AAA",
+    "name": "Ada Lovelace",
+    "accountName": "Analytical Ltd",
+    "language": "English",
+    "vipLevel": "Gold",
+    "vipNotes": "Prefers high floor",
+    "dietary": "Vegan",
+    "accessibilityNeeds": "Step-free access",
+    "idVerified": true
+  },
+  "stats": {
+    "accessible": true,
+    "totalStays": 5,
+    "lifetimeNights": 12,
+    "roomRevenue": 1500,
+    "extrasRevenue": 200,
+    "firstStay": "2024-01-10",
+    "lastStay": "2026-05-01",
+    "nextArrival": null,
+    "refreshedOn": "2026-11-01T10:00:00.000Z"
+  },
+  "upcomingStays": {
+    "accessible": true,
+    "items": [
+      {
+        "bookingId": "a01000000000001AAA",
+        "name": "BK-0001",
+        "startDate": "2027-01-10",
+        "endDate": "2027-01-12",
+        "status": "Confirmed",
+        "spaceName": "101",
+        "channel": "Direct",
+        "balanceDue": 50,
+        "specialRequests": "Late arrival"
+      },
+      {
+        "bookingId": "a01000000000004AAA",
+        "name": "BK-0004",
+        "startDate": "2027-03-10",
+        "endDate": "2027-03-12",
+        "status": "Tentative",
+        "viaParty": true,
+        "totalAmount": 900,
+        "balanceDue": 900,
+        "specialRequests": "Party secret"
+      }
+    ]
+  },
+  "pastStays": {
+    "accessible": true,
+    "items": [
+      {
+        "bookingId": "a01000000000002AAA",
+        "name": "BK-0002",
+        "startDate": "2026-04-01",
+        "endDate": "2026-04-03",
+        "status": "Completed",
+        "balanceDue": 0
+      },
+      {
+        "bookingId": "a01000000000003AAA",
+        "name": "BK-0003",
+        "startDate": "2026-02-01",
+        "endDate": "2026-02-03",
+        "status": "Cancelled"
+      }
+    ]
+  },
+  "preferences": {
+    "accessible": true,
+    "items": [
+      {
+        "preferenceId": "a02000000000001AAA",
+        "category": "Room",
+        "value": "Quiet room",
+        "source": "Guest"
+      },
+      {
+        "preferenceId": "a02000000000002AAA",
+        "category": "Food & Drink",
+        "value": "No nuts"
+      },
+      {
+        "preferenceId": "a02000000000003AAA",
+        "category": null,
+        "value": "Extra towels"
+      },
+      {
+        "preferenceId": "a02000000000004AAA",
+        "category": "Accessibility",
+        "value": "Ground floor"
+      }
+    ]
+  },
+  "service": {
+    "accessible": true,
+    "items": [
+      {
+        "caseId": "500000000000001AAA",
+        "caseNumber": "00001",
+        "subject": "Noisy room",
+        "status": "New",
+        "priority": "High",
+        "isClosed": false,
+        "createdDate": "2026-04-02T10:00:00.000Z"
+      },
+      {
+        "caseId": "500000000000002AAA",
+        "caseNumber": "00002",
+        "subject": "Refund",
+        "status": "Closed",
+        "isClosed": true,
+        "createdDate": "2026-03-02T10:00:00.000Z"
+      }
+    ]
+  },
+  "consent": {
+    "accessible": true,
+    "marketingConsent": true,
+    "consentDate": "2026-01-01T00:00:00.000Z",
+    "consentSource": "Web form",
+    "doNotContact": true,
+    "formAccessible": true,
+    "gdprFormConsentGiven": true,
+    "gdprFormDate": "2026-01-02T00:00:00.000Z"
+  }
+}

@@ -1,0 +1,377 @@
+<template>
+  <lightning-card title="Guest 360" icon-name="standard:contact">
+    <template lwc:if={hasRecord}>
+      <lightning-button-icon
+        slot="actions"
+        icon-name="utility:refresh"
+        alternative-text="Refresh guest information"
+        onclick={handleRefresh}
+      ></lightning-button-icon>
+    </template>
+    <div class="slds-p-horizontal_medium slds-is-relative">
+      <template lwc:if={showLoading}>
+        <lightning-spinner
+          alternative-text="Loading guest information"
+          size="small"
+        ></lightning-spinner>
+      </template>
+      <template lwc:if={showNoRecord}>
+        <p class="slds-text-color_weak">
+          Open this component on a Contact record to see the guest overview.
+        </p>
+      </template>
+      <template lwc:if={error}>
+        <div
+          class="slds-notify slds-notify_alert slds-alert_error"
+          role="alert"
+        >
+          {error}
+        </div>
+      </template>
+
+      <template lwc:if={showContent}>
+        <!-- Header -->
+        <div class="slds-m-bottom_small">
+          <h2 class="slds-text-heading_medium">{identity.name}</h2>
+          <div class="slds-grid slds-wrap slds-grid_vertical-align-center">
+            <template lwc:if={hasVip}>
+              <span
+                class="slds-badge slds-theme_warning slds-m-right_x-small slds-m-top_xx-small"
+              >
+                <lightning-icon
+                  icon-name="utility:favorite"
+                  size="xx-small"
+                  alternative-text="VIP guest"
+                  class="slds-m-right_xx-small"
+                ></lightning-icon>
+                {vipLabel}
+              </span>
+            </template>
+            <span class="slds-badge slds-m-right_x-small slds-m-top_xx-small">
+              <lightning-icon
+                icon-name={idIcon}
+                size="xx-small"
+                alternative-text=""
+                class="slds-m-right_xx-small"
+              ></lightning-icon>
+              {idText}
+            </span>
+            <template lwc:if={identity.language}>
+              <span class="slds-m-right_x-small slds-m-top_xx-small">
+                <span class="slds-text-color_weak">Language:</span>
+                {identity.language}
+              </span>
+            </template>
+            <template lwc:if={identity.accountName}>
+              <span class="slds-m-top_xx-small">
+                <span class="slds-text-color_weak">Account:</span>
+                {identity.accountName}
+              </span>
+            </template>
+          </div>
+          <template lwc:if={identity.vipNotes}>
+            <p class="slds-text-body_small slds-m-top_xx-small">
+              {identity.vipNotes}
+            </p>
+          </template>
+        </div>
+
+        <!-- KPIs -->
+        <template lwc:if={showStats}>
+          <h3 class="slds-assistive-text">Guest statistics</h3>
+          <div
+            class="slds-grid slds-wrap slds-gutters_x-small slds-m-bottom_x-small"
+          >
+            <template for:each={kpis} for:item="k">
+              <div
+                key={k.key}
+                class="kpi slds-col slds-size_1-of-2 slds-medium-size_1-of-4 slds-m-bottom_x-small"
+              >
+                <div class="slds-box slds-box_x-small slds-text-align_center">
+                  <p class="kpi-value slds-text-heading_small">
+                    <template lwc:if={k.isNumber}>
+                      <lightning-formatted-number
+                        value={k.number}
+                      ></lightning-formatted-number>
+                    </template>
+                    <template lwc:if={k.isCurrency}>
+                      <lightning-formatted-number
+                        value={k.currency}
+                        format-style="currency"
+                      ></lightning-formatted-number>
+                    </template>
+                    <template lwc:if={k.isDate}>
+                      <lightning-formatted-date-time
+                        value={k.date}
+                        time-zone="UTC"
+                        year="numeric"
+                        month="short"
+                        day="2-digit"
+                      ></lightning-formatted-date-time>
+                    </template>
+                    <template lwc:if={k.isEmpty}>
+                      <span>None</span>
+                    </template>
+                  </p>
+                  <p class="slds-text-body_small slds-text-color_weak">
+                    {k.label}
+                  </p>
+                </div>
+              </div>
+            </template>
+          </div>
+          <template lwc:if={statsRefreshed}>
+            <p
+              class="slds-text-body_small slds-text-color_weak slds-m-bottom_small"
+            >
+              Stats refreshed
+              <lightning-relative-date-time
+                value={statsRefreshed}
+              ></lightning-relative-date-time>
+            </p>
+          </template>
+        </template>
+
+        <lightning-tabset>
+          <template lwc:if={upcomingAccessible}>
+            <lightning-tab label={upcomingLabel}>
+              <template lwc:if={noUpcoming}>
+                <p class="slds-text-color_weak">No upcoming stays.</p>
+              </template>
+              <template for:each={upcoming} for:item="s">
+                <div key={s.key} class="stay-row slds-p-vertical_x-small">
+                  <div class="slds-grid slds-wrap slds-grid_align-spread">
+                    <a href="#" data-id={s.bookingId} onclick={handleOpen}
+                      >{s.name}</a
+                    >
+                    <span class={s.badgeClass}>{s.status}</span>
+                  </div>
+                  <p class="slds-text-body_small">
+                    <lightning-formatted-date-time
+                      value={s.startDate}
+                      time-zone="UTC"
+                    ></lightning-formatted-date-time>
+                    to
+                    <lightning-formatted-date-time
+                      value={s.endDate}
+                      time-zone="UTC"
+                    ></lightning-formatted-date-time>
+                  </p>
+                  <p class="slds-text-body_small slds-text-color_weak">
+                    <template lwc:if={s.spaceName}>Room {s.spaceName}</template>
+                    <template lwc:if={s.channel}> | {s.channel}</template>
+                    <template lwc:if={s.viaParty}>
+                      | via party booking</template
+                    >
+                    <template lwc:if={s.hasBalanceValue}>
+                      | Balance due
+                      <lightning-formatted-number
+                        value={s.balanceDue}
+                        format-style="currency"
+                      ></lightning-formatted-number>
+                    </template>
+                  </p>
+                  <template lwc:if={s.showRequests}>
+                    <p class="slds-text-body_small">{s.specialRequests}</p>
+                  </template>
+                </div>
+              </template>
+            </lightning-tab>
+          </template>
+
+          <template lwc:if={pastAccessible}>
+            <lightning-tab label={pastLabel}>
+              <template lwc:if={noPast}>
+                <p class="slds-text-color_weak">No past stays.</p>
+              </template>
+              <template for:each={past} for:item="s">
+                <div key={s.key} class="stay-row slds-p-vertical_x-small">
+                  <div class="slds-grid slds-wrap slds-grid_align-spread">
+                    <a href="#" data-id={s.bookingId} onclick={handleOpen}
+                      >{s.name}</a
+                    >
+                    <span class={s.badgeClass}>{s.status}</span>
+                  </div>
+                  <p class="slds-text-body_small">
+                    <lightning-formatted-date-time
+                      value={s.startDate}
+                      time-zone="UTC"
+                    ></lightning-formatted-date-time>
+                    to
+                    <lightning-formatted-date-time
+                      value={s.endDate}
+                      time-zone="UTC"
+                    ></lightning-formatted-date-time>
+                  </p>
+                  <p class="slds-text-body_small slds-text-color_weak">
+                    <template lwc:if={s.spaceName}>Room {s.spaceName}</template>
+                    <template lwc:if={s.channel}> | {s.channel}</template>
+                    <template lwc:if={s.viaParty}>
+                      | via party booking</template
+                    >
+                    <template lwc:if={s.hasBalanceValue}>
+                      | Balance due
+                      <lightning-formatted-number
+                        value={s.balanceDue}
+                        format-style="currency"
+                      ></lightning-formatted-number>
+                    </template>
+                  </p>
+                </div>
+              </template>
+            </lightning-tab>
+          </template>
+
+          <template lwc:if={prefsAccessible}>
+            <lightning-tab label={prefsLabel}>
+              <template lwc:if={noPrefs}>
+                <p class="slds-text-color_weak">No preferences recorded.</p>
+              </template>
+              <template for:each={highlights} for:item="h">
+                <div
+                  key={h.key}
+                  class="pref-highlight slds-box slds-box_x-small slds-m-bottom_x-small"
+                >
+                  <div class="slds-grid slds-grid_vertical-align-center">
+                    <lightning-icon
+                      icon-name={h.icon}
+                      size="x-small"
+                      alternative-text={h.label}
+                      class="slds-m-right_x-small"
+                    ></lightning-icon>
+                    <div>
+                      <p class="slds-text-title_bold">{h.label}</p>
+                      <p>{h.value}</p>
+                    </div>
+                  </div>
+                </div>
+              </template>
+              <template for:each={prefGroups} for:item="g">
+                <div key={g.key} class="slds-m-bottom_small">
+                  <h3
+                    class="slds-text-title_bold slds-m-bottom_xx-small slds-grid slds-grid_vertical-align-center"
+                  >
+                    <template lwc:if={g.icon}>
+                      <lightning-icon
+                        icon-name={g.icon}
+                        size="xx-small"
+                        alternative-text=""
+                        class="slds-m-right_xx-small"
+                      ></lightning-icon>
+                    </template>
+                    {g.category}
+                  </h3>
+                  <ul class="slds-list_dotted">
+                    <template for:each={g.items} for:item="p">
+                      <li key={p.key}>
+                        {p.value}
+                        <template lwc:if={p.source}>
+                          <span class="slds-text-color_weak">
+                            ({p.source})</span
+                          >
+                        </template>
+                      </li>
+                    </template>
+                  </ul>
+                </div>
+              </template>
+            </lightning-tab>
+          </template>
+
+          <template lwc:if={serviceAccessible}>
+            <lightning-tab label={serviceLabel}>
+              <template lwc:if={noCases}>
+                <p class="slds-text-color_weak">No service cases.</p>
+              </template>
+              <template for:each={cases} for:item="c">
+                <div key={c.key} class="stay-row slds-p-vertical_x-small">
+                  <div class="slds-grid slds-wrap slds-grid_align-spread">
+                    <a href="#" data-id={c.caseId} onclick={handleOpen}
+                      >{c.caseNumber}: {c.subject}</a
+                    >
+                    <span class={c.badgeClass}>{c.statusText}</span>
+                  </div>
+                  <p class="slds-text-body_small slds-text-color_weak">
+                    <template lwc:if={c.priority}
+                      >{c.priority} priority |
+                    </template>
+                    <lightning-formatted-date-time
+                      value={c.createdDate}
+                    ></lightning-formatted-date-time>
+                  </p>
+                </div>
+              </template>
+            </lightning-tab>
+          </template>
+
+          <template lwc:if={showConsent}>
+            <lightning-tab label="Consent">
+              <template lwc:if={doNotContact}>
+                <div
+                  class="slds-notify slds-notify_alert slds-alert_warning slds-m-bottom_small"
+                  role="alert"
+                >
+                  <lightning-icon
+                    icon-name="utility:warning"
+                    size="x-small"
+                    alternative-text="Warning"
+                    class="slds-m-right_x-small"
+                  ></lightning-icon>
+                  Do not contact: this guest must not be contacted.
+                </div>
+              </template>
+              <dl class="slds-m-bottom_small">
+                <dt class="slds-text-title_bold">Marketing consent</dt>
+                <dd class="slds-grid slds-grid_vertical-align-center">
+                  <lightning-icon
+                    icon-name={marketingIcon}
+                    size="xx-small"
+                    alternative-text=""
+                    class="slds-m-right_xx-small"
+                  ></lightning-icon>
+                  {marketingText}
+                </dd>
+                <template lwc:if={consentDateValue}>
+                  <dt class="slds-text-title_bold slds-m-top_x-small">
+                    Consent date
+                  </dt>
+                  <dd>
+                    <lightning-formatted-date-time
+                      value={consentDateValue}
+                      year="numeric"
+                      month="short"
+                      day="2-digit"
+                    ></lightning-formatted-date-time>
+                  </dd>
+                </template>
+                <template lwc:if={consent.consentSource}>
+                  <dt class="slds-text-title_bold slds-m-top_x-small">
+                    Source
+                  </dt>
+                  <dd>{consent.consentSource}</dd>
+                </template>
+              </dl>
+              <template lwc:if={formShown}>
+                <h3 class="slds-text-title_bold">Latest GDPR form</h3>
+                <template lwc:if={hasForm}>
+                  <p>
+                    {formText},
+                    <lightning-formatted-date-time
+                      value={formDateValue}
+                      year="numeric"
+                      month="short"
+                      day="2-digit"
+                    ></lightning-formatted-date-time>
+                  </p>
+                </template>
+                <template lwc:else>
+                  <p class="slds-text-color_weak">No GDPR form on file.</p>
+                </template>
+              </template>
+            </lightning-tab>
+          </template>
+        </lightning-tabset>
+      </template>
+    </div>
+  </lightning-card>
+</template>
