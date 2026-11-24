@@ -67,6 +67,8 @@
         <members>PMS_GuestCheckInController</members>
         <members>PMS_GuestNotifications</members>
         <members>PMS_GuestNotificationsTest</members>
+        <members>PMS_GuestStatsBatch</members>
+        <members>PMS_GuestStatsService</members>
         <members>PMS_HomeController</members>
         <members>PMS_HomeControllerAccessTest</members>
         <members>PMS_HomeControllerTest</members>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Last_Error__c</fullName>
+    <description>First error message of the last run, if any.</description>
+    <externalId>false</externalId>
+    <label>Last Error</label>
+    <length>255</length>
+    <unique>false</unique>
+    <required>false</required>
+    <type>Text</type>
+</CustomField>
