@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PMS_Room_Revenue__c</fullName>
+    <description
+  >Lifetime room revenue excluding VAT, in the org corporate currency. Written by PMS system code only.</description>
+    <inlineHelpText
+  >Excludes VAT; corporate currency; read-only.</inlineHelpText>
+    <label>Room Revenue</label>
+    <precision>16</precision>
+    <scale>2</scale>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

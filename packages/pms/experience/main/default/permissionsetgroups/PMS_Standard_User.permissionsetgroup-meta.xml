@@ -11,6 +11,8 @@
     <permissionSets>PMS_Dunning</permissionSets>
     <permissionSets>PMS_Experience_Access</permissionSets>
     <permissionSets>PMS_Guarantees</permissionSets>
+    <permissionSets>PMS_Guest360_Editor</permissionSets>
+    <permissionSets>PMS_Guest360_Viewer</permissionSets>
     <permissionSets>PMS_Partner_Management</permissionSets>
     <permissionSets>PMS_Stripe_Access</permissionSets>
     <status>Updated</status>

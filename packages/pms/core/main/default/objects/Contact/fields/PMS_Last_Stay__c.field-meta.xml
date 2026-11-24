@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PMS_Last_Stay__c</fullName>
+    <description
+  >Check-out date of the guest's most recent stay. Written by PMS system code only.</description>
+    <inlineHelpText>Calculated by PMS; read-only.</inlineHelpText>
+    <label>Last Stay</label>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

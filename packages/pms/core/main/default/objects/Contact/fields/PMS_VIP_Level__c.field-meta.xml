@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PMS_VIP_Level__c</fullName>
+    <description>VIP tier assigned to the guest by staff.</description>
+    <inlineHelpText>Leave blank for non-VIP guests.</inlineHelpText>
+    <label>VIP Level</label>
+    <valueSet>
+        <restricted>false</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>VIP 1</fullName>
+                <default>false</default>
+                <label>VIP 1</label>
+            </value>
+            <value>
+                <fullName>VIP 2</fullName>
+                <default>false</default>
+                <label>VIP 2</label>
+            </value>
+            <value>
+                <fullName>VIP 3</fullName>
+                <default>false</default>
+                <label>VIP 3</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+</CustomField>

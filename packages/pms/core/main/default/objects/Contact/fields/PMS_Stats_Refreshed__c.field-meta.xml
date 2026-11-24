@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PMS_Stats_Refreshed__c</fullName>
+    <description
+  >When the guest stay statistics were last recalculated. Written by PMS system code only.</description>
+    <inlineHelpText>Time of the last statistics refresh.</inlineHelpText>
+    <label>Stats Refreshed</label>
+    <trackTrending>false</trackTrending>
+    <type>DateTime</type>
+</CustomField>

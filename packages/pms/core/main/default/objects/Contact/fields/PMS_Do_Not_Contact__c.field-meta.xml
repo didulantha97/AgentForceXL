@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PMS_Do_Not_Contact__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description
+  >The guest must not be contacted for marketing purposes. Normally written by system code from GDPR intake forms; editable by the privacy admin only.</description>
+    <inlineHelpText
+  >When checked, no marketing communication may be sent.</inlineHelpText>
+    <label>Do Not Contact</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

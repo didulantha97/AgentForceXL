@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PMS_Marketing_Consent__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description
+  >Whether the guest has consented to marketing communication. Normally written by system code from GDPR intake forms; editable by the privacy admin only.</description>
+    <inlineHelpText
+  >Set from the GDPR intake form; do not change without the guest's consent.</inlineHelpText>
+    <label>Marketing Consent</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

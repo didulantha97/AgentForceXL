@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PMS_Consent_Source__c</fullName>
+    <description
+  >Where the guest's consent was captured. Normally written by system code from GDPR intake forms; editable by the privacy admin only.</description>
+    <inlineHelpText>Channel through which consent was recorded.</inlineHelpText>
+    <label>Consent Source</label>
+    <valueSet>
+        <restricted>false</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Intake Form</fullName>
+                <default>false</default>
+                <label>Intake Form</label>
+            </value>
+            <value>
+                <fullName>Check-In</fullName>
+                <default>false</default>
+                <label>Check-In</label>
+            </value>
+            <value>
+                <fullName>Portal</fullName>
+                <default>false</default>
+                <label>Portal</label>
+            </value>
+            <value>
+                <fullName>Staff</fullName>
+                <default>false</default>
+                <label>Staff</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+</CustomField>

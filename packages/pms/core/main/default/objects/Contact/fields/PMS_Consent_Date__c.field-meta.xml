@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PMS_Consent_Date__c</fullName>
+    <description
+  >When the guest gave or withdrew marketing consent. Normally written by system code from GDPR intake forms; editable by the privacy admin only.</description>
+    <inlineHelpText>Time the consent was recorded.</inlineHelpText>
+    <label>Consent Date</label>
+    <trackTrending>false</trackTrending>
+    <type>DateTime</type>
+</CustomField>

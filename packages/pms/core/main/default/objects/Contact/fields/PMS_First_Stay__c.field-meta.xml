@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PMS_First_Stay__c</fullName>
+    <description
+  >Check-in date of the guest's first stay. Written by PMS system code only.</description>
+    <inlineHelpText>Calculated by PMS; read-only.</inlineHelpText>
+    <label>First Stay</label>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

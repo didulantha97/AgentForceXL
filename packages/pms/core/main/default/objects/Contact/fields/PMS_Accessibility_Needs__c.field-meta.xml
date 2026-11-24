@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PMS_Accessibility_Needs__c</fullName>
+    <description
+  >Accessibility needs of the guest, such as step-free access.</description>
+    <inlineHelpText
+  >For example wheelchair access or hearing loop.</inlineHelpText>
+    <label>Accessibility Needs</label>
+    <length>255</length>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+</CustomField>
