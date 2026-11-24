@@ -344,6 +344,176 @@ private class PMS_ChannexTest {
     Assert.areEqual('Booking Cancelled', o.logs[0].Kind__c);
   }
 
+  // ---- guestFor / guest matching
+
+  private static Map<String, Object> guestRev(
+    String first,
+    String last,
+    String mail,
+    String phone
+  ) {
+    return new Map<String, Object>{
+      'arrival_date' => String.valueOf(Date.today().addDays(10)),
+      'departure_date' => String.valueOf(Date.today().addDays(12)),
+      'customer' => new Map<String, Object>{
+        'name' => first,
+        'surname' => last,
+        'mail' => mail,
+        'phone' => phone
+      }
+    };
+  }
+
+  @isTest
+  static void guestForFillsBlankPhoneAndAliasOnMatch() {
+    Account a = PMS_TestDataFactory.account('Match');
+    Contact c = new Contact(
+      AccountId = a.Id,
+      LastName = 'Match',
+      Email = 'match@guest.example.com'
+    );
+    insert c;
+    Contact hit = PMS_ChannexBookings.guestFor(
+      guestRev('M', 'Match', 'MATCH@guest.example.com', '+46701230000')
+    );
+    Assert.areEqual(c.Id, hit.Id);
+    Contact after = [
+      SELECT Phone, PMS_OTA_Alias_Email__c
+      FROM Contact
+      WHERE Id = :c.Id
+    ];
+    Assert.areEqual('+46701230000', after.Phone);
+    Assert.isNull(
+      after.PMS_OTA_Alias_Email__c,
+      'unmasked email gives no alias'
+    );
+
+    // Existing phone is never overwritten.
+    PMS_ChannexBookings.guestFor(
+      guestRev('M', 'Match', 'match@guest.example.com', '+46709999999')
+    );
+    Assert.areEqual(
+      '+46701230000',
+      [SELECT Phone FROM Contact WHERE Id = :c.Id].Phone
+    );
+  }
+
+  @isTest
+  static void guestForFillsAliasWhenMatchedByPhoneAndName() {
+    PMS_Settings__c st = PMS_Settings__c.getOrgDefaults();
+    st.Guest_Match_Phone_Name__c = true;
+    upsert st;
+    Account a = PMS_TestDataFactory.account('Pn');
+    Contact c = new Contact(
+      AccountId = a.Id,
+      FirstName = 'P',
+      LastName = 'Pn',
+      Phone = '+46705550000'
+    );
+    insert c;
+    String relay = 'pn99@guest.booking.com';
+    Contact hit = PMS_ChannexBookings.guestFor(
+      guestRev('P', 'Pn', relay, '0046705550000')
+    );
+    Assert.areEqual(c.Id, hit.Id);
+    Contact after = [
+      SELECT Email, PMS_OTA_Alias_Email__c
+      FROM Contact
+      WHERE Id = :c.Id
+    ];
+    Assert.areEqual(relay, after.PMS_OTA_Alias_Email__c);
+    Assert.isNull(after.Email);
+    // Alias already set is not overwritten.
+    PMS_ChannexBookings.guestFor(
+      guestRev('P', 'Pn', 'other@guest.booking.com', '+46705550000')
+    );
+    Assert.areEqual(
+      relay,
+      [SELECT PMS_OTA_Alias_Email__c FROM Contact WHERE Id = :c.Id]
+      .PMS_OTA_Alias_Email__c
+    );
+  }
+
+  @isTest
+  static void guestForMaskedEmailCreatesContactWithAliasOnly() {
+    Contact ct = PMS_ChannexBookings.guestFor(
+      guestRev('Nora', 'Relay', 'nr1@guest.booking.com', '+46701119999')
+    );
+    Contact r = [
+      SELECT Email, PMS_OTA_Alias_Email__c, Account.Name
+      FROM Contact
+      WHERE Id = :ct.Id
+    ];
+    Assert.isNull(r.Email);
+    Assert.areEqual('nr1@guest.booking.com', r.PMS_OTA_Alias_Email__c);
+    Assert.areEqual('Nora Relay', r.Account.Name);
+    // Second booking with same relay does not match the first contact.
+    Contact second = PMS_ChannexBookings.guestFor(
+      guestRev('Nora', 'Relay', 'nr1@guest.booking.com', null)
+    );
+    Assert.areNotEqual(ct.Id, second.Id);
+  }
+
+  @isTest
+  static void guestForFlagsPossibleDuplicateOnNewContact() {
+    PMS_Entitlements.forceStateForTest(PMS_Entitlements.DEV);
+    Account a = PMS_TestDataFactory.account('Flag');
+    Contact orig = new Contact(
+      AccountId = a.Id,
+      FirstName = 'Fia',
+      LastName = 'Flag',
+      Email = 'fia@guest.example.com'
+    );
+    insert orig;
+    insert new PMS_Booking__c(
+      Primary_Contact__c = orig.Id,
+      Status__c = 'Confirmed',
+      Start__c = Datetime.newInstance(
+        Date.today().addDays(10),
+        Time.newInstance(12, 0, 0, 0)
+      ),
+      End__c = Datetime.newInstance(
+        Date.today().addDays(12),
+        Time.newInstance(12, 0, 0, 0)
+      )
+    );
+    Contact ct = PMS_ChannexBookings.guestFor(
+      guestRev('Fia', 'Flag', 'fia@guest.booking.com', null)
+    );
+    Contact r = [
+      SELECT PMS_Possible_Duplicate_Of__c, PMS_Duplicate_Reason__c
+      FROM Contact
+      WHERE Id = :ct.Id
+    ];
+    Assert.areNotEqual(orig.Id, ct.Id);
+    Assert.areEqual(orig.Id, r.PMS_Possible_Duplicate_Of__c);
+    Assert.isNotNull(r.PMS_Duplicate_Reason__c);
+  }
+
+  @isTest
+  static void guestForPlainEmailBookingStillCreatesThenReusesGuest() {
+    Contact first = PMS_ChannexBookings.guestFor(
+      guestRev('Ivar', 'Plain', 'ivar@guest.example.com', null)
+    );
+    Contact r = [
+      SELECT
+        Email,
+        PMS_OTA_Alias_Email__c,
+        PMS_Possible_Duplicate_Of__c,
+        AccountId
+      FROM Contact
+      WHERE Id = :first.Id
+    ];
+    Assert.areEqual('ivar@guest.example.com', r.Email);
+    Assert.isNull(r.PMS_OTA_Alias_Email__c);
+    Assert.isNull(r.PMS_Possible_Duplicate_Of__c);
+    Assert.isNotNull(r.AccountId);
+    Contact again = PMS_ChannexBookings.guestFor(
+      guestRev('Ivar', 'Plain', 'IVAR@guest.example.com', null)
+    );
+    Assert.areEqual(first.Id, again.Id);
+  }
+
   @isTest
   static void inboundBookingIsAcceptedAndAckedWhenLicenceSuspended() {
     PMS_Entitlements.forceManaged = true;

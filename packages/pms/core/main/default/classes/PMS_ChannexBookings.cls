@@ -496,20 +496,39 @@ public without sharing class PMS_ChannexBookings {
     String last = cut(PMS_ChannexClient.str(c, 'surname'), 80);
     String mail = PMS_ChannexClient.str(c, 'mail');
     String phone = cut(PMS_ChannexClient.str(c, 'phone'), 40);
-    if (String.isNotBlank(mail)) {
-      List<Contact> found = [
-        SELECT Id, AccountId, Phone
+    PMS_GuestMatchService.GuestInput gi = new PMS_GuestMatchService.GuestInput();
+    gi.firstName = first;
+    gi.lastName = last;
+    gi.email = mail;
+    gi.phone = phone;
+    gi.arrival = parseDate(PMS_ChannexClient.str(rev, 'arrival_date'));
+    gi.departure = parseDate(PMS_ChannexClient.str(rev, 'departure_date'));
+    // One revision at a time, so the list has one entry; the service itself is bulk-safe.
+    PMS_GuestMatchService.Result m = PMS_GuestMatchService.match(
+      new List<PMS_GuestMatchService.GuestInput>{ gi }
+    )[0];
+    if (m.contactId != null) {
+      Contact found = [
+        SELECT Id, AccountId, Phone, PMS_OTA_Alias_Email__c
         FROM Contact
-        WHERE Email = :mail AND AccountId != NULL
-        ORDER BY CreatedDate
-        LIMIT 1
+        WHERE Id = :m.contactId
       ];
-      if (!found.isEmpty()) {
-        if (String.isBlank(found[0].Phone) && String.isNotBlank(phone)) {
-          update new Contact(Id = found[0].Id, Phone = phone);
-        }
-        return found[0];
+      Contact patch = new Contact(Id = found.Id);
+      Boolean dirty = false;
+      if (String.isBlank(found.Phone) && String.isNotBlank(phone)) {
+        patch.Phone = phone;
+        dirty = true;
       }
+      if (
+        String.isBlank(found.PMS_OTA_Alias_Email__c) && m.aliasEmail != null
+      ) {
+        patch.PMS_OTA_Alias_Email__c = m.aliasEmail;
+        dirty = true;
+      }
+      if (dirty) {
+        update patch;
+      }
+      return found;
     }
     String display = String.join(
         new List<String>{
@@ -524,18 +543,23 @@ public without sharing class PMS_ChannexBookings {
         'OTA guest ' + PMS_ChannexClient.str(rev, 'ota_reservation_code');
     }
     Account a = new Account(Name = cut(display, 255), Phone = phone);
-    insert a;
-    Contact ct = new Contact(
-      AccountId = a.Id,
-      FirstName = first,
-      LastName = String.isBlank(last)
-        ? (String.isBlank(first) ? 'Guest' : first)
-        : last,
-      Email = String.isBlank(mail) ? null : mail,
-      Phone = phone
-    );
-    insert ct;
+    // OTA bookings cannot be refused: bypass duplicate rules, the match service flags duplicates itself.
+    Database.DMLOptions dml = new Database.DMLOptions();
+    dml.OptAllOrNone = true; // DMLOptions default to partial success: keep failures as exceptions
+    dml.duplicateRuleHeader.allowSave = true;
+    Database.insert(a, dml);
+    gi.accountId = a.Id;
+    Contact ct = PMS_GuestMatchService.newContact(gi, m);
+    Database.insert(ct, dml);
     return ct;
+  }
+
+  private static Date parseDate(String s) {
+    try {
+      return String.isBlank(s) ? null : Date.valueOf(s.left(10));
+    } catch (Exception e) {
+      return null;
+    }
   }
 
   private static void withoutPolicyFees(List<PMS_Booking__c> rows) {

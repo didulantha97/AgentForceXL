@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PMS_Duplicate_Reason__c</fullName>
+    <description
+  >Why guest matching flagged this contact as a possible duplicate. Written by PMS system code.</description>
+    <inlineHelpText
+  >Why this contact was flagged as a possible duplicate.</inlineHelpText>
+    <label>Duplicate Reason</label>
+    <length>255</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PMS_Possible_Duplicate_Of__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description
+  >Set when guest matching found a contact that may be the same person but was not certain enough to merge. Staff review it and clear the field. Records are never merged automatically.</description>
+    <inlineHelpText
+  >Contact this guest may duplicate. Review, merge if needed, then clear this field.</inlineHelpText>
+    <label>Possible Duplicate Of</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Possible Duplicates</relationshipLabel>
+    <relationshipName>Possible_Duplicates</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>
