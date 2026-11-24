@@ -117,6 +117,11 @@ private class PMS_UIControllerTest {
         today
       );
       Assert.areEqual(1, desk.arrivals.size());
+      Assert.areEqual(
+        h.guest.Id,
+        desk.arrivals[0].contactId,
+        'Desk row carries the primary contact'
+      );
       Assert.areEqual(2, desk.totalRooms);
 
       PMS_UIController.checkIn(b.Id, null);

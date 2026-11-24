@@ -61,38 +61,56 @@
             <p class="slds-text-color_weak">No arrivals today.</p>
           </template>
           <template for:each={arrivals} for:item="a">
-            <div
-              key={a.key}
-              class="slds-grid slds-grid_vertical-align-center slds-border_bottom slds-p-vertical_x-small"
-            >
-              <div class="slds-col">
-                <a data-id={a.id} onclick={open}>{a.guest}</a>
-                <p class="slds-text-body_small slds-text-color_weak">
-                  {a.name} · {a.roomType} · {a.startDate} → {a.endDate} ·
-                  {a.adults} adults
-                </p>
-              </div>
+            <div key={a.key} class="slds-border_bottom">
               <div
-                class="slds-col slds-grow-none slds-p-right_x-small"
-                style="min-width: 12rem"
+                class="slds-grid slds-grid_vertical-align-center slds-p-vertical_x-small"
               >
-                <lightning-combobox
-                  label="Room"
-                  variant="label-hidden"
-                  data-id={a.id}
-                  value={a.selectedRoom}
-                  options={a.options}
-                  onchange={handleRoom}
-                ></lightning-combobox>
+                <div class="slds-col">
+                  <a data-id={a.id} onclick={open}>{a.guest}</a>
+                  <p class="slds-text-body_small slds-text-color_weak">
+                    {a.name} · {a.roomType} · {a.startDate} → {a.endDate} ·
+                    {a.adults} adults
+                  </p>
+                </div>
+                <div
+                  class="slds-col slds-grow-none slds-p-right_x-small"
+                  style="min-width: 12rem"
+                >
+                  <lightning-combobox
+                    label="Room"
+                    variant="label-hidden"
+                    data-id={a.id}
+                    value={a.selectedRoom}
+                    options={a.options}
+                    onchange={handleRoom}
+                  ></lightning-combobox>
+                </div>
+                <template lwc:if={a.contactId}>
+                  <div class="slds-col slds-grow-none slds-p-right_x-small">
+                    <lightning-button
+                      label={a.cardLabel}
+                      title={a.cardTitle}
+                      aria-expanded={a.cardExpanded}
+                      aria-controls={a.cardRegionId}
+                      data-id={a.id}
+                      onclick={toggleCard}
+                    ></lightning-button>
+                  </div>
+                </template>
+                <div class="slds-col slds-grow-none">
+                  <lightning-button
+                    variant="brand"
+                    label="Check in"
+                    data-id={a.id}
+                    onclick={doCheckIn}
+                  ></lightning-button>
+                </div>
               </div>
-              <div class="slds-col slds-grow-none">
-                <lightning-button
-                  variant="brand"
-                  label="Check in"
-                  data-id={a.id}
-                  onclick={doCheckIn}
-                ></lightning-button>
-              </div>
+              <template lwc:if={a.cardOpen}>
+                <div class="slds-p-bottom_x-small" id={a.cardRegionId}>
+                  <c-pms-guest-card contact-id={a.contactId}></c-pms-guest-card>
+                </div>
+              </template>
             </div>
           </template>
         </lightning-tab>

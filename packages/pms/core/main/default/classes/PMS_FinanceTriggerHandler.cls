@@ -4,6 +4,7 @@ public without sharing class PMS_FinanceTriggerHandler {
     List<PMS_Charge__c> newList,
     List<PMS_Charge__c> oldList
   ) {
+    PMS_GuestStatsQueueable.onCharges(newList, oldList); // no-op unless real-time stats are on
     Set<Id> invoiceIds = new Set<Id>();
     Set<Id> bookingIds = new Set<Id>();
     for (

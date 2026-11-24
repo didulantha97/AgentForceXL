@@ -8,7 +8,10 @@ trigger PMS_BookingTrigger on PMS_Booking__c(
   after undelete
 ) {
   if (Trigger.isUndelete) {
-    PMS_Entitlements.guardWrites(); // suspended: a restore is a write too
+    if (!PMS_Entitlements.guardWrites()) {
+      // suspended: a restore is a write too
+      PMS_GuestStatsQueueable.onBookingSave(Trigger.new, null);
+    }
     return;
   }
   if (Trigger.isBefore && PMS_Entitlements.guardWrites()) {
@@ -17,6 +20,8 @@ trigger PMS_BookingTrigger on PMS_Booking__c(
   if (Trigger.isBefore) {
     if (!Trigger.isDelete) {
       PMS_BookingTriggerHandler.beforeSave(Trigger.new, Trigger.oldMap);
+    } else {
+      PMS_BookingTriggerHandler.beforeDelete(Trigger.old);
     }
   } else if (Trigger.isDelete) {
     PMS_BookingTriggerHandler.afterDelete(Trigger.old);

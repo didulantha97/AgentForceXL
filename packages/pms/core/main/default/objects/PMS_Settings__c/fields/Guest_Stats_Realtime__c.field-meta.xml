@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Guest_Stats_Realtime__c</fullName>
+    <label>Guest Stats Real-Time Updates</label>
+    <description
+  >When ticked, Guest 360 statistics are refreshed shortly after a booking, booking party or charge changes (one background job per save). Off by default: the nightly job keeps the statistics current. Edit on the org-level PMS Settings record.</description>
+    <inlineHelpText
+  >Refresh Guest 360 statistics within moments of a booking, party or charge change. Off = nightly refresh only.</inlineHelpText>
+    <type>Checkbox</type>
+    <defaultValue>false</defaultValue>
+</CustomField>

@@ -19,6 +19,7 @@ export default class PmsFrontDeskToday extends NavigationMixin(
   businessDate = todayIso();
   data;
   roomChoice = {};
+  openCards = {};
   loading = false;
   error;
 
@@ -81,6 +82,11 @@ export default class PmsFrontDeskToday extends NavigationMixin(
       return {
         ...a,
         key: a.id,
+        cardOpen: !!this.openCards[a.id],
+        cardLabel: this.openCards[a.id] ? "Hide guest" : "Guest",
+        cardTitle: `${this.openCards[a.id] ? "Hide" : "Show"} guest card for ${a.guest || "guest"}`,
+        cardExpanded: this.openCards[a.id] ? "true" : "false",
+        cardRegionId: `guest-card-${a.id}`,
         options,
         selectedRoom:
           this.roomChoice[a.id] ||
@@ -145,6 +151,10 @@ export default class PmsFrontDeskToday extends NavigationMixin(
   handleDate(e) {
     this.businessDate = e.detail.value;
     this.load();
+  }
+  toggleCard(e) {
+    const id = e.currentTarget.dataset.id;
+    this.openCards = { ...this.openCards, [id]: !this.openCards[id] };
   }
   handleRoom(e) {
     this.roomChoice = {

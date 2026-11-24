@@ -365,6 +365,8 @@ public with sharing class PMS_UIController {
     public Decimal balance;
     @AuraEnabled
     public Integer adults;
+    @AuraEnabled
+    public Id contactId;
   }
 
   public class DeskData {
@@ -415,6 +417,7 @@ public with sharing class PMS_UIController {
           Balance_Due__c,
           Adults__c,
           Account__r.Name,
+          Primary_Contact__c,
           Primary_Contact__r.Name
         FROM PMS_Booking__c
         WHERE
@@ -445,6 +448,7 @@ public with sharing class PMS_UIController {
         r.status = b.Status__c;
         r.balance = b.Balance_Due__c;
         r.adults = b.Adults__c == null ? null : b.Adults__c.intValue();
+        r.contactId = b.Primary_Contact__c;
         if (b.Status__c == 'Active') {
           if (r.endDate <= d) {
             data.departures.add(r);

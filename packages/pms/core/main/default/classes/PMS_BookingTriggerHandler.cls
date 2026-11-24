@@ -41,6 +41,7 @@ public without sharing class PMS_BookingTriggerHandler {
         );
       }
     }
+    PMS_GuestStatsQueueable.onBookingSave(records, oldMap); // no-op unless real-time stats are on
     if (bypass) {
       return;
     }
@@ -98,6 +99,10 @@ public without sharing class PMS_BookingTriggerHandler {
       typeIds.add(b.Space__r.Space_Type__c);
     }
     PMS_BookingService.refreshInventory(typeIds, minDate, maxDate);
+  }
+
+  public static void beforeDelete(List<PMS_Booking__c> oldRecords) {
+    PMS_GuestStatsQueueable.onBookingBeforeDelete(oldRecords); // no-op unless real-time stats are on
   }
 
   public static void afterDelete(List<PMS_Booking__c> oldRecords) {
