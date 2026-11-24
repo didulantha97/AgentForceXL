@@ -147,6 +147,7 @@ private class PMS_Guest360ControllerTest {
         String o : new List<String>{
           'PMS_Booking__c',
           'PMS_Intake_Form__c',
+          'PMS_Site__c', // PMS_Space__c is master-detail to Site: Read on Space requires Read on Site
           'PMS_Space__c',
           'Case'
         }
