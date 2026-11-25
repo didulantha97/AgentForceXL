@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PMS_Anonymised_On__c</fullName>
+    <label>Anonymised On</label>
+    <description
+  >When the guest was anonymised (GDPR erasure audit).</description>
+    <inlineHelpText
+  >When the guest was anonymised (GDPR erasure audit).</inlineHelpText>
+    <type>DateTime</type>
+</CustomField>

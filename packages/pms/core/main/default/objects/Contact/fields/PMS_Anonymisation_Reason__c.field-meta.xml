@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PMS_Anonymisation_Reason__c</fullName>
+    <label>Anonymisation Reason</label>
+    <description
+  >Why the guest was anonymised (audit). Must not contain personal data.</description>
+    <inlineHelpText
+  >Why the guest was anonymised (audit). Must not contain personal data.</inlineHelpText>
+    <length>255</length>
+    <type>Text</type>
+</CustomField>

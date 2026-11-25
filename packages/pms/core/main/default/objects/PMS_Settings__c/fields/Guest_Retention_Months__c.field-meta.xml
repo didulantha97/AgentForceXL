@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Guest_Retention_Months__c</fullName>
+    <label>Guest Retention (Months)</label>
+    <description
+  >GDPR retention: guests with no stay ending within this many months are handled by the weekly retention job (see Guest Retention Mode). Blank or below 1 = 36. Confirm the period with your legal adviser. Edit on the org-level PMS Settings record.</description>
+    <inlineHelpText
+  >Months without a stay before a guest is due for retention handling. Default 36.</inlineHelpText>
+    <type>Number</type>
+    <precision>4</precision>
+    <scale>0</scale>
+    <defaultValue>36</defaultValue>
+</CustomField>

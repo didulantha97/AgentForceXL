@@ -1,0 +1,97 @@
+<template>
+  <template if:true={canManage}>
+    <lightning-card title="Guest privacy" icon-name="standard:record_lookup">
+      <div class="slds-var-p-horizontal_medium">
+        <template if:true={error}>
+          <p class="slds-text-color_error slds-var-m-bottom_small" role="alert">
+            {error}
+          </p>
+        </template>
+        <template if:true={notice}>
+          <p
+            class="slds-text-color_success slds-var-m-bottom_small"
+            role="status"
+          >
+            {notice}
+          </p>
+        </template>
+        <lightning-button
+          label="Export guest data"
+          icon-name="utility:download"
+          onclick={handleExport}
+          disabled={busy}
+        ></lightning-button>
+        <lightning-button
+          class="slds-var-m-left_small"
+          variant="destructive-text"
+          label="Anonymise guest"
+          icon-name="utility:delete"
+          onclick={openModal}
+          disabled={busy}
+        ></lightning-button>
+      </div>
+    </lightning-card>
+
+    <template if:true={showModal}>
+      <section
+        role="dialog"
+        tabindex="-1"
+        aria-modal="true"
+        aria-labelledby="pms-anon-title"
+        class="slds-modal slds-fade-in-open"
+      >
+        <div class="slds-modal__container">
+          <header class="slds-modal__header">
+            <h2 id="pms-anon-title" class="slds-modal__title slds-hyphenate">
+              Anonymise guest
+            </h2>
+          </header>
+          <div class="slds-modal__content slds-var-p-around_medium">
+            <p class="slds-var-m-bottom_small">
+              This permanently removes this guest's personal data (name, contact
+              details, preferences, check-in documents, files). Invoices,
+              payments and charges are kept for bookkeeping. This cannot be
+              undone.
+            </p>
+            <template if:true={blockMessage}>
+              <p
+                class="slds-text-color_error slds-var-m-bottom_small"
+                role="alert"
+              >
+                Cannot anonymise: {blockMessage}
+              </p>
+            </template>
+            <lightning-textarea
+              label="Reason (do not enter personal data)"
+              required
+              max-length="255"
+              value={reason}
+              onchange={handleReason}
+            ></lightning-textarea>
+            <lightning-input
+              class="slds-var-m-top_small"
+              label="Type ANONYMISE to confirm"
+              value={confirmText}
+              onchange={handleConfirm}
+            ></lightning-input>
+          </div>
+          <footer class="slds-modal__footer">
+            <lightning-button
+              label="Cancel"
+              onclick={closeModal}
+              disabled={busy}
+            ></lightning-button>
+            <lightning-button
+              class="slds-var-m-left_small"
+              variant="destructive"
+              label="Anonymise"
+              onclick={handleAnonymise}
+              disabled={confirmDisabled}
+            ></lightning-button>
+          </footer>
+        </div>
+      </section>
+      <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+  </template>
+</template>

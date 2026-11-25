@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PMS_Retention_Due__c</fullName>
+    <label>Retention Due</label>
+    <description
+  >Set by the weekly retention job when the guest's last activity is older than the retention period. Review and anonymise.</description>
+    <inlineHelpText
+  >Set by the weekly retention job when the guest's last activity is older than the retention period. Review and anonymise.</inlineHelpText>
+    <type>Date</type>
+</CustomField>

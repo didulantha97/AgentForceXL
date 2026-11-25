@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomPermission xmlns="http://soap.sforce.com/2006/04/metadata"><description
+  >Can export a guest's data (right of access) and anonymise a guest (GDPR erasure).</description><isLicensed
+  >false</isLicensed><label>PMS Guest Privacy</label></CustomPermission>

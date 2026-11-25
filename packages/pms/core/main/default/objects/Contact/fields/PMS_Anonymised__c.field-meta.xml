@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PMS_Anonymised__c</fullName>
+    <label>Anonymised</label>
+    <description
+  >Set by the GDPR erasure service when this guest's personal data has been removed. Do not edit by hand.</description>
+    <inlineHelpText
+  >Set by the GDPR erasure service when this guest's personal data has been removed. Do not edit by hand.</inlineHelpText>
+    <defaultValue>false</defaultValue>
+    <type>Checkbox</type>
+</CustomField>

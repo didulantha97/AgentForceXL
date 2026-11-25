@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PMS_Anonymised_By__c</fullName>
+    <label>Anonymised By</label>
+    <description
+  >User who requested the anonymisation (audit, non-PII).</description>
+    <inlineHelpText
+  >User who requested the anonymisation (audit, non-PII).</inlineHelpText>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <referenceTo>User</referenceTo>
+    <relationshipLabel>Anonymised Guests</relationshipLabel>
+    <relationshipName>PMS_Anonymised_Guests</relationshipName>
+    <type>Lookup</type>
+</CustomField>

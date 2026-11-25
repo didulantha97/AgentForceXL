@@ -111,6 +111,20 @@
     <type>Region</type>
   </flexiPageRegions>
   <flexiPageRegions>
+    <itemInstances>
+      <componentInstance>
+        <componentName>c:pmsGuestPrivacy</componentName>
+        <identifier>c_pmsGuestPrivacy</identifier>
+        <visibilityRule>
+          <criteria>
+            <leftValue
+            >{!$Permission.CustomPermission.PMS_Guest_Privacy}</leftValue>
+            <operator>EQUAL</operator>
+            <rightValue>true</rightValue>
+          </criteria>
+        </visibilityRule>
+      </componentInstance>
+    </itemInstances>
     <name>sidebar</name>
     <type>Region</type>
   </flexiPageRegions>

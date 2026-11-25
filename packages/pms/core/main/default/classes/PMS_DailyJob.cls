@@ -27,10 +27,19 @@ public with sharing class PMS_DailyJob implements Schedulable {
     }
     // Guest 360 stats: incremental nightly; full rebuild on Sundays (corrects deleted bookings / swapped guests)
     // and on every run until one has succeeded (first-install backfill in subscriber orgs).
-    Boolean fullGuestStats =
+    Boolean isSunday =
       Datetime.newInstance(Date.today(), Time.newInstance(12, 0, 0, 0))
-        .format('u') == '7' ||
+        .format('u') == '7';
+    Boolean fullGuestStats =
+      isSunday ||
       PMS_Guest_Stats_Run__c.getOrgDefaults()?.Last_Success__c == null;
+    // GDPR retention: weekly. Flags guests past the retention period by default (PMS Settings).
+    if (isSunday) {
+      Database.executeBatch(
+        new PMS_GuestRetentionBatch(),
+        PMS_GuestRetentionBatch.SCOPE_SIZE
+      );
+    }
     Database.executeBatch(new PMS_GuestStatsBatch(fullGuestStats), 100);
     if (PMS_ModuleConfig.isEnabled(PMS_ModuleConfig.PROPERTY)) {
       Database.executeBatch(

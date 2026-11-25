@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Guest_Retention_Mode__c</fullName>
+    <label>Guest Retention Mode</label>
+    <description
+  >What the weekly retention job does with guests past the retention period. FLAG (default): sets Retention Due on the guest for a privacy admin to review. ANONYMISE: anonymises them automatically (blocked guests are flagged instead). Any other value = FLAG. Edit on the org-level PMS Settings record.</description>
+    <inlineHelpText>FLAG (default) or ANONYMISE.</inlineHelpText>
+    <type>Text</type>
+    <length>20</length>
+    <defaultValue>"FLAG"</defaultValue>
+</CustomField>
