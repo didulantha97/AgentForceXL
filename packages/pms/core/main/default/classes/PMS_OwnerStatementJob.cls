@@ -12,6 +12,7 @@ public without sharing class PMS_OwnerStatementJob implements Schedulable, Datab
   public static final String JOB_NAME = 'PMS Owner Statements (nightly)';
   @TestVisible
   private Date today;
+  private Boolean currentMonthOnly; // null on batches resumed after an upgrade; treat as false
 
   @NamespaceAccessible
   public PMS_OwnerStatementJob() {
@@ -21,6 +22,13 @@ public without sharing class PMS_OwnerStatementJob implements Schedulable, Datab
   @NamespaceAccessible
   public PMS_OwnerStatementJob(Date today) {
     this.today = today;
+  }
+
+  /** Refreshes only the month containing `day` (no previous-month catch-up). */
+  @NamespaceAccessible
+  public PMS_OwnerStatementJob(Date day, Boolean currentMonthOnly) {
+    this(day);
+    this.currentMonthOnly = currentMonthOnly == true;
   }
 
   @NamespaceAccessible
@@ -45,7 +53,7 @@ public without sharing class PMS_OwnerStatementJob implements Schedulable, Datab
   @NamespaceAccessible
   public void execute(Database.BatchableContext bc, List<PMS_Site__c> scope) {
     PMS_OwnerStatementService.generate(today, scope);
-    if (today.day() <= 5) {
+    if (currentMonthOnly != true && today.day() <= 5) {
       PMS_OwnerStatementService.generate(
         today.toStartOfMonth().addDays(-1),
         scope

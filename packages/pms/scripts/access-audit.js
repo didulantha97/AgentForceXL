@@ -47,6 +47,8 @@ const ADMIN_SETS = [
   "PMS_Channex",
   "PMS_Dynamic_Pricing",
   "PMS_Rent_Review",
+  "PMS_Guest360_Viewer",
+  "PMS_Guest360_Editor",
   // Experience
   "PMS_Experience_Access",
   "PMS_Payment_Integration",
@@ -57,6 +59,11 @@ const ADMIN_SETS = [
   "PMS_Customer_Portal_Management",
   "PMS_Partner_Management"
 ];
+/**
+ * Sets assigned to a named role, never to the installer / Admin persona (e.g. the DPO holds Privacy Admin). What
+ * Admin lacks because of that (classes, custom permissions, fields only these sets grant) is a design decision.
+ */
+const OPT_IN_SETS = ["PMS_Guest_Privacy_Admin"];
 const STAFF_GROUP = "PMS_Standard_User";
 const PORTAL_SETS = [
   "PMS_Customer_Portal",
@@ -79,7 +86,20 @@ const EXCLUDED_FIELDS = new Set([
 /** Code-maintained idempotency keys: readable by the people who run the feature, never hand-edited, so no edit FLS for anyone. */
 const READONLY_BY_DESIGN = new Set([
   "PMS_Booking__c.Channex_Room_Key__c",
-  "PMS_Rate__c.Dynamic_Key__c"
+  "PMS_Rate__c.Dynamic_Key__c",
+  // Guest 360 system-written Contact fields (field descriptions: "Written by PMS system code" / "Do not edit by hand")
+  "Contact.PMS_Total_Stays__c",
+  "Contact.PMS_Lifetime_Nights__c",
+  "Contact.PMS_Room_Revenue__c",
+  "Contact.PMS_Extras_Revenue__c",
+  "Contact.PMS_First_Stay__c",
+  "Contact.PMS_Last_Stay__c",
+  "Contact.PMS_Next_Arrival__c",
+  "Contact.PMS_Stats_Refreshed__c",
+  "Contact.PMS_Retention_Due__c",
+  "Contact.PMS_Duplicate_Reason__c",
+  "Contact.PMS_OTA_Alias_Email__c",
+  "Contact.PMS_Anonymised__c"
 ]);
 
 /** Negative switches, handed out by the access engine from Access Team settings. Nobody gets them by hand. */
@@ -603,6 +623,8 @@ const ADDON_SETS = [
   "PMS_Rent_Review"
 ];
 const notes = [];
+const optInClass = (c) =>
+  OPT_IN_SETS.some((s) => SETS[s] && SETS[s].classes.has(c));
 const addonClass = (c) => ADDON_SETS.some((s) => SETS[s].classes.has(c));
 const note = (persona, kind, item, issue) =>
   notes.push({ persona, kind, item, issue });
@@ -721,9 +743,26 @@ for (const o of objects) {
       continue;
     }
     const a = P.Admin.fields[f.full];
-    if (!a || !a.read) gap("Admin", "field", f.full, "not readable");
-    else if (!f.readOnly && !READONLY_BY_DESIGN.has(f.full) && !a.edit)
-      gap("Admin", "field", f.full, "not editable");
+    const optIn = OPT_IN_SETS.some((x) => SETS[x] && SETS[x].fields[f.full]);
+    if (!a || !a.read) {
+      if (optIn)
+        note(
+          "Admin",
+          "field",
+          f.full,
+          `only role set ${OPT_IN_SETS.join("/")} grants it`
+        );
+      else gap("Admin", "field", f.full, "not readable");
+    } else if (!f.readOnly && !READONLY_BY_DESIGN.has(f.full) && !a.edit) {
+      if (optIn)
+        note(
+          "Admin",
+          "field",
+          f.full,
+          `edit only via role set ${OPT_IN_SETS.join("/")}`
+        );
+      else gap("Admin", "field", f.full, "not editable");
+    }
     const s = fieldFlsStaff(f.full);
     if (a && a.read && !s.read && !ADMIN_ONLY_OBJECTS.has(o.name))
       gap("Staff", "field", f.full, "not readable");
@@ -826,8 +865,16 @@ for (const c of Object.values(classes).filter((x) => x.entry)) {
       gap("Staff", "class", c.name, "portal-only class granted to Staff");
     continue;
   }
-  if (!P.Admin.classes.has(c.name))
-    gap("Admin", "class", c.name, "entry-point class not granted");
+  if (!P.Admin.classes.has(c.name)) {
+    if (optInClass(c.name))
+      note(
+        "Admin",
+        "class",
+        c.name,
+        `role set ${OPT_IN_SETS.join("/")} grants it (assigned separately)`
+      );
+    else gap("Admin", "class", c.name, "entry-point class not granted");
+  }
   if (ADMIN_ONLY_CLASSES.has(c.name)) {
     if (P.Staff.classes.has(c.name))
       gap("Staff", "class", c.name, "admin-only class granted to Staff");
@@ -1006,8 +1053,16 @@ for (const cp of allCustomPerms.sort()) {
         gap(p, "customPermission", cp, "negative switch granted by hand");
     continue;
   }
-  if (!P.Admin.customPerms.has(cp))
-    gap("Admin", "customPermission", cp, "not granted");
+  if (!P.Admin.customPerms.has(cp)) {
+    if (OPT_IN_SETS.some((x) => SETS[x] && SETS[x].customPerms.has(cp)))
+      note(
+        "Admin",
+        "customPermission",
+        cp,
+        `role set ${OPT_IN_SETS.join("/")} grants it (assigned separately)`
+      );
+    else gap("Admin", "customPermission", cp, "not granted");
+  }
   if (ADMIN_ONLY_CUSTOM_PERMS.has(cp) && P.Staff.customPerms.has(cp))
     gap(
       "Staff",

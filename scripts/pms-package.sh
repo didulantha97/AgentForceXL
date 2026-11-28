@@ -294,7 +294,7 @@ DEMO_APEX="packages/pms/scripts/apex/demo-data.apex"
 # Admin = every set an administrator needs (kept in step with ADMIN_SETS in packages/pms/scripts/access-audit.js
 # and the install handlers). Not listed on purpose: portal / guest-site sets, and the Hide_* sets the access engine hands out.
 PMS_PERMSETS=(
-  PMS_Core_Admin PMS_App_Access PMS_Access_Manager PMS_Channex PMS_Dynamic_Pricing PMS_Rent_Review
+  PMS_Core_Admin PMS_App_Access PMS_Access_Manager PMS_Channex PMS_Dynamic_Pricing PMS_Rent_Review PMS_Guest360_Viewer PMS_Guest360_Editor
   PMS_Experience_Access PMS_Payment_Integration PMS_Payment_Gateway PMS_Stripe_Access PMS_Dunning PMS_Guarantees PMS_Customer_Portal_Management PMS_Partner_Management
 )
 PMS_STAFF_GROUP=PMS_Standard_User

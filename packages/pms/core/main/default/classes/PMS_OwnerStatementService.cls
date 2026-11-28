@@ -378,18 +378,81 @@ public without sharing class PMS_OwnerStatementService {
 
   // ------------------------------------------------------------------ statements
 
-  /** Creates or refreshes Draft statements for every active owned site, for the month containing anyDay. */
+  /** Largest site count generated inline; each site costs ~6 SOQL and 2 DML, so this stays well inside limits. */
+  @TestVisible
+  private static Integer INLINE_SITE_LIMIT = 10; // non-final so tests can lower it (a test may batch at most one chunk)
+
+  /**
+   * Creates or refreshes Draft statements for every active owned site, for the month containing anyDay.
+   * Up to INLINE_SITE_LIMIT sites are processed inline and the number of statements refreshed is returned.
+   * Above that the work is handed to PMS_OwnerStatementJob (batches of 10) and the number of sites queued
+   * is returned instead; the statements appear when the batch finishes.
+   */
   @NamespaceAccessible
   public static Integer generate(Date anyDay) {
-    return generate(
-      anyDay,
-      [
+    // only need to know whether the count exceeds the inline limit, so cap the query at limit + 1
+    Integer probeLimit = INLINE_SITE_LIMIT + 1;
+    List<PMS_Site__c> sites = [
+      SELECT Id
+      FROM PMS_Site__c
+      WHERE Owner_Account__c != NULL AND Status__c = 'Active'
+      ORDER BY Id
+      LIMIT :probeLimit
+    ];
+    if (sites.size() <= INLINE_SITE_LIMIT) {
+      return generate(anyDay, sites);
+    }
+    if (System.isBatch() || System.isFuture() || batchAlreadyActive()) {
+      // Cannot (or need not) start a batch from here: PARTIAL result. Only the first INLINE_SITE_LIMIT
+      // sites (ordered by Id) are refreshed now; the nightly job or the running batch covers the rest.
+      System.debug(
+        LoggingLevel.WARN,
+        'PMS owner statements: partial inline run (' +
+          INLINE_SITE_LIMIT +
+          ' sites); remaining sites are left to the batch/nightly job'
+      );
+      return generate(anyDay, firstSites(sites, INLINE_SITE_LIMIT));
+    }
+    try {
+      Database.executeBatch(new PMS_OwnerStatementJob(anyDay, true), 10);
+    } catch (Exception e) {
+      System.debug(
+        LoggingLevel.ERROR,
+        'PMS owner statements: could not enqueue batch, falling back to partial inline run: ' +
+        e.getMessage()
+      );
+      return generate(anyDay, firstSites(sites, INLINE_SITE_LIMIT));
+    }
+    // the probe is capped, so report the real count of queued sites
+    return [
+      SELECT COUNT()
+      FROM PMS_Site__c
+      WHERE Owner_Account__c != NULL AND Status__c = 'Active'
+    ];
+  }
+
+  private static List<PMS_Site__c> firstSites(
+    List<PMS_Site__c> sites,
+    Integer n
+  ) {
+    List<PMS_Site__c> slice = new List<PMS_Site__c>();
+    for (Integer i = 0; i < n && i < sites.size(); i++) {
+      slice.add(sites[i]);
+    }
+    return slice;
+  }
+
+  private static Boolean batchAlreadyActive() {
+    return ![
         SELECT Id
-        FROM PMS_Site__c
-        WHERE Owner_Account__c != NULL AND Status__c = 'Active'
-        LIMIT 200
+        FROM AsyncApexJob
+        WHERE
+          ApexClass.Name = 'PMS_OwnerStatementJob'
+          AND JobType = 'BatchApex'
+          AND Status IN ('Queued', 'Preparing', 'Processing', 'Holding')
+        LIMIT 1
       ]
-    );
+      .isEmpty();
   }
 
   @NamespaceAccessible

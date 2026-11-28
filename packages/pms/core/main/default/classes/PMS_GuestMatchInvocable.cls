@@ -109,7 +109,7 @@ public with sharing class PMS_GuestMatchInvocable {
         }
       }
       if (!meta.isEmpty()) {
-        // System-maintained match metadata: staff cannot edit these fields, so write in system mode.
+        // System-maintained match metadata: Duplicate_Reason is read-only for staff (they may only clear Possible_Duplicate_Of), so write in system mode.
         Database.update(meta, dml, AccessLevel.SYSTEM_MODE);
       }
       for (Integer n = 0; n < toCreate.size(); n++) {

@@ -129,16 +129,14 @@ private class PMS_GuestPrivacyControllerTest {
     ContentVersion cv = new ContentVersion(
       Title = 'passport-scan',
       PathOnClient = 'passport-scan.txt',
-      VersionData = Blob.valueOf('TOP-SECRET-FILE-BYTES')
+      VersionData = Blob.valueOf('TOP-SECRET-FILE-BYTES'),
+      // Links the file to the guest on insert. A separate ContentDocumentLink insert
+      // intermittently failed with INVALID_CROSS_REFERENCE_KEY in parallel test runs.
+      FirstPublishLocationId = f.c.Id
     );
     insert cv;
     f.docId = [SELECT ContentDocumentId FROM ContentVersion WHERE Id = :cv.Id]
     .ContentDocumentId;
-    insert new ContentDocumentLink(
-      ContentDocumentId = f.docId,
-      LinkedEntityId = f.c.Id,
-      ShareType = 'V'
-    );
     return f;
   }
 

@@ -12,7 +12,9 @@ private class PMS_AccessPersonaCoreTest {
     'PMS_Access_Manager',
     'PMS_Channex',
     'PMS_Dynamic_Pricing',
-    'PMS_Rent_Review'
+    'PMS_Rent_Review',
+    'PMS_Guest360_Viewer',
+    'PMS_Guest360_Editor'
   };
   private static final List<String> STAFF_SETS = new List<String>{
     'PMS_Core_Admin',

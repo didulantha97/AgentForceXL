@@ -4,6 +4,10 @@
   >Everything in PMS Guest 360 Viewer, plus create, edit and delete Guest Preferences and edit VIP and profile fields. Stats and consent fields stay read-only. Assign together with PMS Guest 360 Viewer.</description>
     <hasActivationRequired>false</hasActivationRequired>
     <label>PMS Guest 360 Editor</label>
+    <classAccesses>
+        <apexClass>PMS_GuestMatchInvocable</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
     <fieldPermissions>
         <editable>false</editable>
         <field>Contact.PMS_Anonymised__c</field>
@@ -25,12 +29,12 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Contact.PMS_Duplicate_Reason__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Contact.PMS_ID_Verified__c</field>
         <readable>true</readable>
     </fieldPermissions>

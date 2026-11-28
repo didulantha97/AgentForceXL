@@ -17,6 +17,8 @@ private class PMS_AccessPersonaTest {
     'PMS_Channex',
     'PMS_Dynamic_Pricing',
     'PMS_Rent_Review',
+    'PMS_Guest360_Viewer',
+    'PMS_Guest360_Editor',
     'PMS_Experience_Access',
     'PMS_Payment_Integration',
     'PMS_Payment_Gateway',

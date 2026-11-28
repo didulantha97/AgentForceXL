@@ -151,9 +151,12 @@ public without sharing class PMS_WorkOrderService {
         WHERE Id IN :new Map<Id, PMS_Work_Order__c>(toNotify).keySet()
       ]
     );
+    prefetchVendorRecipients(vendorIds(full.values(), 'Vendor_Account__c'));
+    List<Messaging.SingleEmailMessage> vendorMails = new List<Messaging.SingleEmailMessage>();
     for (PMS_Work_Order__c w : full.values()) {
       Boolean quote = w.Status__c == 'Quote Requested';
-      emailVendor(
+      queueVendorEmail(
+        vendorMails,
         w.Vendor_Account__c,
         (quote ? 'Quote requested: ' : 'New work order: ') +
           w.Name +
@@ -174,6 +177,7 @@ public without sharing class PMS_WorkOrderService {
         }
       );
     }
+    sendVendorMails(vendorMails);
   }
 
   // ------------------------------------------------------------------ quotes
@@ -236,7 +240,7 @@ public without sharing class PMS_WorkOrderService {
     if (decided.isEmpty()) {
       return;
     }
-    for (PMS_Vendor_Quote__c q : [
+    List<PMS_Vendor_Quote__c> decidedFull = [
       SELECT
         Id,
         Name,
@@ -251,9 +255,13 @@ public without sharing class PMS_WorkOrderService {
         Work_Order__r.Space__r.Name
       FROM PMS_Vendor_Quote__c
       WHERE Id IN :new Map<Id, PMS_Vendor_Quote__c>(decided).keySet()
-    ]) {
+    ];
+    prefetchVendorRecipients(vendorIds(decidedFull, 'Vendor_Account__c'));
+    List<Messaging.SingleEmailMessage> vendorMails = new List<Messaging.SingleEmailMessage>();
+    for (PMS_Vendor_Quote__c q : decidedFull) {
       Boolean ok = q.Status__c == 'Accepted';
-      emailVendor(
+      queueVendorEmail(
+        vendorMails,
         q.Vendor_Account__c,
         'Quote ' +
           (ok ? 'accepted' : 'not accepted') +
@@ -277,6 +285,7 @@ public without sharing class PMS_WorkOrderService {
         }
       );
     }
+    sendVendorMails(vendorMails);
   }
 
   // ------------------------------------------------------------------ bills
@@ -332,7 +341,7 @@ public without sharing class PMS_WorkOrderService {
     if (changed.isEmpty()) {
       return;
     }
-    for (PMS_Vendor_Bill__c b : [
+    List<PMS_Vendor_Bill__c> changedFull = [
       SELECT
         Id,
         Name,
@@ -347,7 +356,10 @@ public without sharing class PMS_WorkOrderService {
         Site__r.Currency_Code__c
       FROM PMS_Vendor_Bill__c
       WHERE Id IN :changed
-    ]) {
+    ];
+    prefetchVendorRecipients(vendorIds(changedFull, 'Vendor_Account__c'));
+    List<Messaging.SingleEmailMessage> vendorMails = new List<Messaging.SingleEmailMessage>();
+    for (PMS_Vendor_Bill__c b : changedFull) {
       String ccy = b.Work_Order__r?.Currency_Code__c != null
         ? b.Work_Order__r.Currency_Code__c
         : b.Site__r?.Currency_Code__c;
@@ -356,7 +368,8 @@ public without sharing class PMS_WorkOrderService {
         : b.Status__c == 'Approved'
             ? 'Your invoice has been approved for payment.'
             : 'Your invoice could not be approved. Please see the notes below and contact us if anything is unclear.';
-      emailVendor(
+      queueVendorEmail(
+        vendorMails,
         b.Vendor_Account__c,
         'Invoice ' +
           nz(b.Vendor_Invoice_Number__c) +
@@ -376,6 +389,7 @@ public without sharing class PMS_WorkOrderService {
         }
       );
     }
+    sendVendorMails(vendorMails);
   }
 
   // ------------------------------------------------------------------ emails
@@ -429,30 +443,82 @@ public without sharing class PMS_WorkOrderService {
     String intro,
     List<String[]> rows
   ) {
+    List<Messaging.SingleEmailMessage> mails = new List<Messaging.SingleEmailMessage>();
+    queueVendorEmail(mails, vendorAccountId, subject, intro, rows);
+    sendVendorMails(mails);
+  }
+
+  // Active portal user emails per vendor account, filled once per transaction.
+  private static Map<Id, List<String>> vendorRecipients = new Map<Id, List<String>>();
+
+  private static Set<Id> vendorIds(List<SObject> records, String field) {
+    Set<Id> ids = new Set<Id>();
+    for (SObject r : records) {
+      Id v = (Id) r.get(field);
+      if (v != null) {
+        ids.add(v);
+      }
+    }
+    return ids;
+  }
+
+  /** One query for all vendors not yet cached (max 20 recipients each). */
+  private static void prefetchVendorRecipients(Set<Id> accountIds) {
+    Set<Id> missing = new Set<Id>();
+    for (Id a : accountIds) {
+      if (a != null && !vendorRecipients.containsKey(a)) {
+        missing.add(a);
+        vendorRecipients.put(a, new List<String>());
+      }
+    }
+    if (missing.isEmpty()) {
+      return;
+    }
+    Integer maxRows = missing.size() * 20;
+    try {
+      // without sharing is deliberate: staff cannot see portal users, and this only reads active
+      // portal users of the record's own vendor account (email address only, never exposed to the caller).
+      for (User u : [
+        SELECT Email, Contact.AccountId
+        FROM User
+        WHERE
+          Contact.AccountId IN :missing
+          AND IsActive = TRUE
+          AND ContactId != NULL
+        ORDER BY Id
+        LIMIT :maxRows
+      ]) {
+        List<String> to = vendorRecipients.get(u.Contact.AccountId);
+        if (to != null && to.size() < 20) {
+          to.add(u.Email);
+        }
+      }
+    } catch (Exception e) {
+      // keep the empty placeholders so we do not retry the query for every record
+      System.debug(
+        LoggingLevel.ERROR,
+        'PMS vendor email failed: ' + e.getMessage()
+      );
+    }
+  }
+
+  private static void queueVendorEmail(
+    List<Messaging.SingleEmailMessage> mails,
+    Id vendorAccountId,
+    String subject,
+    String intro,
+    List<String[]> rows
+  ) {
     try {
       if (vendorAccountId == null) {
         return;
       }
-      List<String> to = new List<String>();
-      for (User u : [
-        SELECT Email
-        FROM User
-        WHERE
-          Contact.AccountId = :vendorAccountId
-          AND IsActive = TRUE
-          AND ContactId != NULL
-        LIMIT 20
-      ]) {
-        to.add(u.Email);
-      }
-      if (to.isEmpty()) {
+      prefetchVendorRecipients(new Set<Id>{ vendorAccountId });
+      List<String> to = vendorRecipients.get(vendorAccountId);
+      if (to == null || to.isEmpty()) {
         return;
       }
-      send(
-        new List<Messaging.SingleEmailMessage>{
-          compose(to, subject, intro, rows, portalUrl())
-        }
-      );
+      mails.add(compose(to.clone(), subject, intro, rows, portalUrl()));
     } catch (Exception e) {
       System.debug(
         LoggingLevel.ERROR,
@@ -460,6 +526,26 @@ public without sharing class PMS_WorkOrderService {
       );
     }
   }
+
+  private static void sendVendorMails(
+    List<Messaging.SingleEmailMessage> mails
+  ) {
+    if (mails.isEmpty()) {
+      return;
+    }
+    try {
+      send(mails);
+    } catch (Exception e) {
+      System.debug(
+        LoggingLevel.ERROR,
+        'PMS vendor email failed: ' + e.getMessage()
+      );
+    }
+  }
+
+  // PMS org-wide sender, looked up once per transaction (compose runs once per mail).
+  private static Boolean orgWideLoaded = false;
+  private static Id orgWideId;
 
   private static Messaging.SingleEmailMessage compose(
     List<String> to,
@@ -504,15 +590,19 @@ public without sharing class PMS_WorkOrderService {
     m.setPlainTextBody(String.join(text, '\n'));
     m.setHtmlBody(html);
     m.setSaveAsActivity(false);
-    List<OrgWideEmailAddress> owea = [
-      SELECT Id
-      FROM OrgWideEmailAddress
-      WHERE DisplayName LIKE 'PMS%'
-      ORDER BY DisplayName
-      LIMIT 1
-    ];
-    if (!owea.isEmpty()) {
-      m.setOrgWideEmailAddressId(owea[0].Id);
+    if (!orgWideLoaded) {
+      List<OrgWideEmailAddress> owea = [
+        SELECT Id
+        FROM OrgWideEmailAddress
+        WHERE DisplayName LIKE 'PMS%'
+        ORDER BY DisplayName
+        LIMIT 1
+      ];
+      orgWideId = owea.isEmpty() ? null : owea[0].Id;
+      orgWideLoaded = true;
+    }
+    if (orgWideId != null) {
+      m.setOrgWideEmailAddressId(orgWideId);
     }
     return m;
   }

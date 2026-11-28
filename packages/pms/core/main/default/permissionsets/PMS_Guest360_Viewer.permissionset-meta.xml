@@ -4,6 +4,10 @@
   >Read-only access to Guest 360: guest stats, VIP, profile and consent fields on Contact, and Guest Preferences.</description>
     <hasActivationRequired>false</hasActivationRequired>
     <label>PMS Guest 360 Viewer</label>
+    <classAccesses>
+        <apexClass>PMS_Guest360Controller</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
     <fieldPermissions>
         <editable>false</editable>
         <field>Contact.PMS_Anonymised__c</field>
