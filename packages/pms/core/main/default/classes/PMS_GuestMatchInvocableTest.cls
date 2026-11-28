@@ -291,6 +291,53 @@ private class PMS_GuestMatchInvocableTest {
     }
   }
 
+  /** Least-privilege path: Standard User with only Guest 360 Viewer + Editor can create the Account and Contact. */
+  @isTest
+  static void guest360ViewerAndEditorOnlyCanCreateAccountAndContact() {
+    User u = userWithProfile('Standard User');
+    System.runAs(new User(Id = UserInfo.getUserId())) {
+      List<PermissionSetAssignment> asg = new List<PermissionSetAssignment>();
+      for (PermissionSet ps : [
+        SELECT Id
+        FROM PermissionSet
+        WHERE Name IN ('PMS_Guest360_Viewer', 'PMS_Guest360_Editor')
+      ]) {
+        asg.add(
+          new PermissionSetAssignment(
+            AssigneeId = u.Id,
+            PermissionSetId = ps.Id
+          )
+        );
+      }
+      Assert.areEqual(
+        2,
+        asg.size(),
+        'Both Guest 360 permission sets must exist'
+      );
+      insert asg;
+    }
+    Id contactId;
+    System.runAs(u) {
+      List<PMS_GuestMatchInvocable.Response> out = PMS_GuestMatchInvocable.findOrCreate(
+        new List<PMS_GuestMatchInvocable.Request>{
+          req('Lea', 'Editor', 'lea.editor@guest.example.com', null, 'Guest')
+        }
+      );
+      Assert.areEqual(1, out.size());
+      Assert.isTrue(out[0].isNew);
+      Assert.isNotNull(out[0].accountId);
+      Assert.isNotNull(out[0].contactId);
+      contactId = out[0].contactId;
+    }
+    Contact c = [
+      SELECT AccountId, Account.PMS_Party_Role__c
+      FROM Contact
+      WHERE Id = :contactId
+    ];
+    Assert.isNotNull(c.AccountId);
+    Assert.areEqual('Guest', c.Account.PMS_Party_Role__c);
+  }
+
   /** Documents that PMS_Party_Role__c FLS is required: a plain Standard User is refused by USER_MODE. */
   @isTest
   static void standardUserWithoutPmsPermissionIsRefusedOnPartyRoleField() {
