@@ -1651,6 +1651,12 @@
   <flexiPageRegions>
     <itemInstances>
       <componentInstance>
+        <componentName>c:pmsGuestCard</componentName>
+        <identifier>c_pmsGuestCard</identifier>
+      </componentInstance>
+    </itemInstances>
+    <itemInstances>
+      <componentInstance>
         <componentInstanceProperties>
           <name>parentFieldApiName</name>
           <value>PMS_Booking__c.Id</value>

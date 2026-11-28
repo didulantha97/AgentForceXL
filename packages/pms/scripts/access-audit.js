@@ -639,6 +639,23 @@ function staffHidden(page, lwc) {
     (cp) => !P.Staff.customPerms.has(cp) && P.Admin.customPerms.has(cp)
   );
 }
+/**
+ * A component hidden by a custom permission that an opt-in role set grants together with the component's
+ * controller (e.g. the guest privacy panel): only holders of that role set ever see it, so it is a design
+ * decision for every persona, not a gap. Returns the role set name, or null.
+ */
+function optInGated(page, lwc, cls) {
+  const gate = page && page.gates && page.gates[lwc];
+  if (!gate) return null;
+  return (
+    OPT_IN_SETS.find(
+      (s) =>
+        SETS[s] &&
+        SETS[s].classes.has(cls) &&
+        [...gate].some((cp) => SETS[s].customPerms.has(cp))
+    ) || null
+  );
+}
 const crud = (persona, obj) => {
   const o = P[persona].objects[obj] || {};
   return FLAGS.map((k) => (o[k] ? FLAG_LETTER[k] : "-")).join("");
@@ -1128,6 +1145,18 @@ for (const a of Object.values(apps).sort((x, y) =>
             `${a.name}/${pn}/${l}`,
             `calls ${c}, which is not in source`
           );
+          continue;
+        }
+        const optInSet = optInGated(fp, l, c);
+        if (optInSet) {
+          for (const p of ["Admin", "Staff"])
+            if (!P[p].classes.has(c))
+              note(
+                p,
+                "page",
+                `${a.name}/${pn}/${l}`,
+                `hidden by custom permission ${[...fp.gates[l]].join(", ")}; role set ${optInSet} grants it and ${c} (assigned separately)`
+              );
           continue;
         }
         if (!P.Admin.classes.has(c))

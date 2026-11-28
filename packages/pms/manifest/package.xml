@@ -1145,6 +1145,7 @@
         <members>PMS_Access_Setup</members>
         <members>PMS_Admin_Home</members>
         <members>PMS_Booking_Record_Page</members>
+        <members>PMS_Guest_360_Contact</members>
         <members>PMS_Hotel_Home</members>
         <members>PMS_Invoice_Record_Page</members>
         <members>PMS_Practice_Home</members>

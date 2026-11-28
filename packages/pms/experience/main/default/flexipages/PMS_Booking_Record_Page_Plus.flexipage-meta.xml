@@ -1651,6 +1651,12 @@
   <flexiPageRegions>
     <itemInstances>
       <componentInstance>
+        <componentName>c:pmsGuestCard</componentName>
+        <identifier>c_pmsGuestCard</identifier>
+      </componentInstance>
+    </itemInstances>
+    <itemInstances>
+      <componentInstance>
         <componentName>c:pmsBookingGuarantee</componentName>
         <identifier>c_pmsBookingGuarantee</identifier>
         <visibilityRule>
